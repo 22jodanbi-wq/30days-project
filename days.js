@@ -22,7 +22,7 @@
 //  비워둔 항목은 자동으로 안내 문구가 들어갑니다. 한 줄씩 채워가면 됩니다.
 
 window.DAYS = [
-  { day:  1, youtube: "", title: "", duration: "", prompt: "", log: "" },  // 09.28 (월)
+  { day:  1, youtube: "https://youtu.be/57oY5EdnLVs", title: "Rose Eyes", duration: "00:15", prompt: "", log: "" },  // 09.28 (월)
   { day:  2, youtube: "", title: "", duration: "", prompt: "", log: "" },  // 09.29 (화)
   { day:  3, youtube: "", title: "", duration: "", prompt: "", log: "" },  // 09.30 (수)
   { day:  4, youtube: "", title: "", duration: "", prompt: "", log: "" },  // 10.01 (목)
