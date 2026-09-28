@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30 Days of Drift</title>
+<meta name="description" content="30일간 하루에 한 편. AI 기반 영상 제작 워크샵 30일 프로젝트 아카이브.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#eef1f4;
+    --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+    --sans:Geist,'IBM Plex Sans KR',system-ui,sans-serif;
+    --kr:'IBM Plex Sans KR',system-ui,sans-serif;
+    --serif:'Cormorant Infant',serif;
+    --rule:rgba(255,255,255,.16);
+    --pad:40px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:var(--sans);
+    background:
+      radial-gradient(ellipse 55% 22% at 12% 70%,oklch(0.56 0.14 32 / .6),transparent 70%),
+      radial-gradient(ellipse 45% 20% at 88% 82%,oklch(0.58 0.13 15 / .5),transparent 70%),
+      radial-gradient(ellipse 60% 18% at 50% 96%,oklch(0.52 0.12 40 / .45),transparent 70%),
+      linear-gradient(180deg,#34547e 0%,#2a4467 45%,#24385a 100%);
+    background-attachment:fixed;
+  }
+  .page{position:relative;width:100%;max-width:1280px;margin:0 auto;overflow:hidden}
+
+  /* --- 배경 사진 + 좌측 음영 ---------------------------------------
+     본문은 1280px 컬럼이지만 배경은 화면 전체 폭을 쓴다. 그러지 않으면
+     넓은 화면에서 사진 좌우가 잘려나간다.
+     높이도 화면 폭을 따라간다: 폭 / 사진비율 보다 높아지는 순간부터
+     cover 가 좌우를 잘라내기 시작하므로 그 지점에서 멈춘다.
+     --bg-aspect 는 배경 사진의 가로÷세로. 사진을 갈아끼우면 이 값만 고치면 된다. */
+  .backdrop{--bg-aspect:1.787;            /* cosmos-bg.jpg = 1344x752 */
+    position:absolute;left:0;top:0;width:100%;
+    height:clamp(820px, calc(100vw / var(--bg-aspect)), 1180px);
+    overflow:hidden;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);
+            mask-image:linear-gradient(180deg,#000 80%,transparent)}
+  .bg{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+  .bg-shade{position:absolute;inset:0;
+    background:linear-gradient(90deg,rgba(20,32,52,.35),transparent 55%)}
+
+  /* --- 히어로 --- */
+  .hero{position:relative;height:700px;overflow:hidden}
+  .nav{position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px var(--pad)}
+  .nav ul{display:flex;gap:28px;margin:0;padding:0;list-style:none;
+    font:400 12px var(--mono);text-transform:uppercase;letter-spacing:.06em}
+  .nav a{color:inherit;text-decoration:none}
+  .nav a:hover{opacity:.7}
+  .meta{position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:150px var(--pad) 0;
+    font:400 12px var(--kr);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+  .meta span:last-child{text-align:right}
+  .titlewrap{position:relative;padding:44px var(--pad) 0}
+  h1{font:400 130px/0.9 var(--serif);letter-spacing:-0.08em;margin:110px 0 0}
+  .progress{font:400 12px var(--kr);letter-spacing:.06em;text-align:right;margin-top:24px}
+
+  /* --- 중간 여백 구간 --- */
+  .band{position:relative;height:420px;overflow:hidden}
+  .band p{position:absolute;left:0;right:0;bottom:70px;margin:0;text-align:center;
+    font:400 30px var(--kr);letter-spacing:-.02em;color:#fff}
+
+  /* --- 아카이브 --- */
+  .arch-head{position:relative;padding:56px var(--pad) 0;display:flex;justify-content:space-between;align-items:baseline}
+  .arch-head h2{font:400 40px var(--sans);letter-spacing:-.03em;margin:0}
+
+  .strip{position:relative;display:flex;gap:6px;overflow-x:auto;padding:24px var(--pad);align-items:stretch;
+    scroll-snap-type:x proximity}
+  .strip::-webkit-scrollbar{height:6px}
+  .strip::-webkit-scrollbar-track{background:transparent}
+  .strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}
+  .strip{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}
+
+  .day{flex:none;width:56px;height:360px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;
+    padding:0;color:inherit;font:inherit;text-align:left;scroll-snap-align:center;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+    transition:width .55s cubic-bezier(.2,.7,.2,1)}
+  .day[aria-selected="true"]{width:440px}
+  .day:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .day .nn{position:absolute;left:0;right:0;top:14px;text-align:center;font:500 12px var(--mono)}
+  .day .today-dot{position:absolute;left:50%;bottom:16px;width:6px;height:6px;margin-left:-3px;
+    border-radius:50%;background:var(--ink)}
+  .day .expand{position:absolute;inset:0;opacity:0;transition:opacity .3s ease .15s;pointer-events:none}
+  .day[aria-selected="true"] .expand{opacity:1}
+  .day .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .day .play i{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center}
+  .day .play i::after{content:"";width:0;height:0;margin-left:4px;
+    border-left:15px solid #1f2226;border-top:9px solid transparent;border-bottom:9px solid transparent}
+  .day .foot{position:absolute;left:18px;right:18px;bottom:18px;display:flex;justify-content:space-between;
+    align-items:flex-end;font:400 11px/1.6 var(--mono);letter-spacing:.06em;white-space:nowrap}
+
+  /* --- 상세 --- */
+  .detail{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px;
+    margin:16px var(--pad) 0;padding:32px 0 72px;border-top:1px solid var(--rule)}
+  .lbl{font:500 11px var(--mono);letter-spacing:.08em;opacity:.6}
+  .thumb{position:relative;aspect-ratio:16/9;margin-top:14px;border-radius:3px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    font:400 11px var(--mono);letter-spacing:.06em;text-align:center;padding:8px}
+  .thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* 유튜브 썸네일을 포스터로 깔고, 누를 때만 플레이어를 붙인다 */
+  .poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;
+    background:none;display:flex;align-items:center;justify-content:center}
+  .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .poster i{position:relative;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center;transition:transform .25s ease}
+  .poster:hover i,.poster:focus-visible i{transform:scale(1.08)}
+  .poster i::after{content:"";width:0;height:0;margin-left:4px;
+    border-left:15px solid #1f2226;border-top:9px solid transparent;border-bottom:9px solid transparent}
+  .d-title{font:400 30px/1.1 var(--sans);letter-spacing:-.025em;margin-top:20px;text-wrap:balance}
+  .d-date{font:400 12px var(--mono);letter-spacing:.06em;opacity:.6;margin-top:8px}
+  .d-prompt{font:400 13px/1.7 var(--mono);margin-top:14px;padding:16px;
+    background:rgba(255,255,255,.08);border-radius:3px}
+  .d-log{font:400 15px/1.8 var(--kr);opacity:.85;margin-top:14px;text-wrap:pretty}
+
+  /* ── 팀원 입력 영역. 쓰기 권한이 있는 뷰어에게만 보인다 ── */
+  .d-by{font:400 11px var(--mono);letter-spacing:.06em;opacity:.45;margin-top:10px}
+  .editbtn{font:500 11px var(--mono);letter-spacing:.08em;color:inherit;cursor:pointer;
+    padding:7px 13px;border-radius:3px;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.22);transition:background .2s ease}
+  .editbtn:hover{background:rgba(255,255,255,.16)}
+  .editbtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .editor{margin:0 var(--pad) 72px;padding:28px 0 0;border-top:1px solid var(--rule)}
+  .editor h3{font:400 20px var(--sans);letter-spacing:-.02em;margin:0 0 4px}
+  .editor .hint{font:400 12px/1.6 var(--kr);opacity:.55;margin:0 0 22px;max-width:62ch}
+  .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px}
+  .fields label{display:flex;flex-direction:column;gap:7px}
+  .fields .wide{grid-column:1/-1}
+  .fields span{font:500 11px var(--mono);letter-spacing:.08em;opacity:.6}
+  .fields input,.fields textarea{font:400 13px/1.6 var(--kr);color:inherit;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);
+    border-radius:3px;padding:10px 12px;width:100%}
+  .fields input:focus,.fields textarea:focus{outline:2px solid rgba(255,255,255,.55);
+    outline-offset:-1px;background:rgba(255,255,255,.12)}
+  .fields textarea{resize:vertical;min-height:84px}
+  .fields input::placeholder,.fields textarea::placeholder{color:rgba(238,241,244,.35)}
+  .editrow{display:flex;align-items:center;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .save{font:500 12px var(--mono);letter-spacing:.08em;color:#1f2226;cursor:pointer;
+    padding:11px 22px;border:0;border-radius:3px;background:#eef1f4;transition:opacity .2s ease}
+  .save:hover{opacity:.82}
+  .save:disabled{opacity:.4;cursor:default}
+  .save:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .status{font:400 12px var(--kr);opacity:.7}
+  .status.bad{color:oklch(0.78 0.13 25)}
+  @media (max-width:640px){ .fields{grid-template-columns:minmax(0,1fr)} }
+
+  footer{display:flex;justify-content:space-between;gap:16px;padding:22px var(--pad) 28px;
+    border-top:1px solid var(--rule);font:400 12px var(--mono);letter-spacing:.06em;opacity:.7}
+  footer .names{font-family:var(--kr);letter-spacing:0;font-size:13px}
+
+  /* 1280px 아트보드 기준. 그보다 좁은 화면에서만 무너지지 않게 조정 */
+  @media (max-width:1100px){
+    :root{--pad:28px}
+    .backdrop{height:clamp(520px, calc(100vw / var(--bg-aspect)), 820px)}
+    h1{font-size:clamp(56px,11vw,130px);margin-top:70px}
+    .hero{height:auto;padding-bottom:56px}
+    .meta{padding-top:96px}
+    .band{height:220px}
+    .day[aria-selected="true"]{width:min(440px,78vw)}
+    .detail{grid-template-columns:minmax(0,1fr);gap:32px}
+  }
+  @media (max-width:640px){
+    :root{--pad:18px}
+    .backdrop{height:clamp(360px, calc(100vw / var(--bg-aspect)), 520px)}
+    .meta{grid-template-columns:repeat(2,1fr);row-gap:6px}
+    .meta span:last-child{text-align:left}
+    footer{flex-direction:column}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .day,.day .expand{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true">
+  <img class="bg" src="assets/cosmos-bg.jpg" alt="">
+  <div class="bg-shade"></div>
+</div>
+
+<div class="page">
+  <header class="hero">
+    <div class="nav">
+      <div></div>
+      <ul>
+        <li><a href="#archive">Archive</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+    <div class="meta">
+      <span>Work</span><span>From</span><span id="m-from">(09.28)</span><span>To</span><span id="m-to">(10.27)</span>
+    </div>
+    <div class="titlewrap">
+      <h1>30 Days of Drift</h1>
+      <div class="progress" id="progress">(01/30) IN PROGRESS</div>
+    </div>
+  </header>
+
+  <section class="band" id="about">
+    <p>One a day</p>
+  </section>
+
+  <section id="archive">
+    <div class="arch-head">
+      <h2>Archive</h2>
+      <button class="editbtn" id="toggle" type="button" aria-expanded="false" aria-controls="editor" hidden>
+        이 날 채우기
+      </button>
+    </div>
+    <div class="strip" id="strip" role="tablist" aria-label="30일 아카이브"></div>
+
+    <div class="detail" id="panel" role="tabpanel" aria-live="polite">
+      <div>
+        <div class="lbl">VIDEO</div>
+        <div class="thumb" id="d-thumb"></div>
+        <div class="d-title" id="d-title"></div>
+        <div class="d-date" id="d-date"></div>
+        <div class="d-by" id="d-by"></div>
+      </div>
+      <div>
+        <div class="lbl">PROMPT</div>
+        <div class="d-prompt" id="d-prompt"></div>
+      </div>
+      <div>
+        <div class="lbl">NOTE</div>
+        <div class="d-log" id="d-log"></div>
+      </div>
+    </div>
+    <section class="editor" id="editor" hidden>
+      <h3 id="ed-head">Day 01 채우기</h3>
+      <p class="hint">유튜브에 <strong>공개</strong> 또는 <strong>일부공개</strong>로 올린 뒤 주소를 붙여넣으세요.
+        비공개는 본인만 보여서 여기서 재생되지 않습니다. 저장하면 팀원 모두에게 바로 반영됩니다.</p>
+      <div class="fields">
+        <label class="wide"><span>YOUTUBE 주소</span>
+          <input id="f-youtube" type="url" inputmode="url" autocomplete="off"
+                 placeholder="https://youtu.be/... 또는 watch?v=... / shorts/..."></label>
+        <label><span>제목</span>
+          <input id="f-title" type="text" placeholder="Petals in morning fog"></label>
+        <label><span>길이</span>
+          <input id="f-duration" type="text" placeholder="00:15"></label>
+        <label class="wide"><span>사용한 프롬프트</span>
+          <textarea id="f-prompt" placeholder="soft focus, faint film grain, slow 24fps camera drift, 15 seconds"></textarea></label>
+        <label class="wide"><span>작업 일지</span>
+          <textarea id="f-log" placeholder="이날 무엇을 시도하고 무엇을 골랐는지 적어두세요."></textarea></label>
+      </div>
+      <div class="editrow">
+        <button class="save" id="save" type="button">저장</button>
+        <span class="status" id="status" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+  </section>
+
+  <footer id="team">
+    <span>TEAM 7</span>
+    <span class="names">오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>
+  </footer>
+</div>
+
+<script src="days.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  // 프로젝트 시작일 2026-09-28. 진행 일수는 실제 날짜에서 계산해 1~30으로 묶는다.
+  const START = new Date(2026, 8, 28);
+  const TOTAL = 30;
+
+  // 카드 유리 틴트용 팔레트 (밝기, 채도, 색상각)
+  const cosmos = [
+    [0.52,0.08,245],[0.7,0.09,45],[0.6,0.12,25],[0.62,0.07,310],[0.76,0.08,75],
+    [0.48,0.07,260],[0.66,0.1,15],[0.58,0.06,225],[0.72,0.07,350],[0.64,0.1,55],
+  ];
+
+  // 사람이 직접 채우는 값이다. 제목에 따옴표가 들어와도 태그가 깨지지 않게.
+  const esc = v => String(v).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const pad = n => String(n).padStart(2, '0');
+  const dayAt = i => { const d = new Date(START); d.setDate(START.getDate() + i); return d; };
+  const mmdd = d => `${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
+  const $ = id => document.getElementById(id);
+
+  const P = Math.min(TOTAL, Math.max(1, Math.floor((new Date() - START) / 86400000) + 1));
+
+  // watch?v= / youtu.be / shorts / embed / ID 단독 — 어떤 형태로 붙여넣어도 받아준다.
+  function ytId(v) {
+    const str = String(v || '').trim();
+    if (!str) return '';
+    const m = str.match(/(?:v=|\/(?:embed|shorts|v)\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    return /^[A-Za-z0-9_-]{11}$/.test(str) ? str : '';
+  }
+
+  // ── 데이터 출처 ──────────────────────────────────────────────
+  // remote(공유 DB) > local(days.js) > 안내 문구.
+  // 배포본은 remote, 로컬 파일은 local 을 쓴다. 둘 다 없어도 페이지는 그대로 뜬다.
+  const local = {};
+  for (const e of (window.DAYS || [])) if (e && e.day) local[e.day] = e;
+  let remote = {};
+
+  const field = (n, k) => {
+    const r = remote[n] && String(remote[n][k] || '').trim();
+    if (r) return r;
+    return (local[n] && String(local[n][k] || '').trim()) || '';
+  };
+
+  let days = [];
+  function buildDays() {
+    days = Array.from({ length: TOTAL }, (_, i) => {
+      const n = i + 1;
+      const vid = ytId(field(n, 'youtube'));
+      const up = !!vid;                     // 업로드 판정은 영상 유무로. 날짜로 하면 거짓말이 된다.
+      const isToday = n === P;
+      const late = !up && n < P;            // 지난 날인데 아직 안 올라온 날
+      const [l, c, h] = cosmos[(i * 3) % cosmos.length];
+      const fade = up || isToday ? 0.38 : 0.2;
+      const dur = field(n, 'duration') || '00:15';
+      const title = field(n, 'title');
+      return {
+        n, nn: pad(n), vid, up, isToday,
+        by: (remote[n] && remote[n].by) || '',
+        date: mmdd(dayAt(i)),
+        tint: `oklch(${Math.min(0.9, l + 0.2)} ${c} ${h} / ${fade})`,
+        tag: up ? `▶ ${dur}` : isToday ? 'TODAY · 업로드 중' : late ? '업로드 대기' : 'UPCOMING',
+        title: title || (up ? `Day ${pad(n)}` : isToday ? 'Today' : 'Not yet'),
+        prompt: field(n, 'prompt') || '— 이날 사용한 프롬프트가 여기에 올라옵니다',
+        log: field(n, 'log') || '이날의 작업 과정과 메모가 여기에 기록됩니다.',
+        videoLabel: up ? `VIDEO · ${dur}`
+          : isToday ? 'VIDEO — 오늘 업로드 예정'
+          : late ? 'VIDEO — 업로드 대기'
+          : 'VIDEO — 준비 중',
+      };
+    });
+  }
+
+  // ── 스트립 ───────────────────────────────────────────────────
+  const strip = $('strip');
+  let selected = P;
+
+  $('m-from').textContent = `(${mmdd(START)})`;
+  $('m-to').textContent = `(${mmdd(dayAt(TOTAL - 1))})`;
+  $('progress').textContent = `(${pad(P)}/30) IN PROGRESS`;
+
+  buildDays();
+
+  const cards = days.map(d => {
+    const btn = document.createElement('button');
+    btn.className = 'day';
+    btn.type = 'button';
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-controls', 'panel');
+    btn.dataset.n = d.n;
+    strip.appendChild(btn);
+    return btn;
+  });
+
+  function paintCards() {
+    days.forEach((d, i) => {
+      const btn = cards[i];
+      btn.style.background = d.tint;
+      btn.setAttribute('aria-label', `Day ${d.nn}, ${d.date}, ${d.title}`);
+      btn.innerHTML =
+        `<span class="nn">${d.nn}</span>` +
+        (d.isToday ? '<span class="today-dot"></span>' : '') +
+        '<span class="expand">' +
+          (d.up ? '<span class="play"><i></i></span>' : '') +
+          `<span class="foot"><span>DAY ${d.nn}<br>${d.date}</span><span>${esc(d.tag)}</span></span>` +
+        '</span>';
+      btn.setAttribute('aria-selected', String(d.n === selected));
+    });
+  }
+
+  // ── 상세 ─────────────────────────────────────────────────────
+  let userNs = null;
+  let detailSig = '';
+
+  function renderDetail(force) {
+    const d = days[selected - 1];
+    const sig = [d.n, d.vid, d.title, d.prompt, d.log, d.videoLabel, d.by].join(' ');
+    // 남이 저장했다고 내가 보고 있던 영상을 끊어버리지 않는다.
+    if (!force && sig === detailSig) return;
+    detailSig = sig;
+
+    const thumb = $('d-thumb');
+    thumb.style.background = d.tint;
+    thumb.textContent = '';
+    if (d.vid) {
+      // 썸네일만 먼저 깔고 누를 때 iframe 을 붙인다. 30개 플레이어를 미리 만들 이유가 없다.
+      const poster = document.createElement('button');
+      poster.type = 'button';
+      poster.className = 'poster';
+      poster.setAttribute('aria-label', `Day ${d.nn} 영상 재생`);
+
+      const shot = document.createElement('img');
+      shot.alt = '';
+      shot.loading = 'lazy';
+      shot.src = `https://i.ytimg.com/vi/${d.vid}/maxresdefault.jpg`;
+      // maxres 가 없는 영상이 흔하다. 그때는 16:9 인 mqdefault 로 내려간다.
+      shot.addEventListener('error', () => {
+        shot.src = `https://i.ytimg.com/vi/${d.vid}/mqdefault.jpg`;
+      }, { once: true });
+
+      poster.append(shot, document.createElement('i'));
+      poster.addEventListener('click', () => {
+        thumb.innerHTML =
+          `<iframe src="https://www.youtube-nocookie.com/embed/${d.vid}?autoplay=1&rel=0" ` +
+          `title="Day ${d.nn} — ${esc(d.title)}" allow="autoplay; encrypted-media; fullscreen" ` +
+          'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+      });
+      thumb.appendChild(poster);
+    } else {
+      thumb.textContent = d.videoLabel;
+    }
+
+    $('d-title').textContent = d.title;
+    $('d-date').textContent = `DAY ${d.nn} · ${d.date}`;
+    $('d-prompt').textContent = d.prompt;
+    $('d-log').textContent = d.log;
+    renderBy(d);
+  }
+
+  async function renderBy(d) {
+    const el = $('d-by');
+    if (!d.by || !userNs) { el.textContent = ''; return; }
+    try {
+      const ps = await userNs.profiles([d.by]);
+      const nm = (ps[d.by] && ps[d.by].name) || '';
+      el.textContent = nm ? `${nm} 올림` : '';
+    } catch (_) {
+      el.textContent = '';
+    }
+  }
+
+  function select(n, { scroll = false } = {}) {
+    selected = n;
+    cards.forEach(c => c.setAttribute('aria-selected', String(+c.dataset.n === n)));
+    renderDetail(true);
+    fillForm();
+    if (scroll) cards[n - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  function refresh() {
+    buildDays();
+    paintCards();
+    renderDetail(false);
+    if (!formDirty) fillForm();
+  }
+
+  strip.addEventListener('click', e => {
+    const card = e.target.closest('.day');
+    if (!card) return;
+    const n = +card.dataset.n;
+    if (n === selected && days[n - 1].vid) {
+      $('panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    select(n, { scroll: true });
+  });
+
+  // 좌우 화살표로도 날짜를 넘길 수 있게
+  strip.addEventListener('keydown', e => {
+    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const next = Math.min(TOTAL, Math.max(1, selected + step));
+    select(next, { scroll: true });
+    cards[next - 1].focus();
+  });
+
+  // ── 입력 폼 ──────────────────────────────────────────────────
+  const FIELDS = ['youtube', 'title', 'duration', 'prompt', 'log'];
+  let formDirty = false;
+
+  const val = k => $('f-' + k).value.trim();
+
+  function fillForm() {
+    $('ed-head').textContent = `Day ${pad(selected)} 채우기`;
+    FIELDS.forEach(k => { $('f-' + k).value = field(selected, k); });
+    formDirty = false;
+  }
+
+  function setStatus(msg, bad) {
+    const el = $('status');
+    el.textContent = msg || '';
+    el.classList.toggle('bad', !!bad);
+  }
+
+  FIELDS.forEach(k => $('f-' + k).addEventListener('input', () => {
+    formDirty = true;
+    setStatus('');
+  }));
+
+  $('toggle').addEventListener('click', () => {
+    const ed = $('editor');
+    const open = ed.hidden;
+    ed.hidden = !open;
+    $('toggle').setAttribute('aria-expanded', String(open));
+    $('toggle').textContent = open ? '입력창 닫기' : '이 날 채우기';
+    if (open) { fillForm(); $('f-youtube').focus(); }
+  });
+
+  function lockEditor() {
+    $('editor').hidden = true;
+    $('toggle').hidden = true;
+  }
+
+  async function save() {
+    if (!db) return;
+    const raw = val('youtube');
+    if (raw && !ytId(raw)) {
+      setStatus('유튜브 주소를 알아볼 수 없습니다. 주소창의 링크를 그대로 붙여넣어 주세요.', true);
+      $('f-youtube').focus();
+      return;
+    }
+    const btn = $('save');
+    btn.disabled = true;
+    setStatus('저장하는 중');
+
+    const body = { updatedAt: new Date().toISOString() };
+    FIELDS.forEach(k => { body[k] = val(k); });
+    if (uid) body.by = uid;
+
+    try {
+      await db.doc('days/' + pad(selected)).set(body);
+      formDirty = false;
+      setStatus('저장했습니다. 팀원 모두에게 바로 보입니다.');
+    } catch (err) {
+      const code = err && err.code;
+      if (code === 'invalid_argument') {
+        lockEditor();
+        setStatus('저장 권한이 없습니다. 페이지 소유자에게 Contributor 권한을 요청하세요.', true);
+      } else if (code === 'quota_exceeded') {
+        setStatus('저장 공간이 가득 찼습니다. 소유자에게 알려주세요.', true);
+      } else if (code === 'resource_exhausted') {
+        setStatus('요청이 너무 많습니다. 잠시 후 다시 저장해 주세요.', true);
+      } else {
+        setStatus('저장하지 못했습니다. 잠시 후 다시 시도해 주세요.', true);
+      }
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  $('save').addEventListener('click', save);
+
+  // ── 첫 렌더. 여기까지는 공유 DB 없이도 완전히 동작한다 ──────────
+  paintCards();
+  renderDetail(true);
+  fillForm();
+  {
+    const first = cards[selected - 1];
+    strip.scrollLeft = first.offsetLeft - (strip.clientWidth - first.offsetWidth) / 2;
+  }
+
+  // ── 공유 DB 연결. 배포된 뷰어에서만 살아난다 ────────────────────
+  let db = null, uid = null;
+
+  (async () => {
+    if (!(window.claude && window.claude.use)) return;   // 로컬 파일 — days.js 만으로 동작
+    const [d, u] = await Promise.all([
+      window.claude.use('db'),
+      window.claude.use('user'),
+    ]);
+    db = d;
+
+    let writable = !!db;
+    if (u) {
+      userNs = u;
+      try { uid = await u.id(); } catch (_) {}
+      // null 은 "권한 없음"이 아니라 "아직 모름". 입력창은 열어두고 거절되면 닫는다.
+      let allowed = null;
+      try { allowed = await u.can('data.write'); } catch (_) {}
+      writable = !!db && allowed !== false;
+    }
+
+    if (writable) $('toggle').hidden = false;
+
+    if (db) {
+      db.collection('days').onSnapshot(snap => {
+        const next = {};
+        snap.docs.forEach(doc => { if (doc.exists) next[+doc.id] = doc.data(); });
+        remote = next;
+        refresh();
+      }, err => {
+        if (err && err.code === 'revoked') {
+          lockEditor();
+          setStatus('접근 권한이 해제되었습니다. 페이지를 새로 고쳐 주세요.', true);
+        }
+      });
+    }
+  })();
+})();
+</script>
+</body>
+</html>

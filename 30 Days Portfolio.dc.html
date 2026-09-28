@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;1,300;1,400&amp;family=Odibee+Sans&amp;family=IM+Fell+Great+Primer:ital@0;1&amp;family=Instrument+Serif:ital@0;1&amp;family=Gloock&amp;family=Bodoni+Moda:ital,wght@0,400;1,400&amp;family=Cormorant+Garamond:ital,wght@0,300;1,300&amp;family=Italiana&amp;family=Yeseva+One&amp;family=Geist:wght@300;400;500&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet"><style>body{margin:0;background:#ecebe7;font-family:Geist,Pretendard,system-ui,sans-serif}a{color:inherit}a:hover{opacity:.7}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08)}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-direction:column;gap:48px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}.hs::-webkit-scrollbar{height:6px}.hs::-webkit-scrollbar-track,.hsd::-webkit-scrollbar-track{background:transparent}.hs::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}.hsd::-webkit-scrollbar{height:6px}.hsd::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:3px}</style></helmet>
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">배경 비교 — 하늘빛 + 흐릿한 꽃 + 필름 그레인 vs 기존 <a class="dv-oid" href="#2a">2a</a></span></div>
+<div class="dv-opts" style="flex-direction:row;flex-wrap:nowrap">
+<div class="dv-opt" id="4a" data-screen-label="4a Sky Bloom">
+<div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a>Night Cosmos — 첨부 사진을 배경으로, 짙은 블루 톤 전체 적용</div>
+<div class="dv-card" style="width:1280px;position:relative;background:radial-gradient(ellipse 55% 22% at 12% 70%,oklch(0.56 0.14 32 / .6),transparent 70%),radial-gradient(ellipse 45% 20% at 88% 82%,oklch(0.58 0.13 15 / .5),transparent 70%),radial-gradient(ellipse 60% 18% at 50% 96%,oklch(0.52 0.12 40 / .45),transparent 70%),linear-gradient(180deg,#34547e 0%,#2a4467 45%,#24385a 100%);color:#eef1f4;border:0">
+  <img src="assets/cosmos-bg.png" alt="" style="position:absolute;left:0;top:0;width:100%;height:1180px;object-fit:cover;object-position:50% 45%;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)">
+  <div style="position:absolute;left:0;top:0;width:100%;height:1180px;background:linear-gradient(90deg,rgba(20,32,52,.35),transparent 55%);-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);mask-image:linear-gradient(180deg,#000 80%,transparent)"></div>
+  <div style="position:relative;height:700px;overflow:hidden;background:transparent">
+
+    <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px 40px">
+      
+      <div style="display:flex;gap:28px;font:400 12px 'Geist Mono';text-transform:uppercase;letter-spacing:.06em"><span>Archive</span><span>Team</span><span>About</span></div>
+    </div>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:150px 40px 0;font:400 12px 'Geist Mono';letter-spacing:.08em;text-transform:uppercase;opacity:.7">
+      <span style="font-family: Pretendard">Work</span><span style="font-family: Pretendard">From</span><span style="font-family: Pretendard">(09.28)</span><span style="font-family: Pretendard">To</span><span style="text-align: right; font-family: Pretendard">(10.27)</span>
+    </div>
+    <div style="position:relative;padding:44px 40px 0">
+      
+      <div style="font: 400 150px/0.9 'Cormorant Infant',serif; letter-spacing: -0.08em; font-size: 130px; margin-top: 110px">30 Days of <span style="font-style: normal;">Drift</span></div><div style="font: 400 12px 'Geist Mono'; letter-spacing: .06em; font-family: Pretendard; text-align: right; margin-top: 24px">({{ progressLabel }}) IN PROGRESS</div>
+    </div>
+  </div>
+  <div style="position:relative;height:420px;overflow:hidden;background:transparent">
+    <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center">
+      <div style="font: 400 30px Geist; letter-spacing: -.02em; color: #fff; font-family: Pretendard">One a day</div>
+    </div>
+  </div>
+  <div style="padding:56px 40px 0;display:flex;justify-content:space-between;align-items:baseline">
+    <div style="font:400 40px Geist;letter-spacing:-.03em">Archive</div>
+    
+  </div>
+  <div class="hs" style="display:flex;gap:6px;overflow-x:auto;padding:24px 40px 24px;align-items:stretch">
+    <sc-for list="{{ days4 }}" as="d" hint-placeholder-count="14">
+      <div onClick="{{ d.pick }}" style="flex:none;width:{{ d.w4 }};height:360px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;background:{{ d.bg4c }};backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:width .55s cubic-bezier(.2,.7,.2,1);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)">
+        <div style="position:absolute;left:0;right:0;top:14px;text-align:center;font:500 12px 'Geist Mono'">{{ d.nn }}</div>
+        <sc-if value="{{ d.isToday }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;bottom:16px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#eef1f4"></div></sc-if>
+        <sc-if value="{{ d.sel }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <sc-if value="{{ d.done }}" hint-placeholder-val="{{ false }}"><div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:15px solid #1f221f;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px"></div></div></sc-if>
+          </div>
+          <div style="position:absolute;left:18px;bottom:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-end;font:400 11px/1.6 'Geist Mono';letter-spacing:.06em">
+            <span>DAY {{ d.nn }}<br>{{ d.date }}</span><span>{{ d.tag }}</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px;margin:16px 40px 0;padding:32px 0 72px;border-top:1px solid rgba(255,255,255,.16)">
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">VIDEO</div>
+      <div style="aspect-ratio:16/9;margin-top:14px;border-radius:3px;background:{{ s4.bg4c }};display:flex;align-items:center;justify-content:center;font:400 11px 'Geist Mono';letter-spacing:.06em">{{ s4.videoLabel }}</div>
+      <div style="font:400 30px/1.1 Geist;letter-spacing:-.025em;margin-top:20px">{{ s4.title }}</div>
+      <div style="font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.6;margin-top:8px">DAY {{ s4.nn }} · {{ s4.date }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">PROMPT</div>
+      <div style="font:400 13px/1.7 'Geist Mono';margin-top:14px;padding:16px;background:rgba(255,255,255,.08);border-radius:3px">{{ s4.prompt }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">NOTE</div>
+      <div style="font:400 15px/1.8 Pretendard;opacity:.85;margin-top:14px;text-wrap:pretty">{{ s4.log }}</div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:22px 40px 28px;border-top:1px solid rgba(255,255,255,.16);font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.7">
+    <span>TEAM 7</span><span style="font-family:Pretendard;letter-spacing:0;font-size:13px">오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>
+  </div>
+</div>
+</div>
+<div class="dv-opt" data-screen-label="2a 비교용">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>기존 (비교용 사본)</div>
+<div class="dv-card" style="width:1280px;background:#e4e5e1;color:#1f221f">
+  <div style="position:relative;height:700px;overflow:hidden;background:#e1e3de">
+    <div style="position: absolute; width: 520px; height: 520px; left: -144px; top: 132px; border-radius: 50%; background: oklch(0.86 0.035 200); filter: blur(100px)"></div>
+    <div style="position:absolute;width:300px;height:300px;left:420px;top:40px;border-radius:50%;background:oklch(0.88 0.04 60);filter:blur(90px);opacity:.8"></div>
+    <sc-for list="{{ flies }}" as="b" hint-placeholder-count="0">
+      <div style="position:absolute;left:{{ b.x }};top:{{ b.y }};width:{{ b.w }};height:{{ b.h }};transform:{{ b.tf }};opacity:{{ b.op }};filter:blur(0.6px)">
+        <div style="position:absolute;right:52%;top:38%;width:{{ b.tw }};height:26%;border-radius:50%;background:{{ b.trail }};filter:blur(4px)"></div>
+        <div style="position:absolute;left:0;top:0;width:50%;height:62%;border-radius:85% 10% 40% 60%;background:{{ b.w1 }}"></div>
+        <div style="position:absolute;left:50%;top:0;width:50%;height:62%;border-radius:10% 85% 60% 40%;background:{{ b.w1r }}"></div>
+        <div style="position:absolute;left:14%;top:50%;width:36%;height:46%;border-radius:40% 20% 70% 85%;background:{{ b.w2 }}"></div>
+        <div style="position:absolute;left:50%;top:50%;width:36%;height:46%;border-radius:20% 40% 85% 70%;background:{{ b.w2 }}"></div>
+        <div style="position:absolute;left:48.5%;top:16%;width:3%;height:68%;border-radius:3px;background:#4a4a44"></div>
+      </div>
+    </sc-for>
+    <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px 40px">
+      
+      <div style="display:flex;gap:28px;font:400 12px 'Geist Mono';text-transform:uppercase;letter-spacing:.06em"><span>Archive</span><span>Team</span><span>About</span></div>
+    </div>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:150px 40px 0;font:400 12px 'Geist Mono';letter-spacing:.08em;text-transform:uppercase;opacity:.7">
+      <span style="font-family: Pretendard">Work</span><span style="font-family: Pretendard">From</span><span style="font-family: Pretendard">(09.28)</span><span style="font-family: Pretendard">To</span><span style="text-align: right; font-family: Pretendard">(10.27)</span>
+    </div>
+    <div style="position:relative;padding:44px 40px 0">
+      
+      <div style="font: 400 150px/0.9 'Cormorant Infant',serif; letter-spacing: -0.08em; font-size: 130px">30 Days of <span style="font-style: normal;">Drift</span></div><div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 32px; position: relative">
+        <div style="font: 400 12px 'Geist Mono'; letter-spacing: .06em; font-family: Pretendard">({{ progressLabel }}) IN PROGRESS</div>
+      <div style="font-size: 16px; line-height: 1; position: absolute; left: 46px; top: 11px"></div></div>
+    </div>
+  </div>
+  <div style="position:relative;height:420px;overflow:hidden;background:#cfd6d2">
+    <div style="position:absolute;left:50%;top:48%;width:0;height:0;filter:blur(5px)">
+      <sc-for list="{{ petals }}" as="p" hint-placeholder-count="0">
+        <div style="position:absolute;left:0;top:-70px;width:{{ p.len }};height:140px;border-radius:50% 70% 70% 50%;transform-origin:0 50%;transform:{{ p.tf }};background:{{ p.bg }};opacity:{{ p.op }}"></div>
+      </sc-for>
+      <div style="position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,oklch(0.8 0.09 70),oklch(0.66 0.1 35) 45%,transparent 72%)"></div>
+    </div>
+    <div style="position:absolute;left:50%;top:48%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:repeating-conic-gradient(oklch(0.78 0.08 75) 0 3deg,transparent 3deg 9deg);-webkit-mask-image:radial-gradient(circle,#000 20%,transparent 70%);mask-image:radial-gradient(circle,#000 20%,transparent 70%);opacity:.7;filter:blur(.8px)"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#e1e3de 0%,rgba(225,227,222,0) 30%,rgba(228,229,225,0) 70%,#e4e5e1 100%)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center">
+      <div style="font:400 30px Geist;letter-spacing:-.02em;color:#1f221f">One a day</div>
+    </div>
+  </div>
+  <div style="padding:56px 40px 0;display:flex;justify-content:space-between;align-items:baseline">
+    <div style="font:400 40px Geist;letter-spacing:-.03em">Archive</div>
+    
+  </div>
+  <div class="hs" style="display:flex;gap:6px;overflow-x:auto;padding:24px 40px 24px;align-items:stretch">
+    <sc-for list="{{ days4 }}" as="d" hint-placeholder-count="14">
+      <div onClick="{{ d.pick }}" style="flex:none;width:{{ d.w4 }};height:360px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;background:{{ d.bg4 }};transition:width .55s cubic-bezier(.2,.7,.2,1);border:1px solid rgba(0,0,0,.06)">
+        <div style="position:absolute;left:0;right:0;top:14px;text-align:center;font:500 12px 'Geist Mono'">{{ d.nn }}</div>
+        <sc-if value="{{ d.isToday }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;bottom:16px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#1f221f"></div></sc-if>
+        <sc-if value="{{ d.sel }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <sc-if value="{{ d.done }}" hint-placeholder-val="{{ false }}"><div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:15px solid #1f221f;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px"></div></div></sc-if>
+          </div>
+          <div style="position:absolute;left:18px;bottom:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-end;font:400 11px/1.6 'Geist Mono';letter-spacing:.06em">
+            <span>DAY {{ d.nn }}<br>{{ d.date }}</span><span>{{ d.tag }}</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px;margin:16px 40px 0;padding:32px 0 72px;border-top:1px solid rgba(0,0,0,.1)">
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">VIDEO</div>
+      <div style="aspect-ratio:16/9;margin-top:14px;border-radius:3px;background:{{ s4.bg4 }};display:flex;align-items:center;justify-content:center;font:400 11px 'Geist Mono';letter-spacing:.06em">{{ s4.videoLabel }}</div>
+      <div style="font:400 30px/1.1 Geist;letter-spacing:-.025em;margin-top:20px">{{ s4.title }}</div>
+      <div style="font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.6;margin-top:8px">DAY {{ s4.nn }} · {{ s4.date }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">PROMPT</div>
+      <div style="font:400 13px/1.7 'Geist Mono';margin-top:14px;padding:16px;background:rgba(255,255,255,.45);border-radius:3px">{{ s4.prompt }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">NOTE</div>
+      <div style="font:400 15px/1.8 Pretendard;opacity:.85;margin-top:14px;text-wrap:pretty">{{ s4.log }}</div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:22px 40px 28px;border-top:1px solid rgba(0,0,0,.1);font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.7">
+    <span>TEAM 7</span><span style="font-family:Pretendard;letter-spacing:0;font-size:13px">오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>
+  </div>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "<a class="dv-oid" href="#4a">4a</a> 꽃을 더 크게/선명하게" · "<a class="dv-oid" href="#4a">4a</a> 제목 색을 포스터처럼 붉은 오렌지로" · "나비 빼기"</p>
+</section>
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname"><a class="dv-oid" href="#2a">2a</a> 제목 폰트 — 그림 같은 세리프 5종</span></div>
+<div class="dv-opts">
+<sc-for list="{{ fontOpts }}" as="f" hint-placeholder-count="5">
+<div class="dv-opt" id="{{ f.id }}">
+<div class="dv-olabel"><a class="dv-oid" href="{{ f.href }}">{{ f.id }}</a>{{ f.label }}</div>
+<div class="dv-card" style="width:1280px;height:460px;position:relative;overflow:hidden;background:#e1e3de;color:#1f221f">
+  <div style="position:absolute;width:520px;height:520px;left:-120px;top:60px;border-radius:50%;background:oklch(0.86 0.035 200);filter:blur(100px)"></div>
+  <div style="position:absolute;width:300px;height:300px;left:420px;top:-60px;border-radius:50%;background:oklch(0.88 0.04 60);filter:blur(90px);opacity:.8"></div>
+  <sc-for list="{{ flies }}" as="b" hint-placeholder-count="0">
+    <div style="position:absolute;left:{{ b.x }};top:{{ b.y2 }};width:{{ b.w }};height:{{ b.h }};transform:{{ b.tf }};opacity:{{ b.op }};filter:blur(0.6px)">
+      <div style="position:absolute;right:52%;top:38%;width:{{ b.tw }};height:26%;border-radius:50%;background:{{ b.trail }};filter:blur(4px)"></div>
+      <div style="position:absolute;left:0;top:0;width:50%;height:62%;border-radius:85% 10% 40% 60%;background:{{ b.w1 }}"></div>
+      <div style="position:absolute;left:50%;top:0;width:50%;height:62%;border-radius:10% 85% 60% 40%;background:{{ b.w1r }}"></div>
+      <div style="position:absolute;left:14%;top:50%;width:36%;height:46%;border-radius:40% 20% 70% 85%;background:{{ b.w2 }}"></div>
+      <div style="position:absolute;left:50%;top:50%;width:36%;height:46%;border-radius:20% 40% 85% 70%;background:{{ b.w2 }}"></div>
+      <div style="position:absolute;left:48.5%;top:16%;width:3%;height:68%;border-radius:3px;background:#4a4a44"></div>
+    </div>
+  </sc-for>
+  <div style="position:absolute;left:40px;top:28px;font:500 18px Geist">Thirty</div>
+  <div style="position:absolute;right:40px;top:30px;font:400 12px 'Geist Mono';letter-spacing:.08em;opacity:.7">{{ f.name }}</div>
+  <div style="position:absolute;left:40px;right:40px;bottom:56px;font-family:{{ f.family }};font-weight:{{ f.weight }};font-size:{{ f.size }};line-height:.95;letter-spacing:{{ f.ls }}">30 Days of <span style="font-style:{{ f.italic }}">Drift</span></div>
+</div>
+</div>
+</sc-for>
+</div>
+<p class="dv-next">Try next: "<a class="dv-oid" href="#3b">3b</a>로 <a class="dv-oid" href="#2a">2a</a> 제목 교체" · "<a class="dv-oid" href="#3a">3a</a>에서 Drift만 이탤릭"</p>
+</section>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname"><a class="dv-oid" href="#1a">1a</a> 무드 + <a class="dv-oid" href="#1b">1b</a> 펼침 아카이브 · 시작일 09.28 · 당번 제거 · 채도 낮춤</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="2a" data-screen-label="2a Mist Archive">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Mist Archive — 첨부 이미지(나비·꽃)를 저채도로 깔고, 클릭하면 펼쳐지는 스트립</div>
+<div class="dv-card" style="width:1280px;background:#e4e5e1;color:#1f221f">
+  <div style="position:relative;height:700px;overflow:hidden;background:#e1e3de">
+    <div style="position: absolute; width: 520px; height: 520px; left: -144px; top: 132px; border-radius: 50%; background: oklch(0.86 0.035 200); filter: blur(100px)"></div>
+    <div style="position:absolute;width:300px;height:300px;left:420px;top:40px;border-radius:50%;background:oklch(0.88 0.04 60);filter:blur(90px);opacity:.8"></div>
+    <sc-for list="{{ flies }}" as="b" hint-placeholder-count="0">
+      <div style="position:absolute;left:{{ b.x }};top:{{ b.y }};width:{{ b.w }};height:{{ b.h }};transform:{{ b.tf }};opacity:{{ b.op }};filter:blur(0.6px)">
+        <div style="position:absolute;right:52%;top:38%;width:{{ b.tw }};height:26%;border-radius:50%;background:{{ b.trail }};filter:blur(4px)"></div>
+        <div style="position:absolute;left:0;top:0;width:50%;height:62%;border-radius:85% 10% 40% 60%;background:{{ b.w1 }}"></div>
+        <div style="position:absolute;left:50%;top:0;width:50%;height:62%;border-radius:10% 85% 60% 40%;background:{{ b.w1r }}"></div>
+        <div style="position:absolute;left:14%;top:50%;width:36%;height:46%;border-radius:40% 20% 70% 85%;background:{{ b.w2 }}"></div>
+        <div style="position:absolute;left:50%;top:50%;width:36%;height:46%;border-radius:20% 40% 85% 70%;background:{{ b.w2 }}"></div>
+        <div style="position:absolute;left:48.5%;top:16%;width:3%;height:68%;border-radius:3px;background:#4a4a44"></div>
+      </div>
+    </sc-for>
+    <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px 40px">
+      
+      <div style="display:flex;gap:28px;font:400 12px 'Geist Mono';text-transform:uppercase;letter-spacing:.06em"><span>Archive</span><span>Team</span><span>About</span></div>
+    </div>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:150px 40px 0;font:400 12px 'Geist Mono';letter-spacing:.08em;text-transform:uppercase;opacity:.7">
+      <span style="font-family: Pretendard">Work</span><span style="font-family: Pretendard">From</span><span style="font-family: Pretendard">(09.28)</span><span style="font-family: Pretendard">To</span><span style="text-align: right; font-family: Pretendard">(10.27)</span>
+    </div>
+    <div style="position:relative;padding:44px 40px 0">
+      
+      <div style="font: 400 150px/0.9 'Cormorant Infant',serif; letter-spacing: -0.08em; font-size: 130px">30 Days of <span style="font-style: normal;">Drift</span></div><div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 32px; position: relative">
+        <div style="font: 400 12px 'Geist Mono'; letter-spacing: .06em; font-family: Pretendard">({{ progressLabel }}) IN PROGRESS</div>
+      <div style="font-size: 16px; line-height: 1; position: absolute; left: 46px; top: 11px"></div></div>
+    </div>
+  </div>
+  <div style="position:relative;height:420px;overflow:hidden;background:#cfd6d2">
+    <div style="position:absolute;left:50%;top:48%;width:0;height:0;filter:blur(5px)">
+      <sc-for list="{{ petals }}" as="p" hint-placeholder-count="0">
+        <div style="position:absolute;left:0;top:-70px;width:{{ p.len }};height:140px;border-radius:50% 70% 70% 50%;transform-origin:0 50%;transform:{{ p.tf }};background:{{ p.bg }};opacity:{{ p.op }}"></div>
+      </sc-for>
+      <div style="position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,oklch(0.8 0.09 70),oklch(0.66 0.1 35) 45%,transparent 72%)"></div>
+    </div>
+    <div style="position:absolute;left:50%;top:48%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:repeating-conic-gradient(oklch(0.78 0.08 75) 0 3deg,transparent 3deg 9deg);-webkit-mask-image:radial-gradient(circle,#000 20%,transparent 70%);mask-image:radial-gradient(circle,#000 20%,transparent 70%);opacity:.7;filter:blur(.8px)"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#e1e3de 0%,rgba(225,227,222,0) 30%,rgba(228,229,225,0) 70%,#e4e5e1 100%)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center">
+      <div style="font:400 30px Geist;letter-spacing:-.02em;color:#1f221f">One a day</div>
+    </div>
+  </div>
+  <div style="padding:56px 40px 0;display:flex;justify-content:space-between;align-items:baseline">
+    <div style="font:400 40px Geist;letter-spacing:-.03em">Archive</div>
+    
+  </div>
+  <div class="hs" style="display:flex;gap:6px;overflow-x:auto;padding:24px 40px 24px;align-items:stretch">
+    <sc-for list="{{ days4 }}" as="d" hint-placeholder-count="14">
+      <div onClick="{{ d.pick }}" style="flex:none;width:{{ d.w4 }};height:360px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;background:{{ d.bg4 }};transition:width .55s cubic-bezier(.2,.7,.2,1);border:1px solid rgba(0,0,0,.06)">
+        <div style="position:absolute;left:0;right:0;top:14px;text-align:center;font:500 12px 'Geist Mono'">{{ d.nn }}</div>
+        <sc-if value="{{ d.isToday }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;bottom:16px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#1f221f"></div></sc-if>
+        <sc-if value="{{ d.sel }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <sc-if value="{{ d.done }}" hint-placeholder-val="{{ false }}"><div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:15px solid #1f221f;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px"></div></div></sc-if>
+          </div>
+          <div style="position:absolute;left:18px;bottom:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-end;font:400 11px/1.6 'Geist Mono';letter-spacing:.06em">
+            <span>DAY {{ d.nn }}<br>{{ d.date }}</span><span>{{ d.tag }}</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px;margin:16px 40px 0;padding:32px 0 72px;border-top:1px solid rgba(0,0,0,.1)">
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">VIDEO</div>
+      <div style="aspect-ratio:16/9;margin-top:14px;border-radius:3px;background:{{ s4.bg4 }};display:flex;align-items:center;justify-content:center;font:400 11px 'Geist Mono';letter-spacing:.06em">{{ s4.videoLabel }}</div>
+      <div style="font:400 30px/1.1 Geist;letter-spacing:-.025em;margin-top:20px">{{ s4.title }}</div>
+      <div style="font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.6;margin-top:8px">DAY {{ s4.nn }} · {{ s4.date }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">PROMPT</div>
+      <div style="font:400 13px/1.7 'Geist Mono';margin-top:14px;padding:16px;background:rgba(255,255,255,.45);border-radius:3px">{{ s4.prompt }}</div>
+    </div>
+    <div>
+      <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;opacity:.6">NOTE</div>
+      <div style="font:400 15px/1.8 Pretendard;opacity:.85;margin-top:14px;text-wrap:pretty">{{ s4.log }}</div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:22px 40px 28px;border-top:1px solid rgba(0,0,0,.1);font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.7">
+    <span>TEAM 7</span><span style="font-family:Pretendard;letter-spacing:0;font-size:13px">오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>
+  </div>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "Tweaks에서 진행 일수 올려서 채워진 모습 확인" · "상세 영역을 펼친 칸 안으로 합치기" · "About/Team 섹션 추가"</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">30 Days — 세 가지 방향 · 가로 스크롤 타임라인 · 당번제(4인 순환) · 오늘 = Day 15 가정</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a" data-screen-label="1a Mist">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Mist — 세이지 그레이 바탕, 흐릿한 컬러 번짐, 카드형 타임라인</div>
+<div class="dv-card" style="width:1280px;background:#e3e5e0;color:#1d201d">
+  <div style="position:relative;height:600px;overflow:hidden;background:#dfe2dc">
+    <div style="position:absolute;width:520px;height:520px;left:-80px;top:120px;border-radius:50%;background:oklch(0.82 0.08 200);filter:blur(90px);opacity:.8"></div>
+    <div style="position:absolute;width:460px;height:460px;left:520px;top:-120px;border-radius:50%;background:oklch(0.84 0.1 60);filter:blur(100px);opacity:.75"></div>
+    <div style="position:absolute;width:360px;height:360px;right:-40px;top:260px;border-radius:50%;background:oklch(0.82 0.08 160);filter:blur(90px);opacity:.7"></div>
+    <div style="position:absolute;width:220px;height:220px;left:760px;top:330px;border-radius:50%;background:oklch(0.8 0.1 350);filter:blur(70px);opacity:.55"></div>
+    <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px 40px">
+      <div style="font:500 18px Geist;letter-spacing:-.01em">Thirty</div>
+      <div style="display:flex;gap:28px;font:400 12px 'Geist Mono';text-transform:uppercase;letter-spacing:.06em"><span>Timeline</span><span>Team</span><span>About</span></div>
+    </div>
+    <div style="position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:120px 40px 0;font:400 12px 'Geist Mono';letter-spacing:.08em;text-transform:uppercase;opacity:.75">
+      <span>Work</span><span>From</span><span>(09.14)</span><span>To</span><span style="text-align:right">(10.13)</span>
+    </div>
+    <div style="position:relative;padding:40px 40px 0">
+      <div style="font:300 136px/0.9 Geist;letter-spacing:-.045em">30 Days of Drift</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:28px">
+        <div style="font:400 17px/1.5 Pretendard;max-width:420px;opacity:.8">네 명이 서른 날 동안 하루에 하나씩 만든 영상과 프롬프트, 그리고 작업 일지.</div>
+        <div style="font:400 12px 'Geist Mono';letter-spacing:.06em">(15/30) IN PROGRESS</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:64px 0 24px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 40px 24px">
+      <div style="font:400 40px Geist;letter-spacing:-.03em">Timeline</div>
+      <div style="display:flex;gap:22px;font:400 13px Pretendard">
+        <sc-for list="{{ members }}" as="m" hint-placeholder-count="4"><span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ m.color }}"></span>{{ m.name }}</span></sc-for>
+      </div>
+    </div>
+    <div class="hs" style="display:flex;gap:14px;overflow-x:auto;padding:0 40px 20px;scroll-snap-type:x mandatory">
+      <sc-for list="{{ days1 }}" as="d" hint-placeholder-count="8">
+        <div onClick="{{ d.pick }}" style="flex:none;width:200px;cursor:pointer;scroll-snap-align:start;opacity:{{ d.dim }}">
+          <div style="height:250px;border-radius:4px;background:{{ d.bg }};outline:{{ d.ring }};outline-offset:3px;position:relative;overflow:hidden">
+            <div style="position:absolute;left:10px;bottom:10px;font:400 10px 'Geist Mono';letter-spacing:.06em;color:#1d201d;opacity:.7">{{ d.tag }}</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:12px">
+            <span style="font:500 13px 'Geist Mono'">DAY {{ d.nn }}</span>
+            <span style="font:400 11px 'Geist Mono';opacity:.55">{{ d.date }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;margin-top:6px;font:400 13px Pretendard;opacity:.8"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.color }}"></span>{{ d.member }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:40px;padding:32px 40px 72px;border-top:1px solid rgba(0,0,0,.08);margin:0 40px;padding-left:0;padding-right:0">
+    <div>
+      <div style="aspect-ratio:16/9;border-radius:4px;background:{{ s1.bg }};position:relative;display:flex;align-items:center;justify-content:center">
+        <sc-if value="{{ s1.done }}" hint-placeholder-val="{{ true }}"><div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:16px solid #1d201d;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px"></div></div></sc-if>
+        <sc-if value="{{ s1.empty }}" hint-placeholder-val="{{ false }}"><div style="font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.6">VIDEO — {{ s1.member }} 업로드 대기</div></sc-if>
+        <div style="position:absolute;left:14px;top:12px;font:400 11px 'Geist Mono';letter-spacing:.06em;opacity:.7">VIDEO · 00:15</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div>
+        <div style="font:400 12px 'Geist Mono';letter-spacing:.06em;opacity:.55">DAY {{ s1.nn }} · {{ s1.date }}</div>
+        <div style="font:400 34px/1.1 Geist;letter-spacing:-.025em;margin-top:10px;text-wrap:pretty">{{ s1.title }}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font:400 14px Pretendard"><span style="width:8px;height:8px;border-radius:50%;background:{{ s1.color }}"></span>{{ s1.member }}</div>
+      </div>
+      <div>
+        <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;margin-bottom:8px">PROMPT</div>
+        <div style="font:400 13px/1.6 'Geist Mono';background:rgba(255,255,255,.5);border-radius:4px;padding:14px 16px">{{ s1.prompt }}</div>
+      </div>
+      <div>
+        <div style="font:500 11px 'Geist Mono';letter-spacing:.08em;margin-bottom:8px">작업 일지 · LOG</div>
+        <div style="font:400 15px/1.7 Pretendard;opacity:.85;text-wrap:pretty">{{ s1.log }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b" data-screen-label="1b Nocturne">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Nocturne — 어두운 바탕 + 발광 오브, 모노 HUD, 선택하면 펼쳐지는 필름 스트립</div>
+<div class="dv-card" style="width:1280px;background:#0d0e0d;color:#e8ebe6;border-color:#000">
+  <div style="position:relative;height:620px;overflow:hidden">
+    <div style="position:absolute;width:420px;height:420px;left:430px;top:90px;border-radius:50%;background:radial-gradient(circle at 40% 35%,oklch(0.85 0.06 200),oklch(0.7 0.16 30) 55%,oklch(0.55 0.14 10) 80%);filter:blur(8px);opacity:.9"></div>
+    <div style="position:absolute;width:700px;height:300px;left:290px;top:330px;border-radius:50%;background:oklch(0.7 0.12 350);filter:blur(120px);opacity:.35"></div>
+    <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:150px 120px;pointer-events:none;font:300 22px 'Geist Mono';opacity:.6">
+      <span>+</span><span style="text-align:center">+</span><span style="text-align:right">+</span><span>+</span><span style="text-align:center">+</span><span style="text-align:right">+</span><span>+</span><span style="text-align:center">+</span><span style="text-align:right">+</span>
+    </div>
+    <div style="position:relative;display:flex;justify-content:space-between;padding:28px 40px;font:400 13px 'Geist Mono';letter-spacing:.08em">
+      <span>THIRTY_</span><span>DAY 15 / 30</span>
+    </div>
+    <div style="position:absolute;left:40px;bottom:44px;right:40px;display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <div style="display:flex;align-items:center;gap:16px;font:400 14px 'Geist Mono';opacity:.8">@thirty.days<span style="width:220px;height:1px;background:rgba(255,255,255,.4)"></span></div>
+        <div style="font:400 88px/1 'Geist Mono';letter-spacing:.02em;margin-top:14px">FRAGMENTS</div>
+        <div style="font:400 17px/1.5 'Geist Mono';opacity:.75;margin-top:10px">Thirty moving images,<br>one each day.</div>
+      </div>
+      <div style="font:400 15px/1.7 Pretendard;opacity:.7;text-align:right">서른 날의 영상 기록<br>09.14 — 10.13</div>
+    </div>
+  </div>
+  <div style="padding:40px 40px 0;display:flex;justify-content:space-between;font:400 12px 'Geist Mono';letter-spacing:.08em;opacity:.7">
+    <span>ARCHIVE / 01—30</span>
+    <span style="display:flex;gap:20px"><sc-for list="{{ members }}" as="m" hint-placeholder-count="4"><span style="display:flex;align-items:center;gap:7px;font-family:Pretendard;letter-spacing:0"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.color }}"></span>{{ m.name }}</span></sc-for></span>
+  </div>
+  <div class="hsd" style="display:flex;gap:6px;overflow-x:auto;padding:20px 40px 24px;align-items:stretch">
+    <sc-for list="{{ days2 }}" as="d" hint-placeholder-count="12">
+      <div onClick="{{ d.pick }}" style="flex:none;width:{{ d.w }};height:300px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;background:{{ d.bgDark }};transition:width .5s cubic-bezier(.2,.7,.2,1);border:1px solid rgba(255,255,255,.08)">
+        <div style="position:absolute;left:0;right:0;top:12px;text-align:center;font:500 12px 'Geist Mono'">{{ d.nn }}</div>
+        <div style="position:absolute;left:50%;bottom:14px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:{{ d.color }}"></div>
+        <sc-if value="{{ d.sel }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:16px;bottom:34px;right:16px;font:400 11px/1.6 'Geist Mono';letter-spacing:.06em;text-align:left">DAY {{ d.nn }} · {{ d.date }}<br><span style="font-family:Pretendard;font-size:14px;letter-spacing:0">{{ d.member }}</span></div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.1);margin:24px 40px 72px;border:1px solid rgba(255,255,255,.1)">
+    <div style="background:#0d0e0d;padding:24px">
+      <div style="font:400 11px 'Geist Mono';letter-spacing:.08em;opacity:.55">01 · VIDEO</div>
+      <div style="aspect-ratio:4/5;margin-top:16px;border-radius:2px;background:{{ s2.bgDark }};display:flex;align-items:center;justify-content:center;font:400 11px 'Geist Mono';letter-spacing:.06em;opacity:.9">{{ s2.videoLabel }}</div>
+    </div>
+    <div style="background:#0d0e0d;padding:24px">
+      <div style="font:400 11px 'Geist Mono';letter-spacing:.08em;opacity:.55">02 · PROMPT</div>
+      <div style="font:400 26px/1.15 Geist;letter-spacing:-.02em;margin-top:16px">{{ s2.title }}</div>
+      <div style="font:400 13px/1.7 'Geist Mono';opacity:.8;margin-top:18px">{{ s2.prompt }}</div>
+    </div>
+    <div style="background:#0d0e0d;padding:24px">
+      <div style="font:400 11px 'Geist Mono';letter-spacing:.08em;opacity:.55">03 · LOG — {{ s2.member }}</div>
+      <div style="font:400 15px/1.8 Pretendard;opacity:.85;margin-top:16px;text-wrap:pretty">{{ s2.log }}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c" data-screen-label="1c Aura">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Aura — 블루·오렌지 번짐 전면 배경, 반투명 유리 카드, 한 화면 안에서 스크롤</div>
+<div class="dv-card" style="width:1280px;position:relative;color:#fff;border:0;background:#8fd3ea;padding-bottom:40px">
+  <div style="position:absolute;inset:-100px;background:radial-gradient(ellipse 60% 70% at 70% 20%,oklch(0.76 0.16 55),transparent 70%),radial-gradient(ellipse 50% 60% at 10% 60%,oklch(0.84 0.09 220),transparent 70%),radial-gradient(ellipse 40% 40% at 5% 100%,oklch(0.78 0.12 160),transparent 70%),radial-gradient(ellipse 50% 50% at 90% 90%,oklch(0.84 0.08 230),transparent 70%),oklch(0.85 0.07 70);filter:blur(30px)"></div>
+  <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px 40px">
+    <div style="display:flex;align-items:center;gap:22px;font:500 22px Geist;letter-spacing:-.02em">Thirty<span style="width:1px;height:26px;background:rgba(255,255,255,.7)"></span><span style="font-weight:400;opacity:.95">30-Day Video Project</span></div>
+    <div style="font:400 12px 'Geist Mono';letter-spacing:.08em">DAY 15 / 30</div>
+  </div>
+  <div style="position:relative;padding:40px 40px 0;display:flex;justify-content:space-between;align-items:flex-end">
+    <div style="font:400 92px/0.95 Geist;letter-spacing:-.045em">One a day,<br>thirty days.</div>
+    <div style="font:400 15px/1.6 Pretendard;text-align:right;max-width:280px">오세령 · 우민선 · 조단비 · 팜뚜안끼엣<br>하루 한 명씩, 돌아가며 기록합니다.</div>
+  </div>
+  <div class="hs" style="position:relative;display:flex;gap:12px;overflow-x:auto;padding:48px 40px 20px">
+    <sc-for list="{{ days3 }}" as="d" hint-placeholder-count="10">
+      <div onClick="{{ d.pick }}" style="flex:none;width:150px;height:190px;border-radius:14px;cursor:pointer;background:{{ d.glass }};backdrop-filter:blur(14px);border:1px solid {{ d.glassBorder }};padding:14px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;color:{{ d.ink }}">
+        <div style="display:flex;justify-content:space-between;font:400 11px 'Geist Mono';letter-spacing:.06em"><span>DAY</span><span>{{ d.date }}</span></div>
+        <div style="font:300 56px/1 Geist;letter-spacing:-.04em">{{ d.nn }}</div>
+        <div style="display:flex;align-items:center;gap:7px;font:400 12px Pretendard"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.color }}"></span>{{ d.member }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="position:relative;margin:12px 40px 0;display:grid;grid-template-columns:420px minmax(0,1fr);gap:28px;padding:20px;border-radius:18px;background:rgba(255,255,255,.28);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.5);color:#1c2226">
+    <div style="aspect-ratio:16/9;border-radius:10px;background:{{ s3.bg }};display:flex;align-items:center;justify-content:center;font:400 11px 'Geist Mono';letter-spacing:.06em;color:#1c2226">{{ s3.videoLabel }}</div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px">
+      <div>
+        <div style="font:500 11px 'Geist Mono';letter-spacing:.08em">DAY {{ s3.nn }} — PROMPT</div>
+        <div style="font:400 13px/1.65 'Geist Mono';margin-top:10px">{{ s3.prompt }}</div>
+      </div>
+      <div>
+        <div style="font:500 11px 'Geist Mono';letter-spacing:.08em">LOG · {{ s3.member }}</div>
+        <div style="font:400 14px/1.7 Pretendard;margin-top:10px;text-wrap:pretty">{{ s3.log }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "<a class="dv-oid" href="#1a">1a</a> 레이아웃에 <a class="dv-oid" href="#1b">1b</a>의 펼쳐지는 스트립" · "<a class="dv-oid" href="#1c">1c</a>를 풀페이지로 확장" · "팀 소개 섹션 추가"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;progress&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:1,&quot;max&quot;:30,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;2a 미리보기&quot;,&quot;label&quot;:&quot;진행 일수 (오늘 = Day N)&quot;}}">
+class Component extends DCLogic {
+  state = { s1: 15, s2: 12, s3: 15 };
+  renderVals() {
+    const TODAY = 15;
+    const members = [
+      { name: '오세령', color: 'oklch(0.72 0.11 220)' },
+      { name: '우민선', color: 'oklch(0.72 0.11 55)' },
+      { name: '조단비', color: 'oklch(0.72 0.11 350)' },
+      { name: '팜뚜안끼엣', color: 'oklch(0.72 0.11 165)' },
+    ];
+    const titles = ['Petals in morning fog', 'Butterflies on a paper sky', 'Walking past the green stairwell', 'Glass helmet, crystal bloom', 'Light through linen curtains', 'Orange haze over still water', 'Soft static, pastel noise'];
+    const logs = [
+      '채도를 낮추고 블러를 한 단계 올려 시리즈 전체 톤에 맞췄다. 두 번째 생성본을 최종으로 골랐다.',
+      '카메라 움직임이 너무 빨라서 slow drift로 다시 뽑았다. 세 번째 시도가 가장 자연스러웠다.',
+      '배경색을 세이지 그린으로 고정하니 앞선 날들의 영상과 이어지는 느낌이 생겼다.',
+      '프롬프트에 film grain을 넣으니 질감이 살아났다. 대신 인물 윤곽이 흐려져 조명 묘사를 보강했다.',
+      '15초 안에 전환 한 번만 넣기로 했다. 여백이 많을수록 차분해 보인다.',
+    ];
+    const start = new Date(2026, 8, 14);
+    const pad = n => String(n).padStart(2, '0');
+    const mk = key => Array.from({ length: 30 }, (_, i) => {
+      const n = i + 1, m = members[i % 4];
+      const dt = new Date(start); dt.setDate(start.getDate() + i);
+      const h1 = (n * 47) % 360, h2 = (n * 47 + 140) % 360;
+      const done = n < TODAY, today = n === TODAY, sel = this.state[key] === n;
+      const bg = done
+        ? `radial-gradient(circle at 30% 35%, oklch(0.8 0.1 ${h1}), transparent 60%), radial-gradient(circle at 75% 75%, oklch(0.8 0.11 ${h2}), transparent 55%), #d6dad3`
+        : `repeating-linear-gradient(135deg, rgba(0,0,0,.05) 0 1px, transparent 1px 9px), #d9dcd6`;
+      const bgDark = done
+        ? `radial-gradient(circle at 50% 40%, oklch(0.62 0.12 ${h1}), transparent 65%), radial-gradient(circle at 60% 85%, oklch(0.5 0.1 ${h2}), transparent 60%), #151715`
+        : `repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 1px, transparent 1px 9px), #121412`;
+      return {
+        n, nn: pad(n), member: m.name, color: m.color, done, empty: !done, sel,
+        date: `${pad(dt.getMonth() + 1)}.${pad(dt.getDate())}`,
+        title: done ? titles[i % titles.length] : today ? 'Uploading today' : 'Not yet',
+        prompt: done ? `${titles[i % titles.length].toLowerCase()}, soft focus, faint film grain, muted teal and coral palette, slow 24fps camera drift, 15 seconds` : '— 프롬프트가 여기에 올라옵니다',
+        log: done ? logs[i % logs.length] : `${m.name} 님의 작업 일지가 여기에 기록됩니다.`,
+        videoLabel: done ? 'VIDEO · 00:15' : `VIDEO — ${m.name} 업로드 대기`,
+        tag: done ? '▶ 00:15' : today ? 'TODAY' : 'UPCOMING',
+        bg, bgDark,
+        dim: done || today ? 1 : 0.55,
+        ring: sel ? '1px solid #1d201d' : '1px solid transparent',
+        w: sel ? '360px' : '54px',
+        glass: sel ? 'rgba(255,255,255,.85)' : done ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.1)',
+        glassBorder: sel ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,.45)',
+        ink: '#1c2226',
+        pick: () => this.setState({ [key]: n }),
+      };
+    });
+    const days1 = mk('s1'), days2 = mk('s2'), days3 = mk('s3');
+    const P = Math.min(30, Math.max(1, this.props.progress ?? 1));
+    const sel4 = this.state.s4 ?? P;
+    const start2 = new Date(2026, 8, 28);
+    const days4 = Array.from({ length: 30 }, (_, i) => {
+      const n = i + 1, done = n < P, isToday = n === P, sel = sel4 === n;
+      const dt = new Date(start2); dt.setDate(start2.getDate() + i);
+      const h1 = (n * 47) % 360, h2 = (n * 47 + 140) % 360;
+      return {
+        n, nn: pad(n), done, isToday, sel,
+        date: `${pad(dt.getMonth() + 1)}.${pad(dt.getDate())}`,
+        w4: sel ? '440px' : '56px',
+        bg4: done
+          ? `radial-gradient(circle at 35% 35%, oklch(0.84 0.045 ${h1}), transparent 60%), radial-gradient(circle at 70% 80%, oklch(0.8 0.05 ${h2}), transparent 55%), #d8dbd5`
+          : isToday ? `radial-gradient(circle at 50% 40%, oklch(0.88 0.03 200), transparent 65%), #dcdfda`
+          : `repeating-linear-gradient(135deg, rgba(0,0,0,.045) 0 1px, transparent 1px 9px), #dde0da`,
+        tag: done ? '▶ 00:15' : isToday ? 'TODAY · 업로드 중' : 'UPCOMING',
+        title: done ? titles[i % titles.length] : isToday ? 'Today' : 'Not yet',
+        prompt: done ? `${titles[i % titles.length].toLowerCase()}, soft focus, faint film grain, muted sage and dusty coral palette, slow 24fps camera drift, 15 seconds` : '— 이날 사용한 프롬프트가 여기에 올라옵니다',
+        log: done ? logs[i % logs.length] : '이날의 작업 과정과 메모가 여기에 기록됩니다.',
+        videoLabel: done ? 'VIDEO · 00:15' : isToday ? 'VIDEO — 오늘 업로드 예정' : 'VIDEO — 준비 중',
+        pick: () => this.setState({ s4: n }),
+      };
+    });
+    const pal = [[185, 0.06], [80, 0.07], [15, 0.06], [240, 0.05], [165, 0.06], [55, 0.07]];
+    const fl = [[700,70,54,-18,.6,.85],[930,150,40,24,.8,.75],[1110,60,26,-35,.5,.6],[820,300,64,12,.45,.85],[1040,330,34,-50,.7,.7],[600,230,22,40,.7,.55],[1180,250,44,8,.55,.75],[980,470,28,-20,.8,.55],[520,90,18,-10,.6,.5],[1210,440,20,30,.7,.5],[760,520,30,-28,.6,.45]];
+    const flies = fl.map(([x, y, s, r, sx, op], i) => {
+      const [h, c] = pal[i % pal.length];
+      const a = `oklch(0.62 ${c} ${h})`, b = `oklch(0.8 ${c * .8} ${h})`, e = `oklch(0.45 ${c * .7} ${h})`;
+      return {
+        x: x + 'px', y: y + 'px', w: s * 2 + 'px', h: s * 1.6 + 'px', tw: s * 4 + 'px', op,
+        tf: `rotate(${r}deg) scaleX(${sx})`,
+        trail: `linear-gradient(270deg, oklch(0.82 0.04 40 / .7), transparent)`,
+        w1: `radial-gradient(circle at 90% 90%, ${b}, ${a} 55%, ${e})`,
+        w1r: `radial-gradient(circle at 10% 90%, ${b}, ${a} 55%, ${e})`,
+        w2: `radial-gradient(circle at 50% 10%, ${a}, ${e})`,
+      };
+    });
+    const petals = Array.from({ length: 11 }, (_, i) => ({
+      len: (300 + (i % 3) * 50) + 'px',
+      tf: `rotate(${i * 33 + (i % 2) * 8}deg)`,
+      op: 0.55 + (i % 3) * 0.12,
+      bg: `radial-gradient(ellipse at 10% 50%, oklch(0.72 0.08 25), oklch(0.86 0.05 60) 35%, oklch(0.95 0.015 80 / .8) 70%, transparent)`,
+    }));
+    flies.forEach((f, i) => { f.y2 = (fl[i][1] * 0.55 - 20) + 'px'; });
+    const fontOpts = [
+      ['3a', 'Gloock', "'Gloock',serif", 400, '164px', '-.02em', 'normal', '잉크가 번진 듯 굵고 대비가 강한 디스플레이 세리프'],
+      ['3b', 'Bodoni Moda', "'Bodoni Moda',serif", 400, '160px', '-.035em', 'italic', '패션 매거진 같은 고대비 · Drift 이탤릭'],
+      ['3c', 'Cormorant Garamond', "'Cormorant Garamond',serif", 300, '184px', '-.02em', 'italic', '가늘고 흐르는 붓 선 같은 이탤릭'],
+      ['3d', 'Italiana', "'Italiana',serif", 400, '176px', '-.01em', 'normal', '아르누보 포스터 같은 얇은 대문자형'],
+      ['3e', 'Yeseva One', "'Yeseva One',serif", 400, '150px', '-.02em', 'normal', '둥글고 볼륨감 있는 빈티지 레터링'],
+    ].map(([id, name, family, weight, size, ls, italic, label]) => ({ id, href: '#' + id, name: name.toUpperCase(), family, weight, size, ls, italic, label: `${name} — ${label}` }));
+    const cosmos = [[0.52, 0.08, 245], [0.7, 0.09, 45], [0.6, 0.12, 25], [0.62, 0.07, 310], [0.76, 0.08, 75], [0.48, 0.07, 260], [0.66, 0.1, 15], [0.58, 0.06, 225], [0.72, 0.07, 350], [0.64, 0.1, 55]];
+    days4.forEach((d, i) => {
+      const [l, c, h] = cosmos[(i * 3) % cosmos.length];
+      const [l2, c2, h2] = cosmos[(i * 7 + 4) % cosmos.length];
+      const fade = d.done || d.isToday ? 0.38 : 0.2;
+      d.bg4c = `oklch(${Math.min(0.9, l + 0.2)} ${c} ${h} / ${fade})`;
+    });
+    days4.forEach(d => { d.bg4b = d.bg4.replace(/#d8dbd5|#dcdfda|#dde0da/g, 'rgba(255,255,255,.38)'); });
+    const bl = [[300, 230, 120, 9, .9, 0], [720, 400, 140, 13, .75, 20], [1110, 250, 125, 11, .8, 40], [110, 590, 160, 15, .7, 10], [1010, 620, 150, 18, .6, 30], [540, 120, 70, 8, .55, 55], [880, 150, 60, 10, .45, 15]];
+    const blooms = bl.map(([x, y, s, b, op, seed]) => {
+      const th = s * 0.85;
+      return {
+        x: x + 'px', y: y + 'px', blur: `blur(${b}px)`, op, c: s * 0.7 + 'px', cOff: -s * 0.35 + 'px',
+        petals: Array.from({ length: 5 }, (_, i) => ({
+          len: s * (0.9 + (i % 2) * 0.15) + 'px', th: th + 'px', top: -th / 2 + 'px',
+          tf: `rotate(${i * 72 + seed}deg)`,
+          bg: `radial-gradient(ellipse at 0% 50%, oklch(0.93 0.1 95), oklch(0.86 0.09 60) 30%, oklch(0.76 0.12 15) 65%, oklch(0.8 0.1 10 / 0) 95%)`,
+        })),
+      };
+    });
+    const stems = [[330, 280, 460, 4], [180, 60, 300, -6], [745, 460, 280, -3], [1135, 300, 420, 5], [1030, 670, 200, 2]].map(([x, y, h, r]) => ({ x: x + 'px', y: y + 'px', h: h + 'px', tf: `rotate(${r}deg)` }));
+    return {
+      flies, petals, fontOpts, blooms, stems,
+      members, days1, days2, days3, days4, s4: days4[sel4 - 1],
+      progressLabel: `${pad(P)}/30`,
+      s1: days1[this.state.s1 - 1], s2: days2[this.state.s2 - 1], s3: days3[this.state.s3 - 1],
+    };
+  }
+}
+</script>
+</body>
+</html>
