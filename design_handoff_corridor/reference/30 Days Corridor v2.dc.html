@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="works-data.js"></script><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&amp;family=Bebas+Neue&amp;family=Archivo+Narrow:ital,wght@0,500;0,600;1,500&amp;display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet"><style>body{margin:0;background:#a9a9a6;color:#1e1e1d;font-family:Pretendard,sans-serif}a{color:inherit}a:hover{opacity:.7}button{font-family:inherit}input::placeholder{color:rgba(30,30,29,.5)}</style></helmet>
+<div style="position:relative;height:{{ pageH }}">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden;perspective:700px;background:radial-gradient(ellipse 30% 30% at 50% 50%,#f4f4f2,#c4c4c0 60%,#8e8e8a)">
+    <div ref="{{ worldRef }}" style="position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d">
+      <div style="position:absolute;left:{{ wallLeftX }};top:{{ wallTop }};width:{{ wallL }};height:{{ wallH }};transform-origin:0 50%;transform:rotateY(90deg);background:linear-gradient(0deg,#5e5e5b 0 15px,#9a9a97 15px 17px,rgba(0,0,0,.22) 17px,transparent 40px),linear-gradient(180deg,rgba(0,0,0,.32) 0,rgba(0,0,0,.08) 5%,transparent 14%,transparent 70%,rgba(0,0,0,.12) 100%),repeating-linear-gradient(90deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.26) 172px,rgba(255,255,255,0) 300px),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22600%22%3E%3Cfilter%20id%3D%22b%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.006%20.012%22%20numOctaves%3D%224%22%20seed%3D%227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.35%200%200%200%200%20.34%200%200%200%200%20.32%200%200%200%20.5%20-.12%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E),#cbcac6;background-size:auto,auto,auto,900px 100%,220px 220px,auto">
+        <sc-for list="{{ leftDoors }}" as="d" hint-placeholder-count="0">
+          <div onClick="{{ d.open }}" onMouseEnter="{{ d.enter }}" onMouseLeave="{{ d.leave }}" title="{{ d.tip }}" style="position:absolute;left:{{ d.x }};bottom:18px;width:{{ doorW }};height:{{ doorH }};cursor:{{ d.cursor }};opacity:{{ d.op }};transition:opacity .4s">
+            <div style="position:absolute;left:50%;top:-46px;transform:translateX(-50%);min-width:52px;height:24px;padding:0 8px;box-sizing:border-box;border-radius:2px;background:{{ d.plateBg }};color:{{ d.plateInk }};box-shadow:0 1px 2px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.6);font:500 12px/24px 'DM Mono',monospace;letter-spacing:.08em;text-align:center;white-space:nowrap">{{ d.plate }}</div>
+            <div style="position:absolute;left:-14px;right:-14px;top:-24px;bottom:-30px;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(0,0,0,.16),transparent 70%);pointer-events:none"></div><div style="position:absolute;inset:-9px -9px 0 -9px;background:linear-gradient(90deg,#8d8c89,#c2c1bd 18%,#b1b0ac 82%,#8a8986);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.35)"></div>
+            <div style="position:absolute;inset:0;background:{{ d.inside }};box-shadow:{{ d.glow }}"></div>
+            <div style="position:absolute;inset:0;transform-origin:0 50%;transform:{{ d.leaf }};transition:transform .6s cubic-bezier(.2,.7,.2,1);background:{{ d.leafBg }};box-shadow:inset 1px 0 0 rgba(255,255,255,.3),inset -1px 0 0 rgba(0,0,0,.3),3px 0 8px rgba(0,0,0,.25);background-size:220px 220px,auto">
+              <div style="position:absolute;left:20%;right:20%;top:10%;height:24%;box-sizing:border-box;background:{{ d.pane }};background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px #7a7976,inset 3px 3px 7px rgba(0,0,0,.45),{{ d.paneGlow }}"><div style="position:absolute;inset:3px;background:linear-gradient(125deg,rgba(255,255,255,.4),rgba(255,255,255,0) 40%),repeating-linear-gradient(45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px),repeating-linear-gradient(-45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px)"></div></div><div style="position:absolute;left:16%;right:16%;top:42%;bottom:20%;box-shadow:inset 2px 2px 3px rgba(0,0,0,.25),inset -1px -1px 0 rgba(255,255,255,.35)"></div><div style="position:absolute;left:0;right:0;bottom:0;height:8%;background:linear-gradient(180deg,#d0d0cd,#8e8e8b 45%,#aaa9a6)"></div>
+              <div style="position:absolute;right:9%;top:50%;width:7%;height:12%;border-radius:2px;background:linear-gradient(90deg,#9d9d9a,#e4e4e1,#9d9d9a);box-shadow:0 1px 2px rgba(0,0,0,.3)"></div><div style="position:absolute;right:9%;top:54%;width:24%;height:5px;border-radius:3px;background:linear-gradient(180deg,#f4f4f2,#8c8c89);box-shadow:0 2px 3px rgba(0,0,0,.35)"></div>
+              <sc-if value="{{ d.boarded }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:-10%;right:-10%;top:44%;height:12px;background:linear-gradient(180deg,#eceae3,#d9d7cf);box-shadow:0 1px 2px rgba(0,0,0,.25);transform:rotate(28deg)"></div><div style="position:absolute;left:-10%;right:-10%;top:44%;height:12px;background:linear-gradient(180deg,#eceae3,#d9d7cf);box-shadow:0 1px 2px rgba(0,0,0,.25);transform:rotate(-28deg)"></div></sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:{{ wallRightX }};top:{{ wallTop }};width:{{ wallL }};height:{{ wallH }};transform-origin:100% 50%;transform:rotateY(-90deg);background:linear-gradient(0deg,#5e5e5b 0 15px,#9a9a97 15px 17px,rgba(0,0,0,.22) 17px,transparent 40px),linear-gradient(180deg,rgba(0,0,0,.32) 0,rgba(0,0,0,.08) 5%,transparent 14%,transparent 70%,rgba(0,0,0,.12) 100%),repeating-linear-gradient(270deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.26) 172px,rgba(255,255,255,0) 300px),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22600%22%3E%3Cfilter%20id%3D%22b%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.006%20.012%22%20numOctaves%3D%224%22%20seed%3D%227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.35%200%200%200%200%20.34%200%200%200%200%20.32%200%200%200%20.5%20-.12%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E),#cbcac6;background-size:auto,auto,auto,900px 100%,220px 220px,auto">
+        <sc-for list="{{ rightDoors }}" as="d" hint-placeholder-count="0">
+          <div onClick="{{ d.open }}" onMouseEnter="{{ d.enter }}" onMouseLeave="{{ d.leave }}" title="{{ d.tip }}" style="position:absolute;right:{{ d.x }};bottom:18px;width:{{ doorW }};height:{{ doorH }};cursor:{{ d.cursor }};opacity:{{ d.op }};transition:opacity .4s">
+            <div style="position:absolute;left:50%;top:-46px;transform:translateX(-50%);min-width:52px;height:24px;padding:0 8px;box-sizing:border-box;border-radius:2px;background:{{ d.plateBg }};color:{{ d.plateInk }};box-shadow:0 1px 2px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.6);font:500 12px/24px 'DM Mono',monospace;letter-spacing:.08em;text-align:center;white-space:nowrap">{{ d.plate }}</div>
+            <div style="position:absolute;left:-14px;right:-14px;top:-24px;bottom:-30px;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(0,0,0,.16),transparent 70%);pointer-events:none"></div><div style="position:absolute;inset:-9px -9px 0 -9px;background:linear-gradient(90deg,#8d8c89,#c2c1bd 18%,#b1b0ac 82%,#8a8986);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.35)"></div>
+            <div style="position:absolute;inset:0;background:{{ d.inside }};box-shadow:{{ d.glow }}"></div>
+            <div style="position:absolute;inset:0;transform-origin:100% 50%;transform:{{ d.leaf }};transition:transform .6s cubic-bezier(.2,.7,.2,1);background:{{ d.leafBg }};box-shadow:inset 1px 0 0 rgba(255,255,255,.3),inset -1px 0 0 rgba(0,0,0,.3),3px 0 8px rgba(0,0,0,.25);background-size:220px 220px,auto">
+              <div style="position:absolute;left:20%;right:20%;top:10%;height:24%;box-sizing:border-box;background:{{ d.pane }};background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px #7a7976,inset 3px 3px 7px rgba(0,0,0,.45),{{ d.paneGlow }}"><div style="position:absolute;inset:3px;background:linear-gradient(125deg,rgba(255,255,255,.4),rgba(255,255,255,0) 40%),repeating-linear-gradient(45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px),repeating-linear-gradient(-45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px)"></div></div><div style="position:absolute;left:16%;right:16%;top:42%;bottom:20%;box-shadow:inset 2px 2px 3px rgba(0,0,0,.25),inset -1px -1px 0 rgba(255,255,255,.35)"></div><div style="position:absolute;left:0;right:0;bottom:0;height:8%;background:linear-gradient(180deg,#d0d0cd,#8e8e8b 45%,#aaa9a6)"></div>
+              <div style="position:absolute;left:9%;top:50%;width:7%;height:12%;border-radius:2px;background:linear-gradient(90deg,#9d9d9a,#e4e4e1,#9d9d9a);box-shadow:0 1px 2px rgba(0,0,0,.3)"></div><div style="position:absolute;left:9%;top:54%;width:24%;height:5px;border-radius:3px;background:linear-gradient(180deg,#f4f4f2,#8c8c89);box-shadow:0 2px 3px rgba(0,0,0,.35)"></div>
+              <sc-if value="{{ d.boarded }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:-10%;right:-10%;top:44%;height:12px;background:linear-gradient(180deg,#eceae3,#d9d7cf);box-shadow:0 1px 2px rgba(0,0,0,.25);transform:rotate(28deg)"></div><div style="position:absolute;left:-10%;right:-10%;top:44%;height:12px;background:linear-gradient(180deg,#eceae3,#d9d7cf);box-shadow:0 1px 2px rgba(0,0,0,.25);transform:rotate(-28deg)"></div></sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:{{ wallLeftX }};top:{{ wallTop }};width:{{ corridorW }};height:{{ wallL }};transform-origin:50% 0;transform:rotateX(-90deg);background:linear-gradient(90deg,rgba(0,0,0,.3),transparent 7%,transparent 93%,rgba(0,0,0,.3)),repeating-linear-gradient(0deg,#a9a8a4 0 2px,transparent 2px 150px),repeating-linear-gradient(90deg,#a9a8a4 0 2px,transparent 2px 12.5%),repeating-linear-gradient(180deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.3) 172px,rgba(255,255,255,0) 300px),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E),#d9d8d4;background-size:auto,auto,auto,auto,140px 140px,auto">
+        <sc-for list="{{ lights }}" as="l" hint-placeholder-count="0"><div style="position:absolute;left:37.5%;top:{{ l.y }};width:25%;height:64px;background:{{ l.bg }};box-shadow:0 0 0 5px #bdbcb8,0 0 0 6px rgba(0,0,0,.2),{{ l.glow }}"><div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 6px)"></div></div></sc-for>
+      </div>
+      <div style="position:absolute;left:{{ wallLeftX }};top:{{ floorTop }};width:{{ corridorW }};height:{{ wallL }};transform-origin:50% 0;transform:rotateX(90deg) scaleY(-1);background:linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.1) 6%,transparent 16%,transparent 84%,rgba(0,0,0,.1) 94%,rgba(0,0,0,.42)),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22600%22%3E%3Cfilter%20id%3D%22b%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.006%20.012%22%20numOctaves%3D%224%22%20seed%3D%227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.35%200%200%200%200%20.34%200%200%200%200%20.32%200%200%200%20.5%20-.12%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E),linear-gradient(90deg,#7c7b77,#8f8e8a 50%,#7c7b77);background-size:auto,900px 700px,180px 180px,auto"><div style="position:absolute;left:34%;width:32%;top:0;bottom:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.34) 172px,rgba(255,255,255,0) 300px);filter:blur(10px)"></div></div>
+      <sc-for list="{{ fogs }}" as="g" hint-placeholder-count="0"><div style="position:absolute;left:{{ wallLeftX }};top:{{ wallTop }};width:{{ corridorW }};height:{{ wallH }};transform:{{ g.tf }};background:rgba(212,211,207,.075);pointer-events:none"></div></sc-for>
+      <div style="position:absolute;left:{{ wallLeftX }};top:{{ wallTop }};width:{{ corridorW }};height:{{ wallH }};transform:{{ backWallTf }};background:radial-gradient(ellipse 40% 50% at 50% 50%,#fbfbfa,#d6d6d2 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:0 20px;box-sizing:border-box">
+        <div style="font:400 20px 'DM Mono',monospace;letter-spacing:.1em;color:#5a5a57">END OF LEVEL 0</div>
+        <div style="font:400 15px Pretendard;color:#5a5a57">TEAM 7 · 오세령 · 우민선 · 조단비 · 팜뚜안끼엣</div>
+        <button onClick="{{ toTop }}" style="margin-top:8px;height:34px;padding:0 16px;border:0;background:#1e1e1d;color:#ececea;font:400 12px 'DM Mono',monospace;cursor:pointer">처음으로 ↑</button>
+      </div>
+    </div>
+    <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 120% 90% at 50% 50%,transparent 50%,rgba(20,20,20,.45)),url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E); background-size: 100% 100%, 200px 200px; left: -3px; top: -1px"></div>
+
+    <div ref="{{ titleRef }}" style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;pointer-events:none;padding:0 20px">
+      <div style="font:400 12px 'DM Mono',monospace;letter-spacing:.12em;opacity:.8">LEVEL 0 · 09.28 — 10.27</div>
+      <div style="margin-top: 14px; font: 500 clamp(54px,10vw,140px)/0.9 'Archivo Narrow',sans-serif; letter-spacing: -.045em; font-family: Bebas Neue; font-style: normal; font-weight: 100">THIRTY DOORS</div>
+      <button onClick="{{ enter }}" style="pointer-events: auto; margin-top: 26px; height: 40px; padding: 0 20px; border: 0; background: #1e1e1d; color: #ececea; font:400 13px 'DM Mono',monospace; letter-spacing: .08em; cursor: pointer; font-weight: 300">ENTER ↓</button>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(14px,3vw,32px);font:400 12px 'DM Mono',monospace;letter-spacing:.04em">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+        <span style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span style="width:9px;height:9px;border-radius:50%;background:#d23b2a"></span>REC · ({{ progressLabel }}) IN PROGRESS</span>
+        <span ref="{{ clockRef }}" style="opacity:.7;white-space:nowrap">--:--:--</span>
+      </div>
+      <div style="flex:none;display:flex;gap:6px">
+      <button onClick="{{ openCctv }}" style="flex:none;height:36px;padding:0 14px;border:0;background:rgba(30,30,29,.14);color:#1e1e1d;font:400 12px 'DM Mono',monospace;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#d23b2a"></span>CCTV</button>
+      <button onClick="{{ toggleMap }}" style="flex:none;height:36px;padding:0 14px;border:0;background:#1e1e1d;color:#ececea;font:400 12px 'DM Mono',monospace;letter-spacing:.06em;cursor:pointer">{{ mapLabel }}</button>
+      </div>
+    </div>
+
+    <div style="position:absolute;right:clamp(8px,2vw,22px);top:50%;transform:translateY(-50%);height:min(60vh,520px);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end">
+      <div ref="{{ markerRef }}" style="position:absolute;right:20px;top:0;margin-top:-9px;font:400 11px/18px 'DM Mono',monospace;color:#d23b2a;transition:top .2s;pointer-events:none">▶</div>
+      <sc-for list="{{ rail }}" as="t" hint-placeholder-count="30">
+        <button onClick="{{ t.go }}" title="{{ t.tip }}" style="display:flex;align-items:center;gap:6px;height:12px;border:0;background:none;padding:0;cursor:{{ t.cursor }};color:#1e1e1d;opacity:{{ t.op }}">
+          <span style="font:400 10px/12px 'DM Mono',monospace;opacity:{{ t.labelOp }}">{{ t.label }}</span>
+          <span style="width:{{ t.w }};height:5px;box-sizing:border-box;background:{{ t.bg }};border:{{ t.border }};outline:{{ t.ring }};outline-offset:1px"></span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:space-between;gap:12px;padding:0 clamp(14px,3vw,32px);font:400 12px 'DM Mono',monospace;pointer-events:none">
+      <span ref="{{ depthRef }}">DAY 01</span><span style="opacity: .75; font-size: 12px">{{ footHint }}</span>
+    </div>
+
+    <sc-if value="{{ mapOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeMap }}" style="position:absolute;inset:0;background:rgba(30,30,29,.2)"></div>
+      <div style="position:absolute;right:clamp(8px,2vw,24px);top:64px;bottom:16px;width:min(420px,calc(100vw - 16px));box-sizing:border-box;padding:20px;background:#e6e6e3;box-shadow:0 20px 50px rgba(20,20,20,.35);display:flex;flex-direction:column;gap:16px;overflow:auto">
+        <div style="display:flex;justify-content:space-between;font:400 13px 'DM Mono',monospace;letter-spacing:.06em"><span>FLOOR PLAN</span><span style="opacity:.7">{{ uploadedLabel }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="display:grid;grid-template-columns:repeat(15,1fr);gap:3px"><sc-for list="{{ planTop }}" as="c" hint-placeholder-count="15"><button onClick="{{ c.go }}" title="{{ c.tip }}" style="aspect-ratio:3/4;border:{{ c.border }};padding:0;background:{{ c.bg }};color:{{ c.ink }};outline:{{ c.ring }};outline-offset:1px;opacity:{{ c.op }};cursor:{{ c.cursor }};font:400 10px 'DM Mono',monospace">{{ c.nn }}</button></sc-for></div>
+          <div style="height:14px;background:repeating-linear-gradient(90deg,rgba(30,30,29,.25) 0 6px,transparent 6px 12px) 0 50%/100% 2px no-repeat"></div>
+          <div style="display:grid;grid-template-columns:repeat(15,1fr);gap:3px"><sc-for list="{{ planBottom }}" as="c" hint-placeholder-count="15"><button onClick="{{ c.go }}" title="{{ c.tip }}" style="aspect-ratio:3/4;border:{{ c.border }};padding:0;background:{{ c.bg }};color:{{ c.ink }};outline:{{ c.ring }};outline-offset:1px;opacity:{{ c.op }};cursor:{{ c.cursor }};font:400 10px 'DM Mono',monospace">{{ c.nn }}</button></sc-for></div>
+        </div>
+        <div style="height:1px;background:rgba(30,30,29,.2)"></div>
+        <input value="{{ q }}" onChange="{{ onQ }}" placeholder="제목, 노트, 프롬프트 검색" style="height:38px;padding:0 12px;border:0;background:rgba(30,30,29,.1);font:400 14px Pretendard;color:#1e1e1d;outline:none">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 11px 'DM Mono',monospace">AI</span>
+          <div style="display:flex;flex-wrap:wrap;gap:5px"><sc-for list="{{ aiOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.toggle }}" style="height:30px;padding:0 10px;border:0;background:{{ o.bg }};color:{{ o.ink }};font:400 11px 'DM Mono',monospace;letter-spacing:.04em;cursor:pointer">{{ o.name }}</button></sc-for></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 11px 'DM Mono',monospace">제작자</span>
+          <div style="display:flex;flex-wrap:wrap;gap:5px"><sc-for list="{{ makerOpts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.toggle }}" style="height:30px;padding:0 10px;border:0;background:{{ o.bg }};color:{{ o.ink }};font:400 13px Pretendard;cursor:pointer">{{ o.name }}</button></sc-for></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <div style="display:flex;gap:4px"><sc-for list="{{ sortOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.pick }}" style="height:28px;padding:0 10px;border:0;background:{{ o.bg }};color:{{ o.ink }};font:400 13px Pretendard;cursor:pointer">{{ o.label }}</button></sc-for></div>
+          <sc-if value="{{ hasActive }}" hint-placeholder-val="{{ false }}"><button onClick="{{ resetAll }}" style="border:0;background:none;padding:0;font:400 13px Pretendard;text-decoration:underline;cursor:pointer;color:#1e1e1d">전체 초기화</button></sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="5">
+            <button onClick="{{ r.go }}" style="display:flex;align-items:baseline;gap:12px;padding:10px 0;border:0;border-top:1px solid rgba(30,30,29,.15);background:none;color:#1e1e1d;text-align:left;cursor:pointer" style-hover="background:rgba(30,30,29,.06)">
+              <span style="flex:none;font:400 12px 'DM Mono',monospace">{{ r.nn }}</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font:500 17px/1.2 'Archivo Narrow',sans-serif">{{ r.title }}</span><span style="font:400 12px Pretendard;opacity:.7">{{ r.names }}</span></span>
+              <span style="flex:none;font:400 10px 'DM Mono',monospace;opacity:.7">{{ r.dur }}</span>
+            </button>
+          </sc-for>
+          <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:26px 0;text-align:center;border-top:1px solid rgba(30,30,29,.15)">
+              <div style="font:400 13px 'DM Mono',monospace">NO ROOMS FOUND</div>
+              <div style="margin-top:6px;font:400 13px Pretendard;opacity:.75">조건에 맞는 방이 없어요. 검색어나 필터를 바꿔 보세요.</div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+
+  <sc-if value="{{ cctvOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:40;overflow:auto;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.18),transparent 70%),#121212;color:#e4e4e2">
+      <div style="position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px clamp(14px,3vw,32px);background:linear-gradient(180deg,#121212 70%,rgba(18,18,18,0));font:400 12px 'DM Mono',monospace;letter-spacing:.06em">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#d23b2a"></span>SECURITY ROOM · {{ cctvCount }}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <sc-if value="{{ hasActive }}" hint-placeholder-val="{{ false }}"><span style="opacity:.7">FILTER ON</span><button onClick="{{ resetAll }}" style="height:34px;padding:0 12px;border:0;background:rgba(228,228,226,.12);color:#e4e4e2;font:400 13px Pretendard;cursor:pointer">필터 해제</button></sc-if>
+          <button onClick="{{ closeCctv }}" style="height:34px;padding:0 14px;border:0;background:#e4e4e2;color:#121212;font:400 12px 'DM Mono',monospace;cursor:pointer">← 복도로 (ESC)</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:clamp(10px,1.6vw,18px);padding:4px clamp(14px,3vw,32px) 48px">
+        <sc-for list="{{ monitors }}" as="m" hint-placeholder-count="8">
+          <div onClick="{{ m.open }}" title="{{ m.tip }}" style="display:flex;flex-direction:column;gap:8px;cursor:{{ m.cursor }};opacity:{{ m.op }}" style-hover="filter:brightness(1.15)">
+            <div style="position:relative;aspect-ratio:4/3;padding:8px;background:linear-gradient(160deg,#333333,#1f1f1f);border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)">
+              <div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:14px/10px;background:{{ m.screen }};box-shadow:inset 0 0 30px rgba(0,0,0,.7)">
+                <sc-if value="{{ m.hasVideo }}" hint-placeholder-val="{{ false }}">{{ m.videoEl }}</sc-if>
+                <sc-if value="{{ m.noSignal }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,rgba(0,0,0,.3) 1px 2px,rgba(255,255,255,.06) 2px 4px),#3a3a3a;display:flex;align-items:center;justify-content:center;font:400 13px 'DM Mono',monospace;color:#e6e6dc;letter-spacing:.1em">NO SIGNAL</div></sc-if>
+                <sc-if value="{{ m.placeholder }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:16px solid rgba(255,255,255,.8);border-top:10px solid transparent;border-bottom:10px solid transparent"></div></div></sc-if>
+                <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 1px,transparent 1px 3px)"></div>
+                <span style="position:absolute;left:8px;top:5px;font:400 10px 'DM Mono',monospace;color:#e4e4e2;text-shadow:0 0 6px rgba(228,228,226,.6)">CAM {{ m.nn }}</span>
+                <span style="position:absolute;right:8px;top:5px;display:flex;align-items:center;gap:5px;font:400 10px 'DM Mono',monospace;color:#e4e4e2"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.led }}"></span>{{ m.dur }}</span>
+                <span style="position:absolute;right:8px;bottom:4px;font:400 10px 'DM Mono',monospace;color:#e4e4e2;opacity:.8">{{ m.date }}</span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 2px">
+              <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 15px 'Archivo Narrow',sans-serif;color:#e8e8e5">{{ m.title }}</span>
+              <span style="flex:none;font:400 12px Pretendard;color:#e8e8e5;opacity:.6">{{ m.names }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ roomOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:50;overflow:auto;opacity:{{ roomOp }};transform:{{ roomTf }};transition:opacity .45s,transform .6s cubic-bezier(.2,.7,.2,1);background:linear-gradient(0deg,#6f6f6c 0 22px,transparent 22px) fixed,repeating-linear-gradient(90deg,rgba(60,60,58,.08) 0 2px,transparent 2px 26px),linear-gradient(180deg,#d9d9d5,#b4b4b0)">
+      <div style="max-width:1240px;margin:0 auto;padding:18px clamp(14px,3vw,40px) 70px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:400 12px 'DM Mono',monospace">
+          <button onClick="{{ closeRoom }}" style="height:36px;padding:0 14px;border:0;background:#1e1e1d;color:#ececea;font:400 12px 'DM Mono',monospace;cursor:pointer">← 복도로 (ESC)</button>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button onClick="{{ prevRoom }}" style="height:36px;padding:0 12px;border:0;background:rgba(30,30,29,.12);color:#1e1e1d;font:400 12px 'DM Mono',monospace;cursor:pointer">◀ {{ prevLabel }}</button>
+            <span style="padding:0 10px;height:36px;display:flex;align-items:center;background:#d23b2a;color:#ffffff">ROOM {{ s.nn }}</span>
+            <button onClick="{{ nextRoom }}" style="height:36px;padding:0 12px;border:0;background:rgba(30,30,29,.12);color:#1e1e1d;font:400 12px 'DM Mono',monospace;cursor:pointer">{{ nextLabel }} ▶</button>
+          </div>
+        </div>
+        <div style="margin-top:26px;padding:clamp(10px,1.4vw,18px);background:#1e1e1d;box-shadow:0 0 80px 10px rgba(255,255,255,.55)">
+          <div style="position:relative;aspect-ratio:16/9;background:{{ s.screen }};display:flex;align-items:center;justify-content:center;color:#ececea">
+            <sc-if value="{{ s.hasVideo }}" hint-placeholder-val="{{ false }}">{{ s.videoEl }}</sc-if>
+            <sc-if value="{{ s.noVideo }}" hint-placeholder-val="{{ true }}"><div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:18px solid #1e1e1d;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px"></div></div></sc-if>
+            <span style="position:absolute;left:14px;top:10px;display:flex;align-items:center;gap:8px;font:400 13px 'DM Mono',monospace"><span style="width:9px;height:9px;border-radius:50%;background:#d23b2a"></span>PLAY · {{ s.dur }}</span>
+            <span style="position:absolute;right:14px;bottom:10px;font:400 12px 'DM Mono',monospace">{{ s.date }}.2026</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 24px;margin-top:22px">
+          <div style="flex:1 1 320px;min-width:0">
+            <div style="font:400 12px 'DM Mono',monospace;opacity:.7">DAY {{ s.nn }} · {{ s.date }}</div>
+            <div style="margin-top:6px;font:500 clamp(34px,4.6vw,58px)/0.95 'Archivo Narrow',sans-serif;letter-spacing:-.03em;text-wrap:pretty">{{ s.title }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding-bottom:6px">
+            <span style="font:400 15px Pretendard">{{ s.names }}</span>
+            <button onClick="{{ copyLink }}" style="border:0;background:none;padding:0;font:400 13px Pretendard;color:#1e1e1d;opacity:.65;cursor:pointer">{{ linkLabel }}</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:32px;margin-top:30px;padding-top:24px;border-top:1px solid rgba(30,30,29,.25)">
+          <div style="flex:1 1 260px;min-width:0">
+            <div style="font:400 12px 'DM Mono',monospace;opacity:.7">AI</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><sc-for list="{{ s.ai }}" as="t" hint-placeholder-count="2"><span style="padding:4px 12px;background:rgba(30,30,29,.12);font:400 12px 'DM Mono',monospace;letter-spacing:.04em">{{ t }}</span></sc-for></div>
+            <div style="font:400 12px 'DM Mono',monospace;opacity:.7;margin-top:26px">NOTE</div>
+            <div style="margin-top:10px;font:400 15px/1.8 Pretendard;text-wrap:pretty">{{ s.note }}</div>
+          </div>
+          <div style="flex:1.4 1 360px;min-width:0">
+            <div style="font:400 12px 'DM Mono',monospace;opacity:.7">PROMPT</div>
+            <div style="position:relative;margin-top:10px;padding:12px 16px 14px;background:rgba(255,255,255,.55)">
+              <button onClick="{{ copyPrompt }}" style="position:absolute;right:8px;top:8px;height:28px;padding:0 12px;border:0;background:#1e1e1d;color:#ececea;font:400 12px Pretendard;cursor:pointer">{{ promptCopyLabel }}</button>
+              <div style="margin-top: 32px; font:400 13px/1.7 'DM Mono',monospace; white-space: pre-wrap; overflow-wrap: anywhere; max-height: {{ pMaxH }}; overflow: hidden; -webkit-mask-image: {{ pMask }}; mask-image: {{ pMask }}; font-size: 12px">{{ s.prompt }}</div>
+              <sc-if value="{{ showMore }}" hint-placeholder-val="{{ false }}"><button onClick="{{ togglePrompt }}" style="margin-top:6px;border:0;background:none;padding:0;font:400 11px 'DM Mono',monospace;text-decoration:underline;cursor:pointer;color:#1e1e1d">more ↓</button></sc-if>
+              <sc-if value="{{ showLess }}" hint-placeholder-val="{{ false }}"><button onClick="{{ togglePrompt }}" style="margin-top:6px;border:0;background:none;padding:0;font:400 13px Pretendard;text-decoration:underline;cursor:pointer;color:#1e1e1d">접기 ↑</button></sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;progress&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:30,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;label&quot;:&quot;오늘 = Day N (0 = 실제 날짜)&quot;}}">
+class Component extends DCLogic {
+  state = { cctv: false, open: null, roomIn: false, opening: null, hover: null, map: false, q: '', ai: [], makers: [], sort: 'day', promptOpen: false, copied: null,
+    vw: typeof window !== 'undefined' ? window.innerWidth : 1280, vh: typeof window !== 'undefined' ? window.innerHeight : 800 };
+  worldRef = React.createRef(); titleRef = React.createRef(); depthRef = React.createRef(); markerRef = React.createRef(); clockRef = React.createRef();
+  SEG = 150; START = 320; K = 1.15; VIEW = 520;
+  componentDidMount() {
+    this.onReady = () => { this.forceUpdate(); if (/cctv/i.test(location.hash)) { this.setState({ cctv: true }); return; } const n = window.D30.hashDay(); if (n) setTimeout(() => this.go(n), 200); };
+    this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = 0; this.paint(); }); };
+    this.onResize = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight });
+    this.onHash = () => { const n = window.D30 && window.D30.hashDay(); if (n && n !== this.state.open) this.go(n); };
+    this.onKey = e => {
+      const S = this.state;
+      if (e.key === 'Escape') { if (S.open) this.closeRoom(); else if (S.cctv) { this.setState({ cctv: false }); window.D30.setHash(null); } else if (S.map) this.setState({ map: false }); return; }
+      if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+      if (S.open && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { this.step(e.key === 'ArrowRight' ? 1 : -1); return; }
+      if (!S.open && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); window.scrollBy({ top: (e.key === 'ArrowDown' ? 1 : -1) * this.SEG * this.K, behavior: 'smooth' }); }
+    };
+    window.addEventListener('d30-ready', this.onReady);
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('hashchange', this.onHash);
+    window.addEventListener('keydown', this.onKey);
+    this.ro = new ResizeObserver(this.onResize); this.ro.observe(document.documentElement);
+    const tick = () => {
+      if (!this.clockRef.current) return; const d = new Date(), p = n => String(n).padStart(2, '0');
+      const h = d.getHours(), mo = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];
+      this.clockRef.current.textContent = `${h < 12 ? 'AM' : 'PM'} ${p(h % 12 || 12)}:${p(d.getMinutes())}:${p(d.getSeconds())} · ${mo}.${p(d.getDate())} ${d.getFullYear()}`;
+    };
+    tick(); this.iv = setInterval(tick, 1000);
+    if (window.D30) this.onReady();
+    this.paint();
+  }
+  componentDidUpdate() { this.paint(); }
+  componentWillUnmount() {
+    window.removeEventListener('d30-ready', this.onReady); window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('hashchange', this.onHash); window.removeEventListener('keydown', this.onKey);
+    this.ro && this.ro.disconnect(); clearInterval(this.iv); clearTimeout(this.ct); clearTimeout(this.t1); clearTimeout(this.t2);
+  }
+  depthOf(n) { return this.START + (n - 1) * this.SEG; }
+  scrollFor(n) { return Math.max(0, (this.depthOf(n) - this.VIEW) * this.K); }
+  nearest() { const z = (window.scrollY || 0) / this.K; return Math.min(30, Math.max(1, Math.round((z + this.VIEW - this.START) / this.SEG) + 1)); }
+  paint() {
+    const z = (window.scrollY || 0) / this.K;
+    if (this.worldRef.current) this.worldRef.current.style.transform = `translateZ(${z}px)`;
+    if (this.titleRef.current) { const o = Math.max(0, 1 - z / 200); this.titleRef.current.style.opacity = String(o); this.titleRef.current.style.visibility = o < 0.02 ? 'hidden' : 'visible'; }
+    const n = this.nearest();
+    if (this.depthRef.current) this.depthRef.current.textContent = z < 120 ? 'ENTRANCE' : `DAY ${String(n).padStart(2, '0')} 근처`;
+    if (this.markerRef.current) this.markerRef.current.style.top = ((n - 1) / 29 * 100) + '%';
+  }
+  has(n) { const D = window.D30; return D && D.works(this.props.progress).some(w => w.day === n); }
+  go(n) {
+    if (!this.has(n)) return;
+    this.setState({ map: false });
+    window.scrollTo({ top: this.scrollFor(n), behavior: 'smooth' });
+    clearTimeout(this.t1); this.t1 = setTimeout(() => this.openDoor(n), 850);
+  }
+  openDoor(n) {
+    if (!this.has(n)) return;
+    this.setState({ opening: n });
+    clearTimeout(this.t2); this.t2 = setTimeout(() => this.openRoom(n), 450);
+  }
+  openRoom(n) {
+    this.setState({ open: n, cctv: false, opening: null, roomIn: false, promptOpen: false, map: false });
+    window.D30.setHash(n);
+    requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ roomIn: true })));
+  }
+  closeRoom() {
+    this.setState({ roomIn: false }); window.D30.setHash(null);
+    clearTimeout(this.t2); this.t2 = setTimeout(() => this.setState({ open: null }), 400);
+  }
+  step(dir) {
+    const D = window.D30, list = D.works(this.props.progress).map(w => w.day).sort((a, b) => a - b);
+    const i = list.indexOf(this.state.open); if (i < 0) return;
+    const n = list[(i + dir + list.length) % list.length];
+    this.setState({ open: n, promptOpen: false }); D.setHash(n);
+    window.scrollTo({ top: this.scrollFor(n), behavior: 'auto' });
+  }
+  flash(k) { this.setState({ copied: k }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: null }), 1600); }
+  tog(k, v) { this.setState(s => ({ [k]: s[k].includes(v) ? s[k].filter(x => x !== v) : [...s[k], v] })); }
+  renderVals() {
+    const D = window.D30; if (!D) return {};
+    const S = this.state, pad = D.pad, P = D.today(this.props.progress), all = D.works(this.props.progress);
+    const f = { q: S.q, ai: S.ai, makers: S.makers }, active = !!(S.q.trim() || S.ai.length || S.makers.length);
+    const NOISE = 'url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E)';
+    const PANE = ['#d9d9d6', '#bdbdba', '#e8e8e6', '#a8a8a5', '#cfcfcc', '#f0f0ee', '#b5b5b2', '#c7c7c4'];
+    const W = Math.max(320, S.vw || 1280), H = Math.max(440, S.vh || 800), L = this.depthOf(30) + 700;
+    const dH = Math.round(Math.min(300, H * 0.5)), dW = Math.round(dH * 0.48);
+    const work = n => all.find(x => x.day === n);
+    const door = side => n => {
+      const w = work(n), ok = w && (!active || D.match(w, f)), isToday = n === P, past = n < P;
+      const ang = S.opening === n ? 72 : w && ok ? (S.hover === n ? 34 : 9) : 0;
+      return {
+        x: this.depthOf(n) + 'px',
+        plate: isToday ? `${pad(n)} NOW` : pad(n), plateBg: isToday ? '#d23b2a' : 'linear-gradient(180deg,#f1f1ef,#b8b8b5)', plateInk: isToday ? '#ffffff' : '#2a2a29',
+        inside: w ? 'linear-gradient(90deg,#f6f6f4,#ffffff)' : '#2c2c2a',
+        glow: w && ok ? '0 0 70px 14px rgba(255,255,255,.65)' : 'none',
+        leaf: `rotateY(${side === 'L' ? ang : -ang}deg)`,
+        leafBg: (w ? 'linear-gradient(90deg,#b4b3af,#cdccc8 45%,#b9b8b4)' : past ? 'linear-gradient(90deg,#8a8986,#9c9b98)' : 'linear-gradient(90deg,#c2c1bd,#d0cfcb)').replace(/^/, NOISE + ','),
+        pane: w ? (w.thumb ? `url("${w.thumb}")` : PANE[n % PANE.length]) : past ? '#1e1e1d' : '#bdbdb9',
+        paneGlow: w && ok ? `0 0 22px ${PANE[n % PANE.length]}` : '0 0 0 transparent',
+        boarded: !w && past,
+        op: w ? (ok ? 1 : 0.28) : n > P ? 0.6 : 0.85,
+        cursor: ok ? 'pointer' : 'default',
+        tip: w ? `DAY ${pad(n)} · ${w.title}` : past ? `DAY ${pad(n)} · 작업물 없음` : isToday ? '오늘 · 아직 업로드 전' : `DAY ${pad(n)}`,
+        open: () => ok && this.openDoor(n),
+        enter: () => ok && this.setState({ hover: n }), leave: () => S.hover === n && this.setState({ hover: null }),
+      };
+    };
+    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const cell = n => {
+      const w = work(n), ok = w && (!active || D.match(w, f));
+      return { n, nn: pad(n), ok, go: () => ok && this.go(n), cursor: ok ? 'pointer' : 'default',
+        tip: w ? `DAY ${pad(n)} · ${w.title}` : n < P ? `DAY ${pad(n)} · 작업물 없음` : `DAY ${pad(n)}`,
+        bg: w ? (ok ? '#1e1e1d' : 'rgba(30,30,29,.15)') : 'transparent', ink: w && ok ? '#ececea' : '#1e1e1d',
+        border: w ? '0' : n < P ? '1px dashed rgba(30,30,29,.45)' : '1px solid rgba(30,30,29,.15)',
+        ring: n === P ? '2px solid #d23b2a' : '2px solid transparent', op: n > P ? 0.5 : 1 };
+    };
+    const rail = days.map(n => { const c = cell(n); return { ...c, label: n % 5 === 0 || n === 1 || n === P ? pad(n) : '', labelOp: n === P ? 1 : 0.6, w: c.ok ? '22px' : '14px', op: 1 }; });
+    let results = all.filter(w => D.match(w, f));
+    results = results.sort(S.sort === 'latest' ? (a, b) => b.uploaded.localeCompare(a.uploaded) : (a, b) => a.day - b.day);
+    const sel = work(S.open);
+    const list = all.map(w => w.day).sort((a, b) => a - b), si = sel ? list.indexOf(sel.day) : -1;
+    const long = sel && sel.prompt.length > 200, open = S.promptOpen;
+    const chip = on => ({ bg: on ? '#1e1e1d' : 'rgba(30,30,29,.1)', ink: on ? '#ececea' : '#1e1e1d' });
+    return {
+      pageH: `calc(100vh + ${Math.round((this.depthOf(30) - this.VIEW + 700) * this.K)}px)`,
+      corridorW: W + 'px', wallLeftX: -W / 2 + 'px', wallRightX: (W / 2 - L) + 'px', wallL: L + 'px',
+      wallTop: -H / 2 + 'px', wallH: H + 'px', floorTop: H / 2 + 'px', doorW: dW + 'px', doorH: dH + 'px',
+      backWallTf: `translateZ(${-L}px)`,
+      leftDoors: days.filter(n => n % 2).map(door('L')), rightDoors: days.filter(n => !(n % 2)).map(door('R')),
+      fogs: Array.from({ length: Math.floor(L / 380) }, (_, i) => ({ tf: `translateZ(${-(i + 1) * 380}px)` })),
+      lights: Array.from({ length: Math.ceil(L / 300) }, (_, i) => ({ y: 140 + i * 300 + 'px', bg: i % 5 === 3 ? '#dcdcd8' : '#ffffff', glow: i % 5 === 3 ? 'none' : '0 0 50px 16px rgba(255,255,255,.75)' })),
+      worldRef: this.worldRef, titleRef: this.titleRef, depthRef: this.depthRef, markerRef: this.markerRef, clockRef: this.clockRef,
+      progressLabel: `${pad(P)}/30`, uploadedLabel: `${pad(all.length)} ROOMS OPEN`,
+      enter: () => window.scrollTo({ top: this.scrollFor(1), behavior: 'smooth' }), toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      mapOpen: S.map, mapLabel: S.map ? 'CLOSE' : active ? `MAP · ${results.length}` : 'MAP',
+      toggleMap: () => this.setState(st => ({ map: !st.map })), closeMap: () => this.setState({ map: false }),
+      footHint: active ? `FILTER ON · ${pad(results.length)} ROOMS` : '↑↓ 이동 · 문을 눌러 들어가기',
+      rail, planTop: days.filter(n => n % 2).map(cell), planBottom: days.filter(n => !(n % 2)).map(cell),
+      q: S.q, onQ: e => this.setState({ q: e.target.value }),
+      aiOpts: D.aiNames(all).map(name => ({ name, ...chip(S.ai.includes(name)), toggle: () => this.tog('ai', name) })),
+      makerOpts: D.MEMBERS.map(name => ({ name, ...chip(S.makers.includes(name)), toggle: () => this.tog('makers', name) })),
+      sortOpts: [['day', 'Day순'], ['latest', '최신순']].map(([k, label]) => ({ label, ...chip(S.sort === k), pick: () => this.setState({ sort: k }) })),
+      hasActive: active, resetAll: () => this.setState({ q: '', ai: [], makers: [] }),
+      results: results.map(w => ({ nn: pad(w.day), title: w.title, names: w.makers.join(' · '), dur: D.dur(w.duration), go: () => this.go(w.day) })),
+      noResults: !results.length,
+      cctvOpen: S.cctv && !sel,
+      openCctv: () => { this.setState({ cctv: true, map: false }); try { history.replaceState(null, '', '#cctv'); } catch (e) {} },
+      closeCctv: () => { this.setState({ cctv: false }); D.setHash(null); },
+      cctvCount: active ? `${pad(results.length)} / ${pad(all.length)} TAPES` : `${pad(all.length)} TAPES · DAY 01—${pad(P)}`,
+      monitors: days.filter(n => n <= P).filter(n => { const w = work(n); return active ? w && D.match(w, f) : true; }).map(n => {
+        const w = work(n);
+        return w ? { nn: pad(n), title: w.title, names: w.makers.join(' · '), dur: D.dur(w.duration), date: D.dateOf(n), led: '#d23b2a', op: 1, cursor: 'pointer', tip: `DAY ${pad(n)} · ${w.title}`,
+          screen: w.thumb ? `url("${w.thumb}") center/cover` : `radial-gradient(ellipse at 50% 45%, ${PANE[n % PANE.length]}, #1f1f1f 85%)`,
+          hasVideo: !!w.video, noSignal: false, placeholder: !w.video,
+          videoEl: w.video ? React.createElement('video', { key: w.video, src: w.video, muted: true, autoPlay: true, loop: true, playsInline: true, style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } }) : null,
+          open: () => { this.setState({ cctv: false }); window.scrollTo({ top: this.scrollFor(n), behavior: 'auto' }); this.openRoom(n); } }
+          : { nn: pad(n), title: n === P ? '오늘 · 업로드 전' : '작업물 없음', names: '', dur: '--:--', date: D.dateOf(n), led: '#555555', op: .7, cursor: 'default', tip: '',
+            screen: '#3a3a3a', hasVideo: false, noSignal: true, placeholder: false, videoEl: null, open: () => {} };
+      }),
+      roomOpen: !!sel, roomOp: S.roomIn ? 1 : 0, roomTf: S.roomIn ? 'scale(1)' : 'scale(.92)',
+      s: sel ? { ...sel, nn: pad(sel.day), date: D.dateOf(sel.day), dur: D.dur(sel.duration), names: sel.makers.join(' · '),
+        screen: `radial-gradient(ellipse at 50% 45%, ${PANE[sel.day % PANE.length]}, #1e1e1d 85%)`,
+        hasVideo: !!sel.video, noVideo: !sel.video,
+        videoEl: sel.video ? React.createElement('video', { key: sel.video, src: sel.video, poster: sel.thumb || undefined, controls: true, playsInline: true, style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } }) : null } : {},
+      closeRoom: () => this.closeRoom(), prevRoom: () => this.step(-1), nextRoom: () => this.step(1),
+      prevLabel: si >= 0 ? pad(list[(si - 1 + list.length) % list.length]) : '', nextLabel: si >= 0 ? pad(list[(si + 1) % list.length]) : '',
+      linkLabel: S.copied === 'link' ? '복사됨' : '링크 복사', copyLink: () => sel && D.copy(D.link(sel.day)).then(() => this.flash('link')),
+      promptCopyLabel: S.copied === 'prompt' ? '복사됨' : '복사', copyPrompt: () => sel && D.copy(sel.prompt).then(() => this.flash('prompt')),
+      pMaxH: long && !open ? '5.4em' : 'none', pMask: long && !open ? 'linear-gradient(180deg,#000 40%,transparent)' : 'none',
+      showMore: long && !open, showLess: long && open, togglePrompt: () => this.setState(st => ({ promptOpen: !st.promptOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>
