@@ -26,6 +26,8 @@
   *,*::before,*::after{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   html.locked{overflow:hidden}
+  /* 방·CCTV 가 화면을 완전히 덮은 동안에는 뒤의 3D 복도를 그리지 않는다 */
+  html.covered .stage{visibility:hidden}
   body{margin:0;background:#a9a9a6;color:var(--ink);font-family:var(--kr)}
   button{font-family:inherit;color:inherit}
   button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--red);outline-offset:2px}
@@ -36,7 +38,8 @@
   .track{position:relative}
   .stage{position:sticky;top:0;height:100vh;overflow:hidden;perspective:700px;
     background:radial-gradient(ellipse 30% 30% at 50% 50%,#f4f4f2,#c4c4c0 60%,#8e8e8a)}
-  .world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+  /* will-change 가 없으면 카메라가 움직일 때마다 크롬이 벽·바닥 전체를 새 배율로 다시 그린다 */
+  .world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
   .world>div{position:absolute}
 
   .wall{background:
@@ -62,7 +65,8 @@
       linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.1) 6%,transparent 16%,transparent 84%,rgba(0,0,0,.1) 94%,rgba(0,0,0,.42)),
       var(--blot),var(--fine),linear-gradient(90deg,#7c7b77,#8f8e8a 50%,#7c7b77);
     background-size:auto,900px 700px,180px 180px,auto}
-  .floor .sheen{position:absolute;left:34%;width:32%;top:0;bottom:0;filter:blur(10px);
+  .floor .sheen{position:absolute;left:34%;width:32%;top:0;bottom:0;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent);
     background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.34) 172px,rgba(255,255,255,0) 300px)}
   .fog{background:rgba(212,211,207,.075);pointer-events:none}
   .endwall{background:radial-gradient(ellipse 40% 50% at 50% 50%,#fbfbfa,#d6d6d2 70%);
@@ -220,12 +224,15 @@
   .mon .cap span{flex:none;font:400 12px var(--kr);opacity:.6}
 
   /* ── 방 ───────────────────────────────────────────────────────── */
-  .room{position:fixed;inset:0;z-index:50;overflow:auto;overscroll-behavior:contain;
+  /* 배경은 스크롤되지 않는 .room 에, 스크롤은 안쪽 .room-scroll 에.
+     배경까지 같이 스크롤되면 스크롤 중에 배경이 비었다가 멈춰야 다시 칠해진다. */
+  .room{position:fixed;inset:0;z-index:50;overflow:hidden;
     opacity:0;transform:scale(.92);transition:opacity .45s,transform .6s cubic-bezier(.2,.7,.2,1);
-    background:linear-gradient(0deg,#6f6f6c 0 22px,transparent 22px) fixed,
-      repeating-linear-gradient(90deg,rgba(60,60,58,.08) 0 2px,transparent 2px 26px),
+    background:repeating-linear-gradient(90deg,rgba(60,60,58,.08) 0 2px,transparent 2px 26px),
       linear-gradient(180deg,#d9d9d5,#b4b4b0)}
-  .room.in{opacity:1;transform:scale(1)}
+  .room::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22px;background:#6f6f6c;pointer-events:none}
+  .room.in{opacity:1;transform:none}
+  .room-scroll{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain}
   .room .wrap{max-width:1240px;margin:0 auto;padding:18px clamp(14px,3vw,40px) 70px}
   .room .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:400 12px var(--mono)}
   .room .nav>div{display:flex;align-items:center;gap:6px}
@@ -338,6 +345,7 @@
 </section>
 
 <section class="room" id="room" role="dialog" aria-modal="true" aria-labelledby="r-title" hidden>
+  <div class="room-scroll" id="room-scroll">
   <div class="wrap">
     <div class="nav">
       <button class="btn" type="button" data-act="room-close">← 복도로 (ESC)</button>
@@ -375,6 +383,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -564,6 +573,14 @@
     paintDoors();
   }
 
+  // 같은 값을 다시 쓰지 않는다. hover 한 번에 30개 문을 전부 다시 칠할 이유가 없다.
+  const put = (el, k, v) => {
+    const c = el._c || (el._c = {});
+    if (c[k] === v) return;
+    c[k] = v;
+    if (k === 'text') el.textContent = v; else if (k === 'title') el.title = v; else el.style[k] = v;
+  };
+
   function paintDoors() {
     for (const n of DAYS) {
       const d = doorEls[n];
@@ -572,18 +589,18 @@
       const ang = S.opening === n ? 72 : ok ? (S.hover === n ? 34 : 9) : 0;
       d.el.classList.toggle('today', isToday);
       d.el.classList.toggle('boarded', !w && past);
-      d.plate.textContent = isToday ? `${pad(n)} NOW` : pad(n);
-      d.inside.style.background = w ? 'linear-gradient(90deg,#f6f6f4,#ffffff)' : '#2c2c2a';
-      d.inside.style.boxShadow = ok ? '0 0 70px 14px rgba(255,255,255,.65)' : 'none';
-      d.leaf.style.transform = `rotateY(${d.side === 'l' ? ang : -ang}deg)`;
-      d.leaf.style.backgroundImage = 'var(--fine),' + (w ? 'linear-gradient(90deg,#b4b3af,#cdccc8 45%,#b9b8b4)'
-        : past ? 'linear-gradient(90deg,#8a8986,#9c9b98)' : 'linear-gradient(90deg,#c2c1bd,#d0cfcb)');
-      d.pane.style.background = w ? `url("${w.thumb}") center/cover, ${PANE[n % PANE.length]}` : past ? '#1e1e1d' : '#bdbdb9';
-      d.pane.style.boxShadow = 'inset 0 0 0 3px #7a7976,inset 3px 3px 7px rgba(0,0,0,.45),' +
-        (ok ? `0 0 22px ${PANE[n % PANE.length]}` : '0 0 0 transparent');
-      d.el.style.opacity = w ? (ok ? 1 : 0.28) : n > P ? 0.6 : 0.85;
-      d.el.style.cursor = ok ? 'pointer' : 'default';
-      d.el.title = tipOf(n);
+      put(d.plate, 'text', isToday ? `${pad(n)} NOW` : pad(n));
+      put(d.inside, 'background', w ? 'linear-gradient(90deg,#f6f6f4,#ffffff)' : '#2c2c2a');
+      put(d.inside, 'boxShadow', ok ? '0 0 70px 14px rgba(255,255,255,.65)' : 'none');
+      put(d.leaf, 'transform', `rotateY(${d.side === 'l' ? ang : -ang}deg)`);
+      put(d.leaf, 'backgroundImage', 'var(--fine),' + (w ? 'linear-gradient(90deg,#b4b3af,#cdccc8 45%,#b9b8b4)'
+        : past ? 'linear-gradient(90deg,#8a8986,#9c9b98)' : 'linear-gradient(90deg,#c2c1bd,#d0cfcb)'));
+      put(d.pane, 'background', w ? `url("${w.thumb}") center/cover, ${PANE[n % PANE.length]}` : past ? '#1e1e1d' : '#bdbdb9');
+      put(d.pane, 'boxShadow', 'inset 0 0 0 3px #7a7976,inset 3px 3px 7px rgba(0,0,0,.45),' +
+        (ok ? `0 0 22px ${PANE[n % PANE.length]}` : '0 0 0 transparent'));
+      put(d.el, 'opacity', String(w ? (ok ? 1 : 0.28) : n > P ? 0.6 : 0.85));
+      put(d.el, 'cursor', ok ? 'pointer' : 'default');
+      put(d.el, 'title', tipOf(n));
     }
   }
 
@@ -738,6 +755,7 @@
     renderCctv();
     try { history.replaceState(null, '', '#cctv'); } catch (_) {}
     syncLock();
+    cover(true);
   }
   function closeCctv() {
     S.cctv = false;
@@ -746,6 +764,7 @@
     cctvSig = ''; camPlaying = null;
     setHash(null);
     syncLock();
+    if (!S.open) cover(false);
   }
 
   // ── 방 ───────────────────────────────────────────────────────
@@ -757,6 +776,8 @@
   };
   const hashDay = () => { const m = /day-?(\d{1,2})/i.exec(location.hash || ''); return m ? +m[1] : null; };
   const syncLock = () => document.documentElement.classList.toggle('locked', !!(S.open || S.cctv));
+  let cv = 0;
+  const cover = on => { clearTimeout(cv); document.documentElement.classList.toggle('covered', on); };
   const roomList = () => works.map(w => w.day);
 
   function renderRoom(force) {
@@ -826,7 +847,7 @@
     window.scrollTo({ top: scrollFor(n), behavior: 'auto' });
     room.classList.remove('in');
     room.hidden = false;
-    room.scrollTop = 0;
+    $('room-scroll').scrollTop = 0;
     renderRoom(true);
     setHash(n);
     syncLock();
@@ -834,8 +855,11 @@
     const enter = () => room.classList.add('in');
     requestAnimationFrame(() => requestAnimationFrame(enter));
     setTimeout(enter, 30);
+    // 진입 애니메이션(.6s)이 끝나 방이 화면을 다 덮으면 뒤의 복도를 숨긴다.
+    clearTimeout(cv); cv = setTimeout(() => { if (S.open) cover(true); }, 650);
   }
   function closeRoom() {
+    cover(false);
     room.classList.remove('in');
     setHash(null);
     clearTimeout(t2);
@@ -852,7 +876,7 @@
     if (i < 0) return;
     const n = list[(i + dir + list.length) % list.length];
     S.open = n; S.promptOpen = false;
-    room.scrollTop = 0;
+    $('room-scroll').scrollTop = 0;
     renderRoom(true);
     setHash(n);
     window.scrollTo({ top: scrollFor(n), behavior: 'auto' });
