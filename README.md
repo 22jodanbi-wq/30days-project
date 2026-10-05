@@ -4,6 +4,8 @@ Team 7 — 2026.09.28 ~ 10.27 · 하루에 한 편
 
 AI기반영상제작워크샵 30일 프로젝트 아카이브. 30일치 영상과 프롬프트, 작업 일지를 한 페이지에 모읍니다.
 
+사이트는 **3D 복도(Thirty Doors)** 입니다. 스크롤하면 복도를 걸어 들어가고, 양쪽 벽에 Day 1–30 의 문이 있습니다(홀수 = 왼쪽, 짝수 = 오른쪽). 영상이 올라온 날의 문을 누르면 그날의 방이 열립니다.
+
 **사이트** → https://22jodanbi-wq.github.io/30days-project/
 
 ---
@@ -34,14 +36,15 @@ https://www.youtube.com/shorts/dQw4w9WgXcQ
 3. 자기 날짜 줄을 찾습니다. 줄 끝에 날짜가 주석으로 적혀 있습니다
 
    ```js
-   { day:  3, youtube: "", title: "", duration: "", prompt: "", log: "" },  // 09.30 (수)
+   { day:  3, youtube: "", title: "", duration: "", ai: "", makers: "", prompt: "", log: "" },  // 09.30 (수)
    ```
 
 4. **따옴표 사이에만** 내용을 채웁니다
 
    ```js
    { day:  3, youtube: "https://youtu.be/dQw4w9WgXcQ", title: "Petals in morning fog",
-     duration: "00:15", prompt: "soft focus, faint film grain, slow 24fps camera drift",
+     duration: "00:15", ai: "Midjourney, Runway", makers: "오세령, 조단비",
+     prompt: "soft focus, faint film grain, slow 24fps camera drift",
      log: "채도를 낮추고 블러를 한 단계 올렸다. 두 번째 생성본을 최종으로 골랐다." },  // 09.30 (수)
    ```
 
@@ -56,6 +59,8 @@ https://www.youtube.com/shorts/dQw4w9WgXcQ
 | `youtube` | 유튜브 주소. **비우면 "업로드 대기"로 표시됩니다** |
 | `title` | 영상 제목. 영문 권장 (디자인이 영문 기준) |
 | `duration` | 길이. 비우면 `00:15` |
+| `ai` | 사용한 AI. 여러 개면 쉼표로 `"Midjourney, Runway"` |
+| `makers` | 만든 사람. 여러 명이면 쉼표로 `"오세령, 조단비"`. 이름을 정확히 써야 MAP 필터에 잡힙니다 |
 | `prompt` | 그날 사용한 생성 프롬프트 |
 | `log` | 작업 일지. 한국어로 쓰세요 |
 
@@ -79,7 +84,7 @@ log: "'느리게' 가는 느낌을 살렸다.",       ← 이것도 맞음
 
 ### 잘못 고쳤으면
 
-사이트의 30일 카드가 전부 `Not yet` 으로 보이면 `days.js` 문법이 깨진 겁니다. 당황하지 마세요.
+복도의 문이 전부 닫혀 있고 MAP 에 `00 ROOMS OPEN` 이 뜨면 `days.js` 문법이 깨진 겁니다. 당황하지 마세요.
 
 저장소 **Commits** 탭 → 자기 커밋 → 오른쪽 **Revert** 를 누르면 되돌아갑니다. 그 다음 다시 고치면 됩니다.
 
@@ -93,10 +98,10 @@ log: "'느리게' 가는 느낌을 살렸다.",       ← 이것도 맞음
 |---|---|
 | `index.html` | 사이트 전체. 이거 하나가 페이지입니다 |
 | `days.js` | 30일치 콘텐츠. **팀원이 고치는 유일한 파일** |
-| `assets/cosmos-bg.jpg` | 배경 (136KB, 실사용) |
-| `assets/cosmos-bg.png` | 배경 원본 (1.2MB, 사이트는 안 씀) |
+| `assets/cosmos-bg.*` | 이전 디자인 배경 (지금 사이트는 안 씀) |
 | `build.py` | claude.ai 아트팩트 발행용 단일 파일 생성 |
-| `30 Days Portfolio.dc.html` | 원본 디자인 시안 (참고용, 사이트와 무관) |
+| `design_handoff_corridor/` | 지금 디자인(Corridor)의 시안과 사양 (참고용, 사이트와 무관) |
+| `30 Days Portfolio.dc.html` | 이전 디자인 시안 (참고용, 사이트와 무관) |
 | `support.js` | 디자인 캔버스 런타임 (사이트와 무관) |
 
 `dist/` 는 아트팩트 발행 전용이라 `.gitignore` 에 있습니다. 깃허브 페이지는 `index.html` 을 직접 씁니다.
@@ -123,19 +128,31 @@ open index.html
 
 ### 진행 일수
 
-시작일은 `index.html` 의 `START = new Date(2026, 8, 28)` (2026-09-28) 이고, 오늘 날짜에서 자동 계산해 `01/30` ~ `30/30` 으로 표시됩니다. 손으로 고칠 필요 없습니다.
+시작일은 `index.html` 의 `START_DATE = new Date(2026, 8, 28)` (2026-09-28) 이고, 오늘 날짜에서 자동 계산해 `01/30` ~ `30/30` 으로 표시됩니다. 손으로 고칠 필요 없습니다.
 
-업로드 완료 판정은 **날짜가 아니라 영상 유무**로 합니다. 하루 밀려도 페이지가 거짓말하지 않습니다.
+업로드 완료 판정은 **날짜가 아니라 영상 유무**로 합니다. 하루 밀려도 페이지가 거짓말하지 않습니다. 오늘 이후 날짜에 미리 채운 영상은 그날이 되면 문이 열립니다.
 
-### 배경 사진을 바꿀 때
+다른 날짜 기준으로 미리 보려면 주소 뒤에 `?today=N` 을 붙이세요. 예: `index.html?today=12`
 
-`index.html` 의 `--bg-aspect` 값을 새 사진의 **가로÷세로** 로 고쳐주세요. 이 값으로 배경 높이를 계산해서 넓은 화면에서 사진 좌우가 잘리지 않게 맞춥니다.
+### 데이터 연결
 
-```css
-.backdrop{--bg-aspect:1.787;   /* cosmos-bg.jpg = 1344x752 */
-```
+`days.js` 의 필드는 디자인 사양(`design_handoff_corridor/README.md` 의 Data)으로 이렇게 바뀌어 쓰입니다.
 
-세로로 긴 사진을 쓰면 잘림 문제 자체가 없어집니다.
+| days.js | 디자인 스키마 |
+|---|---|
+| `youtube` | 문 창·CCTV·방의 썸네일과 영상 (유튜브 임베드) |
+| `log` | `note` |
+| `duration` `"00:15"` | `duration` 초 |
+| `ai`, `makers` `"A, B"` | 배열 |
+| 공유 DB 의 `updatedAt` | `uploaded` (MAP 의 최신순 정렬) |
+
+### 바로가기 주소
+
+`#day-07` 은 7일차 방으로 바로, `#cctv` 는 영상 모아보기로 바로 열립니다. 방 안의 **링크 복사**가 이 주소를 복사합니다.
+
+### 아트팩트 발행본
+
+`python3 build.py` → `dist/portfolio.html`. 발행본은 `days.js` 대신 공유 DB 에서 내용을 읽고, 쓰기 권한이 있는 팀원에게는 오른쪽 위에 **EDIT** 버튼이 보여 페이지에서 바로 채울 수 있습니다.
 
 ---
 

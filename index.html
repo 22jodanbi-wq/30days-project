@@ -3,297 +3,435 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>30 Days of Drift</title>
+<title>Thirty Doors</title>
 <meta name="description" content="30일간 하루에 한 편. AI 기반 영상 제작 워크샵 30일 프로젝트 아카이브.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Archivo+Narrow:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
 
 <style>
   :root{
-    --ink:#eef1f4;
-    --mono:'Geist Mono',ui-monospace,Menlo,monospace;
-    --sans:Geist,'IBM Plex Sans KR',system-ui,sans-serif;
-    --kr:'IBM Plex Sans KR',system-ui,sans-serif;
-    --serif:'Cormorant Infant',serif;
-    --rule:rgba(255,255,255,.16);
-    --pad:40px;
+    --ink:#1e1e1d;
+    --ink-l:#ececea;
+    --red:#d23b2a;
+    --mono:'DM Mono',ui-monospace,Menlo,monospace;
+    --kr:Pretendard,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+    --narrow:'Archivo Narrow','Arial Narrow',sans-serif;
+    --gutter:clamp(14px,3vw,32px);
+    /* 노이즈 2종. 모든 질감은 이 둘과 그라데이션으로 만든다 */
+    --fine:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.5%200%200%200%200%20.5%200%200%200%200%20.5%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E);
+    --blot:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22600%22%3E%3Cfilter%20id%3D%22b%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.006%20.012%22%20numOctaves%3D%224%22%20seed%3D%227%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.35%200%200%200%200%20.34%200%200%200%200%20.32%200%200%200%20.5%20-.12%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E);
   }
   *,*::before,*::after{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0;
-    color:var(--ink);
-    font-family:var(--sans);
-    background:
-      radial-gradient(ellipse 55% 22% at 12% 70%,oklch(0.56 0.14 32 / .6),transparent 70%),
-      radial-gradient(ellipse 45% 20% at 88% 82%,oklch(0.58 0.13 15 / .5),transparent 70%),
-      radial-gradient(ellipse 60% 18% at 50% 96%,oklch(0.52 0.12 40 / .45),transparent 70%),
-      linear-gradient(180deg,#34547e 0%,#2a4467 45%,#24385a 100%);
-    background-attachment:fixed;
-  }
-  .page{position:relative;width:100%;max-width:1280px;margin:0 auto;overflow:hidden}
+  html.locked{overflow:hidden}
+  body{margin:0;background:#a9a9a6;color:var(--ink);font-family:var(--kr)}
+  button{font-family:inherit;color:inherit}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  input::placeholder,textarea::placeholder{color:rgba(30,30,29,.5)}
+  [hidden]{display:none!important}
 
-  /* --- 배경 사진 + 좌측 음영 ---------------------------------------
-     본문은 1280px 컬럼이지만 배경은 화면 전체 폭을 쓴다. 그러지 않으면
-     넓은 화면에서 사진 좌우가 잘려나간다.
-     높이도 화면 폭을 따라간다: 폭 / 사진비율 보다 높아지는 순간부터
-     cover 가 좌우를 잘라내기 시작하므로 그 지점에서 멈춘다.
-     --bg-aspect 는 배경 사진의 가로÷세로. 사진을 갈아끼우면 이 값만 고치면 된다. */
-  .backdrop{--bg-aspect:1.787;            /* cosmos-bg.jpg = 1344x752 */
-    position:absolute;left:0;top:0;width:100%;
-    height:clamp(820px, calc(100vw / var(--bg-aspect)), 1180px);
-    overflow:hidden;pointer-events:none;
-    -webkit-mask-image:linear-gradient(180deg,#000 80%,transparent);
-            mask-image:linear-gradient(180deg,#000 80%,transparent)}
-  .bg{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
-  .bg-shade{position:absolute;inset:0;
-    background:linear-gradient(90deg,rgba(20,32,52,.35),transparent 55%)}
+  /* ── 복도 ─────────────────────────────────────────────────────── */
+  .track{position:relative}
+  .stage{position:sticky;top:0;height:100vh;overflow:hidden;perspective:700px;
+    background:radial-gradient(ellipse 30% 30% at 50% 50%,#f4f4f2,#c4c4c0 60%,#8e8e8a)}
+  .world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+  .world>div{position:absolute}
 
-  /* --- 히어로 --- */
-  .hero{position:relative;height:700px;overflow:hidden}
-  .nav{position:relative;display:flex;justify-content:space-between;align-items:center;padding:28px var(--pad)}
-  .nav ul{display:flex;gap:28px;margin:0;padding:0;list-style:none;
-    font:400 12px var(--mono);text-transform:uppercase;letter-spacing:.06em}
-  .nav a{color:inherit;text-decoration:none}
-  .nav a:hover{opacity:.7}
-  .meta{position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:150px var(--pad) 0;
-    font:400 12px var(--kr);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
-  .meta span:last-child{text-align:right}
-  .titlewrap{position:relative;padding:44px var(--pad) 0}
-  h1{font:400 130px/0.9 var(--serif);letter-spacing:-0.08em;margin:110px 0 0}
-  .progress{font:400 12px var(--kr);letter-spacing:.06em;text-align:right;margin-top:24px}
+  .wall{background:
+      linear-gradient(0deg,#5e5e5b 0 15px,#9a9a97 15px 17px,rgba(0,0,0,.22) 17px,transparent 40px),
+      linear-gradient(180deg,rgba(0,0,0,.32) 0,rgba(0,0,0,.08) 5%,transparent 14%,transparent 70%,rgba(0,0,0,.12) 100%),
+      repeating-linear-gradient(var(--band),rgba(255,255,255,0) 0px,rgba(255,255,255,.26) 172px,rgba(255,255,255,0) 300px),
+      var(--blot),var(--fine),#cbcac6;
+    background-size:auto,auto,auto,900px 100%,220px 220px,auto}
+  .wall-l{--band:90deg;transform-origin:0 50%;transform:rotateY(90deg)}
+  .wall-r{--band:270deg;transform-origin:100% 50%;transform:rotateY(-90deg)}
+  .ceil{transform-origin:50% 0;transform:rotateX(-90deg);background:
+      linear-gradient(90deg,rgba(0,0,0,.3),transparent 7%,transparent 93%,rgba(0,0,0,.3)),
+      repeating-linear-gradient(0deg,#a9a8a4 0 2px,transparent 2px 150px),
+      repeating-linear-gradient(90deg,#a9a8a4 0 2px,transparent 2px 12.5%),
+      repeating-linear-gradient(180deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.3) 172px,rgba(255,255,255,0) 300px),
+      var(--fine),#d9d8d4;
+    background-size:auto,auto,auto,auto,140px 140px,auto}
+  .light{position:absolute;left:37.5%;width:25%;height:64px;background:#fff;
+    box-shadow:0 0 0 5px #bdbcb8,0 0 0 6px rgba(0,0,0,.2),0 0 50px 16px rgba(255,255,255,.75)}
+  .light.off{background:#dcdcd8;box-shadow:0 0 0 5px #bdbcb8,0 0 0 6px rgba(0,0,0,.2)}
+  .light::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 6px)}
+  .floor{transform-origin:50% 0;transform:rotateX(90deg) scaleY(-1);background:
+      linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.1) 6%,transparent 16%,transparent 84%,rgba(0,0,0,.1) 94%,rgba(0,0,0,.42)),
+      var(--blot),var(--fine),linear-gradient(90deg,#7c7b77,#8f8e8a 50%,#7c7b77);
+    background-size:auto,900px 700px,180px 180px,auto}
+  .floor .sheen{position:absolute;left:34%;width:32%;top:0;bottom:0;filter:blur(10px);
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.34) 172px,rgba(255,255,255,0) 300px)}
+  .fog{background:rgba(212,211,207,.075);pointer-events:none}
+  .endwall{background:radial-gradient(ellipse 40% 50% at 50% 50%,#fbfbfa,#d6d6d2 70%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:0 20px;color:#5a5a57}
+  .endwall b{font:400 20px var(--mono);letter-spacing:.1em}
+  .endwall span{font:400 15px var(--kr)}
 
-  /* --- 중간 여백 구간 --- */
-  .band{position:relative;height:420px;overflow:hidden}
-  .band p{position:absolute;left:0;right:0;bottom:70px;margin:0;text-align:center;
-    font:400 30px var(--kr);letter-spacing:-.02em;color:#fff}
+  /* 문. 레이어 아래→위: 그림자, 문틀, 문 안쪽 빛, 문짝 */
+  .door{position:absolute;bottom:18px;width:var(--dw);height:var(--dh);transition:opacity .4s}
+  .door .plate{position:absolute;left:50%;top:-46px;transform:translateX(-50%);min-width:52px;height:24px;padding:0 8px;border-radius:2px;
+    background:linear-gradient(180deg,#f1f1ef,#b8b8b5);color:#2a2a29;
+    box-shadow:0 1px 2px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.6);
+    font:500 12px/24px var(--mono);letter-spacing:.08em;text-align:center;white-space:nowrap}
+  .door.today .plate{background:var(--red);color:#fff}
+  .door .shade{position:absolute;left:-14px;right:-14px;top:-24px;bottom:-30px;pointer-events:none;
+    background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(0,0,0,.16),transparent 70%)}
+  .door .frame{position:absolute;inset:-9px -9px 0 -9px;
+    background:linear-gradient(90deg,#8d8c89,#c2c1bd 18%,#b1b0ac 82%,#8a8986);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.35)}
+  .door .inside{position:absolute;inset:0}
+  .door .leaf{position:absolute;inset:0;transform-origin:0 50%;transition:transform .6s cubic-bezier(.2,.7,.2,1);
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.3),inset -1px 0 0 rgba(0,0,0,.3),3px 0 8px rgba(0,0,0,.25);
+    background-size:220px 220px,auto}
+  .door.r .leaf{transform-origin:100% 50%}
+  .door .pane{position:absolute;left:20%;right:20%;top:10%;height:24%}
+  .door .pane::after{content:"";position:absolute;inset:3px;background:
+      linear-gradient(125deg,rgba(255,255,255,.4),rgba(255,255,255,0) 40%),
+      repeating-linear-gradient(45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px),
+      repeating-linear-gradient(-45deg,rgba(0,0,0,.08) 0 1px,transparent 1px 9px)}
+  .door .recess{position:absolute;left:16%;right:16%;top:42%;bottom:20%;
+    box-shadow:inset 2px 2px 3px rgba(0,0,0,.25),inset -1px -1px 0 rgba(255,255,255,.35)}
+  .door .kick{position:absolute;left:0;right:0;bottom:0;height:8%;background:linear-gradient(180deg,#d0d0cd,#8e8e8b 45%,#aaa9a6)}
+  .door .handle{position:absolute;right:9%;top:50%;width:7%;height:12%;border-radius:2px;
+    background:linear-gradient(90deg,#9d9d9a,#e4e4e1,#9d9d9a);box-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .door .lever{position:absolute;right:9%;top:54%;width:24%;height:5px;border-radius:3px;
+    background:linear-gradient(180deg,#f4f4f2,#8c8c89);box-shadow:0 2px 3px rgba(0,0,0,.35)}
+  .door.r .handle,.door.r .lever{right:auto;left:9%}
+  .door .tape{display:none;position:absolute;left:-10%;right:-10%;top:44%;height:12px;
+    background:linear-gradient(180deg,#eceae3,#d9d7cf);box-shadow:0 1px 2px rgba(0,0,0,.25);transform:rotate(28deg)}
+  .door .tape.b{transform:rotate(-28deg)}
+  .door.boarded .tape{display:block}
 
-  /* --- 아카이브 --- */
-  .arch-head{position:relative;padding:56px var(--pad) 0;display:flex;justify-content:space-between;align-items:baseline}
-  .arch-head h2{font:400 40px var(--sans);letter-spacing:-.03em;margin:0}
+  .grain{position:absolute;left:-3px;top:-1px;right:0;bottom:0;pointer-events:none;
+    background:radial-gradient(ellipse 120% 90% at 50% 50%,transparent 50%,rgba(20,20,20,.45)),var(--fine);
+    background-size:100% 100%,200px 200px}
 
-  .strip{position:relative;display:flex;gap:6px;overflow-x:auto;padding:24px var(--pad);align-items:stretch;
-    scroll-snap-type:x proximity}
-  .strip::-webkit-scrollbar{height:6px}
-  .strip::-webkit-scrollbar-track{background:transparent}
-  .strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}
-  .strip{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}
+  .entrance{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;pointer-events:none;padding:0 20px}
+  .entrance .lv{font:400 12px var(--mono);letter-spacing:.12em;opacity:.8}
+  .entrance h1{margin:14px 0 0;font:400 clamp(54px,10vw,140px)/0.9 'Bebas Neue',var(--narrow);letter-spacing:-.045em}
+  .entrance button{pointer-events:auto;margin-top:26px;height:40px;padding:0 20px;border:0;background:var(--ink);color:var(--ink-l);
+    font:300 13px var(--mono);letter-spacing:.08em;cursor:pointer}
 
-  .day{flex:none;width:56px;height:360px;border-radius:3px;cursor:pointer;position:relative;overflow:hidden;
-    padding:0;color:inherit;font:inherit;text-align:left;scroll-snap-align:center;
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border:1px solid rgba(255,255,255,.22);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
-    transition:width .55s cubic-bezier(.2,.7,.2,1)}
-  .day[aria-selected="true"]{width:440px}
-  .day:focus-visible{outline:2px solid #fff;outline-offset:2px}
-  .day .nn{position:absolute;left:0;right:0;top:14px;text-align:center;font:500 12px var(--mono)}
-  .day .today-dot{position:absolute;left:50%;bottom:16px;width:6px;height:6px;margin-left:-3px;
-    border-radius:50%;background:var(--ink)}
-  .day .expand{position:absolute;inset:0;opacity:0;transition:opacity .3s ease .15s;pointer-events:none}
-  .day[aria-selected="true"] .expand{opacity:1}
-  .day .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .day .play i{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  .topbar{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:16px var(--gutter);font:400 12px var(--mono);letter-spacing:.04em}
+  .topbar .rec{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .topbar .rec span{display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--red)}
+  .topbar .btns{flex:none;display:flex;gap:6px}
+  .btn{flex:none;height:36px;padding:0 14px;border:0;background:var(--ink);color:var(--ink-l);
+    font:400 12px var(--mono);letter-spacing:.06em;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  .btn.ghost{background:rgba(30,30,29,.14);color:var(--ink)}
+  .btn.ghost .dot{width:8px;height:8px}
+
+  .rail{position:absolute;right:clamp(8px,2vw,22px);top:50%;transform:translateY(-50%);height:min(60vh,520px)}
+  .rail .marker{position:absolute;right:20px;top:0;margin-top:-9px;font:400 11px/18px var(--mono);color:var(--red);transition:top .2s;pointer-events:none}
+  .rail .ticks{height:100%;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
+  .rail button{display:flex;align-items:center;gap:6px;height:12px;border:0;background:none;padding:0;color:var(--ink)}
+  .rail .lab{font:400 10px/12px var(--mono)}
+  .rail .tick{height:5px;outline-offset:1px}
+
+  .footbar{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);font:400 12px var(--mono);pointer-events:none}
+  .footbar span:last-child{opacity:.75}
+
+  /* ── MAP / EDIT 패널 ─────────────────────────────────────────── */
+  .dim{position:fixed;inset:0;background:rgba(30,30,29,.2)}
+  .panel{position:fixed;right:clamp(8px,2vw,24px);top:64px;bottom:16px;width:min(420px,calc(100vw - 16px));
+    padding:20px;background:#e6e6e3;box-shadow:0 20px 50px rgba(20,20,20,.35);
+    display:flex;flex-direction:column;gap:16px;overflow:auto;overscroll-behavior:contain}
+  #map-dim,#map{z-index:30}
+  #edit-dim,#editor{z-index:60}
+  .panel .head{display:flex;justify-content:space-between;align-items:center;font:400 13px var(--mono);letter-spacing:.06em}
+  .panel .head span:last-child{opacity:.7}
+  .panel .rule{height:1px;background:rgba(30,30,29,.2)}
+  .plan{display:flex;flex-direction:column;gap:4px}
+  .plan .row{display:grid;grid-template-columns:repeat(15,1fr);gap:3px}
+  .plan .row button{aspect-ratio:3/4;padding:0;outline-offset:1px;font:400 10px var(--mono)}
+  .plan .hall{height:14px;background:repeating-linear-gradient(90deg,rgba(30,30,29,.25) 0 6px,transparent 6px 12px) 0 50%/100% 2px no-repeat}
+  .field:focus-visible{outline:none;background:rgba(30,30,29,.17)}
+  .field{height:38px;padding:0 12px;border:0;background:rgba(30,30,29,.1);font:400 14px var(--kr);color:var(--ink);width:100%}
+  textarea.field{height:auto;min-height:84px;padding:10px 12px;line-height:1.6;resize:vertical}
+  .group{display:flex;flex-direction:column;gap:6px}
+  .group>span{font:400 11px var(--mono)}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{height:30px;padding:0 10px;border:0;background:rgba(30,30,29,.1);color:var(--ink);font:400 13px var(--kr);cursor:pointer}
+  .chip.mono{font:400 11px var(--mono);letter-spacing:.04em}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--ink-l)}
+  .sortrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .sortrow .chips .chip{height:28px}
+  .link{border:0;background:none;padding:0;font:400 13px var(--kr);text-decoration:underline;cursor:pointer;color:var(--ink)}
+  .results{display:flex;flex-direction:column}
+  .results button{display:flex;align-items:baseline;gap:12px;padding:10px 0;border:0;border-top:1px solid rgba(30,30,29,.15);
+    background:none;color:var(--ink);text-align:left;cursor:pointer}
+  .results button:hover{background:rgba(30,30,29,.06)}
+  .results .nn{flex:none;font:400 12px var(--mono)}
+  .results .tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .results .tt b{font:500 17px/1.2 var(--narrow)}
+  .results .tt i{font:400 12px var(--kr);font-style:normal;opacity:.7}
+  .results .du{flex:none;font:400 10px var(--mono);opacity:.7}
+  .empty{padding:26px 0;text-align:center;border-top:1px solid rgba(30,30,29,.15)}
+  .empty b{display:block;font:400 13px var(--mono)}
+  .empty span{display:block;margin-top:6px;font:400 13px var(--kr);opacity:.75}
+
+  .editor .hint{margin:0;font:400 12px/1.6 var(--kr);opacity:.7}
+  .editor label{display:flex;flex-direction:column;gap:6px;font:400 11px var(--mono)}
+  .editor .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .editor .saverow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .editor .status{font:400 12px var(--kr);opacity:.75}
+  .editor .status.bad{color:var(--red);opacity:1}
+  .btn:disabled{opacity:.4;cursor:default}
+
+  /* ── CCTV ─────────────────────────────────────────────────────── */
+  .cctv{position:fixed;inset:0;z-index:40;overflow:auto;overscroll-behavior:contain;color:#e4e4e2;
+    background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.18),transparent 70%),#121212}
+  .cctv .bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:16px var(--gutter);background:linear-gradient(180deg,#121212 70%,rgba(18,18,18,0));font:400 12px var(--mono);letter-spacing:.06em}
+  .cctv .bar>div{display:flex;align-items:center;gap:10px}
+  .cctv .bar .btn{height:34px;background:#e4e4e2;color:#121212}
+  .cctv .bar .btn.dark{background:rgba(228,228,226,.12);color:#e4e4e2;font:400 13px var(--kr);padding:0 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:clamp(10px,1.6vw,18px);padding:4px var(--gutter) 48px}
+  .mon{display:flex;flex-direction:column;gap:8px}
+  .mon.dead{opacity:.7}
+  .mon .cap{width:100%;border:0;background:none;text-align:left;font:inherit;cursor:pointer}
+  .mon .screen:hover,.mon button.cap:hover{filter:brightness(1.15)}
+  .mon .screen.playing:hover{filter:none}
+  .bezel{position:relative;width:100%;aspect-ratio:4/3;padding:8px;background:linear-gradient(160deg,#333,#1f1f1f);border-radius:6px;
+    box-shadow:0 10px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)}
+  .screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:14px/10px;box-shadow:inset 0 0 30px rgba(0,0,0,.7)}
+  .screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .screen .cue{position:absolute;inset:0;width:100%;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .screen .cue::after{content:"";width:0;height:0;margin-left:4px;border-left:16px solid rgba(255,255,255,.8);border-top:10px solid transparent;border-bottom:10px solid transparent}
+  .screen.playing{background:#000!important}
+  .screen .nosig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 13px var(--mono);color:#e6e6dc;letter-spacing:.1em;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,rgba(0,0,0,.3) 1px 2px,rgba(255,255,255,.06) 2px 4px),#3a3a3a}
+  .screen .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 1px,transparent 1px 3px)}
+  .screen .tl,.screen .tr,.screen .br{position:absolute;font:400 10px var(--mono);color:#e4e4e2;pointer-events:none}
+  .screen .tl{left:8px;top:5px;text-shadow:0 0 6px rgba(228,228,226,.6)}
+  .screen .tr{right:8px;top:5px;display:flex;align-items:center;gap:5px}
+  .screen .tr i{width:6px;height:6px;border-radius:50%}
+  .screen .br{right:8px;bottom:4px;opacity:.8}
+  .mon .cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 2px;color:#e8e8e5}
+  .mon .cap em{flex:none;font:400 10px var(--mono);font-style:normal;opacity:.6}
+  .mon .cap>span:first-child{min-width:0;display:flex;align-items:baseline;gap:10px}
+  .mon .cap b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 15px var(--narrow)}
+  .mon .cap span{flex:none;font:400 12px var(--kr);opacity:.6}
+
+  /* ── 방 ───────────────────────────────────────────────────────── */
+  .room{position:fixed;inset:0;z-index:50;overflow:auto;overscroll-behavior:contain;
+    opacity:0;transform:scale(.92);transition:opacity .45s,transform .6s cubic-bezier(.2,.7,.2,1);
+    background:linear-gradient(0deg,#6f6f6c 0 22px,transparent 22px) fixed,
+      repeating-linear-gradient(90deg,rgba(60,60,58,.08) 0 2px,transparent 2px 26px),
+      linear-gradient(180deg,#d9d9d5,#b4b4b0)}
+  .room.in{opacity:1;transform:scale(1)}
+  .room .wrap{max-width:1240px;margin:0 auto;padding:18px clamp(14px,3vw,40px) 70px}
+  .room .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:400 12px var(--mono)}
+  .room .nav>div{display:flex;align-items:center;gap:6px}
+  .room .nav .btn.ghost{background:rgba(30,30,29,.12);padding:0 12px}
+  .room .here{padding:0 10px;height:36px;display:flex;align-items:center;background:var(--red);color:#fff}
+  .frame16{margin-top:26px;padding:clamp(10px,1.4vw,18px);background:var(--ink);box-shadow:0 0 80px 10px rgba(255,255,255,.55)}
+  .vid{position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--ink-l);overflow:hidden}
+  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vid .poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;
     display:flex;align-items:center;justify-content:center}
-  .day .play i::after{content:"";width:0;height:0;margin-left:4px;
-    border-left:15px solid #1f2226;border-top:9px solid transparent;border-bottom:9px solid transparent}
-  .day .foot{position:absolute;left:18px;right:18px;bottom:18px;display:flex;justify-content:space-between;
-    align-items:flex-end;font:400 11px/1.6 var(--mono);letter-spacing:.06em;white-space:nowrap}
-
-  /* --- 상세 --- */
-  .detail{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px;
-    margin:16px var(--pad) 0;padding:32px 0 72px;border-top:1px solid var(--rule)}
-  .lbl{font:500 11px var(--mono);letter-spacing:.08em;opacity:.6}
-  .thumb{position:relative;aspect-ratio:16/9;margin-top:14px;border-radius:3px;overflow:hidden;
-    display:flex;align-items:center;justify-content:center;
-    font:400 11px var(--mono);letter-spacing:.06em;text-align:center;padding:8px}
-  .thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  /* 유튜브 썸네일을 포스터로 깔고, 누를 때만 플레이어를 붙인다 */
-  .poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;
-    background:none;display:flex;align-items:center;justify-content:center}
-  .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .poster i{position:relative;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.55);
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  .vid .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vid .play{position:relative;width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.7);
     display:flex;align-items:center;justify-content:center;transition:transform .25s ease}
-  .poster:hover i,.poster:focus-visible i{transform:scale(1.08)}
-  .poster i::after{content:"";width:0;height:0;margin-left:4px;
-    border-left:15px solid #1f2226;border-top:9px solid transparent;border-bottom:9px solid transparent}
-  .d-title{font:400 30px/1.1 var(--sans);letter-spacing:-.025em;margin-top:20px;text-wrap:balance}
-  .d-date{font:400 12px var(--mono);letter-spacing:.06em;opacity:.6;margin-top:8px}
-  .d-prompt{font:400 13px/1.7 var(--mono);margin-top:14px;padding:16px;
-    background:rgba(255,255,255,.08);border-radius:3px}
-  .d-log{font:400 15px/1.8 var(--kr);opacity:.85;margin-top:14px;text-wrap:pretty}
+  .vid .play::after{content:"";width:0;height:0;margin-left:5px;border-left:18px solid var(--ink);border-top:11px solid transparent;border-bottom:11px solid transparent}
+  .vid .poster:hover .play{transform:scale(1.08)}
+  .vid .tl{position:absolute;left:14px;top:10px;display:flex;align-items:center;gap:8px;font:400 13px var(--mono);pointer-events:none}
+  .vid .br{position:absolute;right:14px;bottom:10px;font:400 12px var(--mono);pointer-events:none}
+  .room .titlerow{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 24px;margin-top:22px}
+  .room .titlerow>div:first-child{flex:1 1 320px;min-width:0}
+  .room .day{font:400 12px var(--mono);opacity:.7}
+  .room h2{margin:6px 0 0;font:500 clamp(34px,4.6vw,58px)/0.95 var(--narrow);letter-spacing:-.03em;text-wrap:pretty}
+  .room .who{display:flex;align-items:center;gap:16px;padding-bottom:6px}
+  .room .who span{font:400 15px var(--kr)}
+  .room .who button{border:0;background:none;padding:0;font:400 13px var(--kr);color:var(--ink);opacity:.65;cursor:pointer}
+  .room .cols{display:flex;flex-wrap:wrap;gap:32px;margin-top:30px;padding-top:24px;border-top:1px solid rgba(30,30,29,.25)}
+  .room .cols>div:first-child{flex:1 1 260px;min-width:0}
+  .room .cols>div:last-child{flex:1.4 1 360px;min-width:0}
+  .room .lbl{font:400 12px var(--mono);opacity:.7}
+  .room .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .room .tags span{padding:4px 12px;background:rgba(30,30,29,.12);font:400 12px var(--mono);letter-spacing:.04em}
+  .room .note{margin-top:10px;font:400 15px/1.8 var(--kr);text-wrap:pretty;white-space:pre-wrap}
+  .pbox{position:relative;margin-top:10px;padding:12px 16px 14px;background:rgba(255,255,255,.55)}
+  .pbox .copy{position:absolute;right:8px;top:8px;height:28px;padding:0 12px;border:0;background:var(--ink);color:var(--ink-l);font:400 12px var(--kr);cursor:pointer}
+  .pbox .ptext{margin-top:32px;font:400 12px/1.7 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;overflow:hidden}
+  .pbox.clip .ptext{max-height:5.4em;-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent);mask-image:linear-gradient(180deg,#000 40%,transparent)}
+  .pbox .more{margin-top:6px;border:0;background:none;padding:0;font:400 11px var(--mono);text-decoration:underline;cursor:pointer;color:var(--ink)}
 
-  /* ── 팀원 입력 영역. 쓰기 권한이 있는 뷰어에게만 보인다 ── */
-  .d-by{font:400 11px var(--mono);letter-spacing:.06em;opacity:.45;margin-top:10px}
-  .editbtn{font:500 11px var(--mono);letter-spacing:.08em;color:inherit;cursor:pointer;
-    padding:7px 13px;border-radius:3px;background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.22);transition:background .2s ease}
-  .editbtn:hover{background:rgba(255,255,255,.16)}
-  .editbtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
-  .editor{margin:0 var(--pad) 72px;padding:28px 0 0;border-top:1px solid var(--rule)}
-  .editor h3{font:400 20px var(--sans);letter-spacing:-.02em;margin:0 0 4px}
-  .editor .hint{font:400 12px/1.6 var(--kr);opacity:.55;margin:0 0 22px;max-width:62ch}
-  .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px}
-  .fields label{display:flex;flex-direction:column;gap:7px}
-  .fields .wide{grid-column:1/-1}
-  .fields span{font:500 11px var(--mono);letter-spacing:.08em;opacity:.6}
-  .fields input,.fields textarea{font:400 13px/1.6 var(--kr);color:inherit;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);
-    border-radius:3px;padding:10px 12px;width:100%}
-  .fields input:focus,.fields textarea:focus{outline:2px solid rgba(255,255,255,.55);
-    outline-offset:-1px;background:rgba(255,255,255,.12)}
-  .fields textarea{resize:vertical;min-height:84px}
-  .fields input::placeholder,.fields textarea::placeholder{color:rgba(238,241,244,.35)}
-  .editrow{display:flex;align-items:center;gap:16px;margin-top:22px;flex-wrap:wrap}
-  .save{font:500 12px var(--mono);letter-spacing:.08em;color:#1f2226;cursor:pointer;
-    padding:11px 22px;border:0;border-radius:3px;background:#eef1f4;transition:opacity .2s ease}
-  .save:hover{opacity:.82}
-  .save:disabled{opacity:.4;cursor:default}
-  .save:focus-visible{outline:2px solid #fff;outline-offset:2px}
-  .status{font:400 12px var(--kr);opacity:.7}
-  .status.bad{color:oklch(0.78 0.13 25)}
-  @media (max-width:640px){ .fields{grid-template-columns:minmax(0,1fr)} }
-
-  footer{display:flex;justify-content:space-between;gap:16px;padding:22px var(--pad) 28px;
-    border-top:1px solid var(--rule);font:400 12px var(--mono);letter-spacing:.06em;opacity:.7}
-  footer .names{font-family:var(--kr);letter-spacing:0;font-size:13px}
-
-  /* 1280px 아트보드 기준. 그보다 좁은 화면에서만 무너지지 않게 조정 */
-  @media (max-width:1100px){
-    :root{--pad:28px}
-    .backdrop{height:clamp(520px, calc(100vw / var(--bg-aspect)), 820px)}
-    h1{font-size:clamp(56px,11vw,130px);margin-top:70px}
-    .hero{height:auto;padding-bottom:56px}
-    .meta{padding-top:96px}
-    .band{height:220px}
-    .day[aria-selected="true"]{width:min(440px,78vw)}
-    .detail{grid-template-columns:minmax(0,1fr);gap:32px}
-  }
-  @media (max-width:640px){
-    :root{--pad:18px}
-    .backdrop{height:clamp(360px, calc(100vw / var(--bg-aspect)), 520px)}
-    .meta{grid-template-columns:repeat(2,1fr);row-gap:6px}
-    .meta span:last-child{text-align:left}
-    footer{flex-direction:column}
+  @media (max-width:520px){
+    .topbar{align-items:flex-start}
+    .topbar .btns .btn{padding:0 10px}
   }
   @media (prefers-reduced-motion:reduce){
-    .day,.day .expand{transition:none}
+    .door,.door .leaf,.room,.rail .marker{transition:none}
   }
 </style>
 </head>
 <body>
-<div class="backdrop" aria-hidden="true">
-  <img class="bg" src="assets/cosmos-bg.jpg" alt="">
-  <div class="bg-shade"></div>
+
+<div class="track" id="track">
+  <div class="stage">
+    <div class="world" id="world"></div>
+    <div class="grain"></div>
+
+    <div class="entrance" id="entrance">
+      <div class="lv" id="level">LEVEL 0 · 09.28 — 10.27</div>
+      <h1>THIRTY DOORS</h1>
+      <button type="button" data-act="enter">ENTER ↓</button>
+    </div>
+
+    <div class="topbar">
+      <div class="rec">
+        <span><i class="dot"></i><span id="progress">REC · (01/30) IN PROGRESS</span></span>
+        <span id="clock" style="opacity:.7">--:--:--</span>
+      </div>
+      <div class="btns">
+        <button class="btn ghost" type="button" data-act="edit" id="edit-btn" hidden>EDIT</button>
+        <button class="btn ghost" type="button" data-act="cctv"><i class="dot"></i>CCTV</button>
+        <button class="btn" type="button" data-act="map" id="map-btn" aria-expanded="false" aria-controls="map">MAP</button>
+      </div>
+    </div>
+
+    <nav class="rail" aria-label="진행 현황판">
+      <div class="marker" id="marker">▶</div>
+      <div class="ticks" id="ticks"></div>
+    </nav>
+
+    <div class="footbar"><span id="depth">ENTRANCE</span><span id="foot-hint">↑↓ 이동 · 문을 눌러 들어가기</span></div>
+  </div>
 </div>
 
-<div class="page">
-  <header class="hero">
+<div class="dim" id="map-dim" data-act="map-close" hidden></div>
+<aside class="panel" id="map" aria-label="평면도와 검색" hidden>
+  <div class="head"><span>FLOOR PLAN</span><span id="rooms-open">00 ROOMS OPEN</span></div>
+  <div class="plan">
+    <div class="row" id="plan-top"></div>
+    <div class="hall"></div>
+    <div class="row" id="plan-bottom"></div>
+  </div>
+  <div class="rule"></div>
+  <input class="field" id="q" type="search" placeholder="제목, 노트, 프롬프트 검색" autocomplete="off" aria-label="검색">
+  <div class="group"><span>AI</span><div class="chips" id="ai-chips"></div></div>
+  <div class="group"><span>제작자</span><div class="chips" id="maker-chips"></div></div>
+  <div class="sortrow">
+    <div class="chips" id="sort-chips"></div>
+    <button class="link" type="button" data-act="reset" id="reset" hidden>전체 초기화</button>
+  </div>
+  <div class="results" id="results"></div>
+</aside>
+
+<section class="cctv" id="cctv" aria-label="영상 모아보기" hidden>
+  <div class="bar">
+    <div><i class="dot"></i><span id="cctv-count">SECURITY ROOM</span></div>
+    <div>
+      <span id="cctv-filter" hidden style="opacity:.7">FILTER ON</span>
+      <button class="btn dark" type="button" data-act="reset" id="cctv-reset" hidden>필터 해제</button>
+      <button class="btn" type="button" data-act="cctv-close">← 복도로 (ESC)</button>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="room" id="room" role="dialog" aria-modal="true" aria-labelledby="r-title" hidden>
+  <div class="wrap">
     <div class="nav">
-      <div></div>
-      <ul>
-        <li><a href="#archive">Archive</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <span>Work</span><span>From</span><span id="m-from">(09.28)</span><span>To</span><span id="m-to">(10.27)</span>
-    </div>
-    <div class="titlewrap">
-      <h1>30 Days of Drift</h1>
-      <div class="progress" id="progress">(01/30) IN PROGRESS</div>
-    </div>
-  </header>
-
-  <section class="band" id="about">
-    <p>One a day</p>
-  </section>
-
-  <section id="archive">
-    <div class="arch-head">
-      <h2>Archive</h2>
-      <button class="editbtn" id="toggle" type="button" aria-expanded="false" aria-controls="editor" hidden>
-        이 날 채우기
-      </button>
-    </div>
-    <div class="strip" id="strip" role="tablist" aria-label="30일 아카이브"></div>
-
-    <div class="detail" id="panel" role="tabpanel" aria-live="polite">
+      <button class="btn" type="button" data-act="room-close">← 복도로 (ESC)</button>
       <div>
-        <div class="lbl">VIDEO</div>
-        <div class="thumb" id="d-thumb"></div>
-        <div class="d-title" id="d-title"></div>
-        <div class="d-date" id="d-date"></div>
-        <div class="d-by" id="d-by"></div>
+        <button class="btn ghost" type="button" data-act="edit" hidden>EDIT</button>
+        <button class="btn ghost" type="button" data-act="prev" id="r-prev">◀</button>
+        <span class="here" id="r-here">ROOM 01</span>
+        <button class="btn ghost" type="button" data-act="next" id="r-next">▶</button>
+      </div>
+    </div>
+    <div class="frame16"><div class="vid" id="r-vid"></div></div>
+    <div class="titlerow">
+      <div>
+        <div class="day" id="r-day">DAY 01 · 09.28</div>
+        <h2 id="r-title"></h2>
+      </div>
+      <div class="who">
+        <span id="r-names"></span>
+        <button type="button" data-act="copy-link" id="r-link">링크 복사</button>
+      </div>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="lbl">AI</div>
+        <div class="tags" id="r-ai"></div>
+        <div class="lbl" style="margin-top:26px">NOTE</div>
+        <div class="note" id="r-note"></div>
       </div>
       <div>
         <div class="lbl">PROMPT</div>
-        <div class="d-prompt" id="d-prompt"></div>
-      </div>
-      <div>
-        <div class="lbl">NOTE</div>
-        <div class="d-log" id="d-log"></div>
+        <div class="pbox" id="r-pbox">
+          <button class="copy" type="button" data-act="copy-prompt" id="r-pcopy">복사</button>
+          <div class="ptext" id="r-prompt"></div>
+          <button class="more" type="button" data-act="toggle-prompt" id="r-more" hidden>more ↓</button>
+        </div>
       </div>
     </div>
-    <section class="editor" id="editor" hidden>
-      <h3 id="ed-head">Day 01 채우기</h3>
-      <p class="hint">유튜브에 <strong>공개</strong> 또는 <strong>일부공개</strong>로 올린 뒤 주소를 붙여넣으세요.
-        비공개는 본인만 보여서 여기서 재생되지 않습니다. 저장하면 팀원 모두에게 바로 반영됩니다.</p>
-      <div class="fields">
-        <label class="wide"><span>YOUTUBE 주소</span>
-          <input id="f-youtube" type="url" inputmode="url" autocomplete="off"
-                 placeholder="https://youtu.be/... 또는 watch?v=... / shorts/..."></label>
-        <label><span>제목</span>
-          <input id="f-title" type="text" placeholder="Petals in morning fog"></label>
-        <label><span>길이</span>
-          <input id="f-duration" type="text" placeholder="00:15"></label>
-        <label class="wide"><span>사용한 프롬프트</span>
-          <textarea id="f-prompt" placeholder="soft focus, faint film grain, slow 24fps camera drift, 15 seconds"></textarea></label>
-        <label class="wide"><span>작업 일지</span>
-          <textarea id="f-log" placeholder="이날 무엇을 시도하고 무엇을 골랐는지 적어두세요."></textarea></label>
-      </div>
-      <div class="editrow">
-        <button class="save" id="save" type="button">저장</button>
-        <span class="status" id="status" role="status" aria-live="polite"></span>
-      </div>
-    </section>
-  </section>
+  </div>
+</section>
 
-  <footer id="team">
-    <span>TEAM 7</span>
-    <span class="names">오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>
-  </footer>
-</div>
+<!-- 팀원 입력 영역. 공유 DB 에 쓰기 권한이 있는 뷰어에게만 열린다 -->
+<div class="dim" id="edit-dim" data-act="edit-close" hidden></div>
+<aside class="panel editor" id="editor" aria-label="방 채우기" hidden>
+  <div class="head"><span id="ed-head">EDIT · DAY 01</span><button class="link" type="button" data-act="edit-close">닫기</button></div>
+  <p class="hint">유튜브에 <strong>공개</strong> 또는 <strong>일부공개</strong>로 올린 뒤 주소를 붙여넣으세요.
+    비공개는 본인만 보여서 여기서 재생되지 않습니다. 저장하면 팀원 모두에게 바로 반영됩니다.</p>
+  <label>DAY<select class="field" id="f-day"></select></label>
+  <label>YOUTUBE 주소<input class="field" id="f-youtube" type="url" inputmode="url" autocomplete="off"
+    placeholder="https://youtu.be/... 또는 watch?v=... / shorts/..."></label>
+  <div class="two">
+    <label>제목<input class="field" id="f-title" type="text" placeholder="Petals in morning fog"></label>
+    <label>길이<input class="field" id="f-duration" type="text" placeholder="00:15"></label>
+  </div>
+  <label>AI (쉼표로 구분)<input class="field" id="f-ai" type="text" placeholder="Midjourney, Runway"></label>
+  <div class="group"><span>제작자</span><div class="chips" id="f-makers"></div></div>
+  <label>프롬프트<textarea class="field" id="f-prompt" placeholder="soft focus, faint film grain, slow 24fps camera drift, 15 seconds"></textarea></label>
+  <label>작업 노트<textarea class="field" id="f-log" placeholder="이날 무엇을 시도하고 무엇을 골랐는지 적어두세요."></textarea></label>
+  <div class="saverow">
+    <button class="btn" type="button" data-act="save" id="save">저장</button>
+    <span class="status" id="status" role="status" aria-live="polite"></span>
+  </div>
+</aside>
 
 <script src="days.js"></script>
 <script>
 (() => {
   'use strict';
 
-  // 프로젝트 시작일 2026-09-28. 진행 일수는 실제 날짜에서 계산해 1~30으로 묶는다.
-  const START = new Date(2026, 8, 28);
+  // 프로젝트 시작일 2026-09-28. ?today=N 으로 오늘을 바꿔 미리 볼 수 있다.
+  const START_DATE = new Date(2026, 8, 28);
   const TOTAL = 30;
+  const MEMBERS = ['오세령', '우민선', '팜뚜안끼엣', '조단비'];
 
-  // 카드 유리 틴트용 팔레트 (밝기, 채도, 색상각)
-  const cosmos = [
-    [0.52,0.08,245],[0.7,0.09,45],[0.6,0.12,25],[0.62,0.07,310],[0.76,0.08,75],
-    [0.48,0.07,260],[0.66,0.1,15],[0.58,0.06,225],[0.72,0.07,350],[0.64,0.1,55],
-  ];
+  // 복도 수치. SEG = 문 간격, START = Day1 깊이, K = 스크롤→깊이 비율, VIEW = 문 앞 카메라 거리
+  const SEG = 150, START = 320, K = 1.15, VIEW = 520;
+  const depthOf = n => START + (n - 1) * SEG;
+  const L = depthOf(TOTAL) + 700;
+  const scrollFor = n => Math.max(0, (depthOf(n) - VIEW) * K);
+  const PANE = ['#d9d9d6', '#bdbdba', '#e8e8e6', '#a8a8a5', '#cfcfcc', '#f0f0ee', '#b5b5b2', '#c7c7c4'];
 
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, '0');
   // 사람이 직접 채우는 값이다. 제목에 따옴표가 들어와도 태그가 깨지지 않게.
   const esc = v => String(v).replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const dateOf = n => { const d = new Date(START_DATE); d.setDate(d.getDate() + n - 1); return `${pad(d.getMonth() + 1)}.${pad(d.getDate())}`; };
+  const fmtDur = s => `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
+  const DAYS = Array.from({ length: TOTAL }, (_, i) => i + 1);
 
-  const pad = n => String(n).padStart(2, '0');
-  const dayAt = i => { const d = new Date(START); d.setDate(START.getDate() + i); return d; };
-  const mmdd = d => `${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
-  const $ = id => document.getElementById(id);
-
-  const P = Math.min(TOTAL, Math.max(1, Math.floor((new Date() - START) / 86400000) + 1));
+  const P = (() => {
+    const forced = parseInt(new URLSearchParams(location.search).get('today'), 10);
+    const auto = Math.floor((Date.now() - START_DATE.getTime()) / 864e5) + 1;
+    return Math.min(TOTAL, Math.max(1, forced || auto));
+  })();
 
   // watch?v= / youtu.be / shorts / embed / ID 단독 — 어떤 형태로 붙여넣어도 받아준다.
   function ytId(v) {
@@ -304,6 +442,15 @@
     return /^[A-Za-z0-9_-]{11}$/.test(str) ? str : '';
   }
 
+  // "00:15" / "15" / "1:05" → 초
+  function toSecs(v) {
+    const str = String(v || '').trim();
+    const m = str.match(/^(\d+):(\d{1,2})$/);
+    if (m) return +m[1] * 60 + +m[2];
+    const s = parseInt(str, 10);
+    return s > 0 ? s : 15;
+  }
+
   // ── 데이터 출처 ──────────────────────────────────────────────
   // remote(공유 DB) > local(days.js) > 안내 문구.
   // 배포본은 remote, 로컬 파일은 local 을 쓴다. 둘 다 없어도 페이지는 그대로 뜬다.
@@ -311,215 +458,469 @@
   for (const e of (window.DAYS || [])) if (e && e.day) local[e.day] = e;
   let remote = {};
 
+  const filled = v => Array.isArray(v) ? v.length > 0 : String(v == null ? '' : v).trim() !== '';
+  const rawField = (n, k) => {
+    const r = remote[n] && remote[n][k];
+    if (filled(r)) return r;
+    return local[n] ? local[n][k] : '';
+  };
   const field = (n, k) => {
-    const r = remote[n] && String(remote[n][k] || '').trim();
-    if (r) return r;
-    return (local[n] && String(local[n][k] || '').trim()) || '';
+    const v = rawField(n, k);
+    return Array.isArray(v) ? v.join(', ') : String(v == null ? '' : v).trim();
+  };
+  // ai / makers 는 배열이든 "A, B" 문자열이든 받는다.
+  const listOf = (n, k) => {
+    const v = rawField(n, k);
+    const arr = Array.isArray(v) ? v : String(v || '').split(/[,·]/);
+    return [...new Set(arr.map(s => String(s).trim()).filter(Boolean))];
   };
 
-  let days = [];
-  function buildDays() {
-    days = Array.from({ length: TOTAL }, (_, i) => {
-      const n = i + 1;
+  // days.js 한 줄 → README Data 스키마
+  //   youtube → vid/thumb, log → note, duration "mm:ss" → 초, updatedAt → uploaded
+  // 업로드 판정은 영상 유무로. 오늘 이후 날짜는 숨긴다.
+  let works = [], byDay = {};
+  function buildWorks() {
+    works = []; byDay = {};
+    for (const n of DAYS) {
       const vid = ytId(field(n, 'youtube'));
-      const up = !!vid;                     // 업로드 판정은 영상 유무로. 날짜로 하면 거짓말이 된다.
-      const isToday = n === P;
-      const late = !up && n < P;            // 지난 날인데 아직 안 올라온 날
-      const [l, c, h] = cosmos[(i * 3) % cosmos.length];
-      const fade = up || isToday ? 0.38 : 0.2;
-      const dur = field(n, 'duration') || '00:15';
-      const title = field(n, 'title');
-      return {
-        n, nn: pad(n), vid, up, isToday,
-        by: (remote[n] && remote[n].by) || '',
-        date: mmdd(dayAt(i)),
-        tint: `oklch(${Math.min(0.9, l + 0.2)} ${c} ${h} / ${fade})`,
-        tag: up ? `▶ ${dur}` : isToday ? 'TODAY · 업로드 중' : late ? '업로드 대기' : 'UPCOMING',
-        title: title || (up ? `Day ${pad(n)}` : isToday ? 'Today' : 'Not yet'),
-        prompt: field(n, 'prompt') || '— 이날 사용한 프롬프트가 여기에 올라옵니다',
-        log: field(n, 'log') || '이날의 작업 과정과 메모가 여기에 기록됩니다.',
-        videoLabel: up ? `VIDEO · ${dur}`
-          : isToday ? 'VIDEO — 오늘 업로드 예정'
-          : late ? 'VIDEO — 업로드 대기'
-          : 'VIDEO — 준비 중',
+      if (!vid || n > P) continue;
+      const w = {
+        day: n, vid,
+        title: field(n, 'title') || `Day ${pad(n)}`,
+        ai: listOf(n, 'ai'),
+        makers: listOf(n, 'makers'),
+        duration: toSecs(field(n, 'duration')),
+        uploaded: (remote[n] && remote[n].updatedAt) || field(n, 'uploaded'),
+        prompt: field(n, 'prompt'),
+        note: field(n, 'log'),
+        thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`,
+      };
+      works.push(w); byDay[n] = w;
+    }
+  }
+
+  // ── 상태 ─────────────────────────────────────────────────────
+  // 스크롤 위치는 여기 넣지 않는다. paint() 가 DOM 을 직접 갱신한다.
+  const S = { open: null, opening: null, hover: null, map: false, cctv: false, edit: false,
+    q: '', ai: [], makers: [], sort: 'day', promptOpen: false, copied: null };
+
+  const active = () => !!(S.q.trim() || S.ai.length || S.makers.length);
+  const matches = w => {
+    const q = S.q.trim().toLowerCase();
+    return (!q || [w.title, w.note, w.prompt].join(' ').toLowerCase().includes(q)) &&
+      (!S.ai.length || w.ai.some(a => S.ai.includes(a))) &&
+      (!S.makers.length || w.makers.some(m => S.makers.includes(m)));
+  };
+  const passes = n => !!byDay[n] && (!active() || matches(byDay[n]));
+  const results = () => works.filter(matches).sort(S.sort === 'latest'
+    ? (a, b) => String(b.uploaded).localeCompare(String(a.uploaded)) || b.day - a.day
+    : (a, b) => a.day - b.day);
+  const tipOf = n => byDay[n] ? `DAY ${pad(n)} · ${byDay[n].title}`
+    : n < P ? `DAY ${pad(n)} · 작업물 없음` : n === P ? '오늘 · 아직 업로드 전' : `DAY ${pad(n)}`;
+
+  // ── 복도 ─────────────────────────────────────────────────────
+  const world = $('world');
+  let doorEls = {};
+
+  const doorHTML = (n, side) =>
+    `<div class="door ${side}" data-n="${n}" style="${side === 'l' ? 'left' : 'right'}:${depthOf(n)}px">` +
+      '<div class="plate"></div><div class="shade"></div><div class="frame"></div><div class="inside"></div>' +
+      '<div class="leaf"><div class="pane"></div><div class="recess"></div><div class="kick"></div>' +
+        '<div class="handle"></div><div class="lever"></div><div class="tape"></div><div class="tape b"></div></div>' +
+    '</div>';
+
+  function buildWorld() {
+    const W = Math.max(320, window.innerWidth), H = Math.max(440, window.innerHeight);
+    const dH = Math.round(Math.min(300, H * 0.5)), dW = Math.round(dH * 0.48);
+    world.style.setProperty('--dw', dW + 'px');
+    world.style.setProperty('--dh', dH + 'px');
+
+    const plane = (cls, x, y, w, h, inner = '', tf = '') =>
+      `<div class="${cls}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px${tf ? ';transform:' + tf : ''}">${inner}</div>`;
+    const lights = Array.from({ length: Math.ceil(L / 300) }, (_, i) =>
+      `<div class="light${i % 5 === 3 ? ' off' : ''}" style="top:${140 + i * 300}px"></div>`).join('');
+    const fogs = Array.from({ length: Math.floor(L / 380) }, (_, i) =>
+      plane('fog', -W / 2, -H / 2, W, H, '', `translateZ(${-(i + 1) * 380}px)`)).join('');
+
+    world.innerHTML =
+      plane('wall wall-l', -W / 2, -H / 2, L, H, DAYS.filter(n => n % 2).map(n => doorHTML(n, 'l')).join('')) +
+      plane('wall wall-r', W / 2 - L, -H / 2, L, H, DAYS.filter(n => !(n % 2)).map(n => doorHTML(n, 'r')).join('')) +
+      plane('ceil', -W / 2, -H / 2, W, L, lights) +
+      plane('floor', -W / 2, H / 2, W, L, '<div class="sheen"></div>') +
+      fogs +
+      plane('endwall', -W / 2, -H / 2, W, H,
+        '<b>END OF LEVEL 0</b><span>TEAM 7 · 오세령 · 우민선 · 조단비 · 팜뚜안끼엣</span>' +
+        '<button class="btn" type="button" data-act="top" style="margin-top:8px;height:34px">처음으로 ↑</button>',
+        `translateZ(${-L}px)`);
+
+    doorEls = {};
+    world.querySelectorAll('.door').forEach(el => {
+      doorEls[el.dataset.n] = {
+        el, side: el.classList.contains('l') ? 'l' : 'r',
+        plate: el.querySelector('.plate'), inside: el.querySelector('.inside'),
+        leaf: el.querySelector('.leaf'), pane: el.querySelector('.pane'),
       };
     });
+    paintDoors();
   }
 
-  // ── 스트립 ───────────────────────────────────────────────────
-  const strip = $('strip');
-  let selected = P;
+  function paintDoors() {
+    for (const n of DAYS) {
+      const d = doorEls[n];
+      if (!d) continue;
+      const w = byDay[n], ok = passes(n), isToday = n === P, past = n < P;
+      const ang = S.opening === n ? 72 : ok ? (S.hover === n ? 34 : 9) : 0;
+      d.el.classList.toggle('today', isToday);
+      d.el.classList.toggle('boarded', !w && past);
+      d.plate.textContent = isToday ? `${pad(n)} NOW` : pad(n);
+      d.inside.style.background = w ? 'linear-gradient(90deg,#f6f6f4,#ffffff)' : '#2c2c2a';
+      d.inside.style.boxShadow = ok ? '0 0 70px 14px rgba(255,255,255,.65)' : 'none';
+      d.leaf.style.transform = `rotateY(${d.side === 'l' ? ang : -ang}deg)`;
+      d.leaf.style.backgroundImage = 'var(--fine),' + (w ? 'linear-gradient(90deg,#b4b3af,#cdccc8 45%,#b9b8b4)'
+        : past ? 'linear-gradient(90deg,#8a8986,#9c9b98)' : 'linear-gradient(90deg,#c2c1bd,#d0cfcb)');
+      d.pane.style.background = w ? `url("${w.thumb}") center/cover, ${PANE[n % PANE.length]}` : past ? '#1e1e1d' : '#bdbdb9';
+      d.pane.style.boxShadow = 'inset 0 0 0 3px #7a7976,inset 3px 3px 7px rgba(0,0,0,.45),' +
+        (ok ? `0 0 22px ${PANE[n % PANE.length]}` : '0 0 0 transparent');
+      d.el.style.opacity = w ? (ok ? 1 : 0.28) : n > P ? 0.6 : 0.85;
+      d.el.style.cursor = ok ? 'pointer' : 'default';
+      d.el.title = tipOf(n);
+    }
+  }
 
-  $('m-from').textContent = `(${mmdd(START)})`;
-  $('m-to').textContent = `(${mmdd(dayAt(TOTAL - 1))})`;
-  $('progress').textContent = `(${pad(P)}/30) IN PROGRESS`;
+  // 스크롤 → world 이동. rAF 로 묶고 DOM 을 직접 쓴다.
+  const nearest = () => {
+    const z = (window.scrollY || 0) / K;
+    return Math.min(TOTAL, Math.max(1, Math.round((z + VIEW - START) / SEG) + 1));
+  };
+  function paint() {
+    const z = (window.scrollY || 0) / K;
+    world.style.transform = `translateZ(${z}px)`;
+    const o = Math.max(0, 1 - z / 200), ent = $('entrance');
+    ent.style.opacity = String(o);
+    ent.style.visibility = o < 0.02 ? 'hidden' : 'visible';
+    const n = nearest();
+    $('depth').textContent = z < 120 ? 'ENTRANCE' : `DAY ${pad(n)} 근처`;
+    $('marker').style.top = ((n - 1) / (TOTAL - 1) * 100) + '%';
+  }
+  let raf = 0;
+  window.addEventListener('scroll', () => {
+    if (!raf) raf = requestAnimationFrame(() => { raf = 0; paint(); });
+  }, { passive: true });
 
-  buildDays();
-
-  const cards = days.map(d => {
-    const btn = document.createElement('button');
-    btn.className = 'day';
-    btn.type = 'button';
-    btn.setAttribute('role', 'tab');
-    btn.setAttribute('aria-controls', 'panel');
-    btn.dataset.n = d.n;
-    strip.appendChild(btn);
-    return btn;
+  let rsz = 0;
+  window.addEventListener('resize', () => {
+    if (!rsz) rsz = requestAnimationFrame(() => { rsz = 0; buildWorld(); paint(); });
   });
 
-  function paintCards() {
-    days.forEach((d, i) => {
-      const btn = cards[i];
-      btn.style.background = d.tint;
-      btn.setAttribute('aria-label', `Day ${d.nn}, ${d.date}, ${d.title}`);
-      btn.innerHTML =
-        `<span class="nn">${d.nn}</span>` +
-        (d.isToday ? '<span class="today-dot"></span>' : '') +
-        '<span class="expand">' +
-          (d.up ? '<span class="play"><i></i></span>' : '') +
-          `<span class="foot"><span>DAY ${d.nn}<br>${d.date}</span><span>${esc(d.tag)}</span></span>` +
-        '</span>';
-      btn.setAttribute('aria-selected', String(d.n === selected));
-    });
+  $('track').style.height = `calc(100vh + ${Math.round((depthOf(TOTAL) - VIEW + 700) * K)}px)`;
+  $('level').textContent = `LEVEL 0 · ${dateOf(1)} — ${dateOf(TOTAL)}`;
+
+  // ── 레일 · 평면도 · 검색 패널 ─────────────────────────────────
+  const cell = n => {
+    const w = byDay[n], ok = passes(n);
+    return { ok, w,
+      bg: w ? (ok ? '#1e1e1d' : 'rgba(30,30,29,.15)') : 'transparent',
+      ink: ok ? '#ececea' : '#1e1e1d',
+      border: w ? '0' : n < P ? '1px dashed rgba(30,30,29,.45)' : '1px solid rgba(30,30,29,.15)',
+      ring: n === P ? '2px solid #d23b2a' : '2px solid transparent',
+    };
+  };
+
+  function renderRail() {
+    $('ticks').innerHTML = DAYS.map(n => {
+      const c = cell(n), label = n % 5 === 0 || n === 1 || n === P ? pad(n) : '';
+      return `<button type="button" data-go="${n}" title="${esc(tipOf(n))}" aria-label="${esc(tipOf(n))}" style="cursor:${c.ok ? 'pointer' : 'default'}">` +
+        `<span class="lab" style="opacity:${n === P ? 1 : 0.6}">${label}</span>` +
+        `<span class="tick" style="width:${c.ok ? 22 : 14}px;background:${c.bg};border:${c.border};outline:${c.ring}"></span></button>`;
+    }).join('');
   }
 
-  // ── 상세 ─────────────────────────────────────────────────────
-  let userNs = null;
-  let detailSig = '';
+  const planCell = n => {
+    const c = cell(n);
+    return `<button type="button" data-go="${n}" title="${esc(tipOf(n))}" style="border:${c.border};background:${c.bg};color:${c.ink};` +
+      `outline:${c.ring};opacity:${n > P ? 0.5 : 1};cursor:${c.ok ? 'pointer' : 'default'}">${pad(n)}</button>`;
+  };
+  const chip = (attr, name, on, mono) =>
+    `<button type="button" class="chip${mono ? ' mono' : ''}" ${attr}="${esc(name)}" aria-pressed="${on}">${esc(name)}</button>`;
 
-  function renderDetail(force) {
-    const d = days[selected - 1];
-    const sig = [d.n, d.vid, d.title, d.prompt, d.log, d.videoLabel, d.by].join(' ');
+  function renderMap() {
+    const list = results(), on = active();
+    $('rooms-open').textContent = `${pad(works.length)} ROOMS OPEN`;
+    $('plan-top').innerHTML = DAYS.filter(n => n % 2).map(planCell).join('');
+    $('plan-bottom').innerHTML = DAYS.filter(n => !(n % 2)).map(planCell).join('');
+    const aiNames = [...new Set(works.flatMap(w => w.ai).concat(S.ai))].sort((a, b) => a.localeCompare(b));
+    $('ai-chips').innerHTML = aiNames.map(a => chip('data-ai', a, S.ai.includes(a), true)).join('') ||
+      '<span style="font:400 12px var(--kr);opacity:.6">아직 입력된 AI가 없어요</span>';
+    $('maker-chips').innerHTML = MEMBERS.map(m => chip('data-maker', m, S.makers.includes(m))).join('');
+    $('sort-chips').innerHTML = [['day', 'Day순'], ['latest', '최신순']]
+      .map(([k, label]) => `<button type="button" class="chip" data-sort="${k}" aria-pressed="${S.sort === k}">${label}</button>`).join('');
+    $('reset').hidden = !on;
+    $('results').innerHTML = list.length
+      ? list.map(w => `<button type="button" data-go="${w.day}"><span class="nn">${pad(w.day)}</span>` +
+          `<span class="tt"><b>${esc(w.title)}</b><i>${esc(w.makers.join(' · '))}</i></span>` +
+          `<span class="du">${fmtDur(w.duration)}</span></button>`).join('')
+      : '<div class="empty"><b>NO ROOMS FOUND</b><span>조건에 맞는 방이 없어요. 검색어나 필터를 바꿔 보세요.</span></div>';
+
+    $('map-btn').textContent = S.map ? 'CLOSE' : on ? `MAP · ${list.length}` : 'MAP';
+    $('map-btn').setAttribute('aria-expanded', String(S.map));
+    $('foot-hint').textContent = on ? `FILTER ON · ${pad(list.length)} ROOMS` : '↑↓ 이동 · 문을 눌러 들어가기';
+  }
+
+  function setMap(open) {
+    S.map = open;
+    $('map').hidden = $('map-dim').hidden = !open;
+    renderMap();
+  }
+
+  $('q').addEventListener('input', e => { S.q = e.target.value; render(); });
+
+  // ── CCTV ─────────────────────────────────────────────────────
+  let cctvSig = '';
+  function renderCctv() {
+    const on = active(), list = results();
+    $('cctv-count').textContent = `SECURITY ROOM · ${on ? `${pad(list.length)} / ${pad(works.length)} TAPES` : `${pad(works.length)} TAPES · DAY 01—${pad(P)}`}`;
+    $('cctv-filter').hidden = $('cctv-reset').hidden = !on;
+
+    const days = DAYS.filter(n => n <= P && (on ? passes(n) : true));
+    const sig = days.map(n => byDay[n] ? [n, byDay[n].vid, byDay[n].title, byDay[n].makers].join('|') : n).join(',');
+    if (sig === cctvSig) return;      // 같은 테이프면 재생 중인 영상을 끊지 않는다
+    cctvSig = sig;
+    camPlaying = null;
+
+    $('grid').innerHTML = days.map(n => {
+      const w = byDay[n];
+      if (!w) {
+        return `<div class="mon dead"><div class="bezel"><div class="screen"><div class="nosig">NO SIGNAL</div><div class="scan"></div>` +
+          `<span class="tl">CAM ${pad(n)}</span><span class="tr"><i style="background:#555"></i>--:--</span><span class="br">${dateOf(n)}</span></div></div>` +
+          `<div class="cap"><b>${n === P ? '오늘 · 업로드 전' : '작업물 없음'}</b><span></span></div></div>`;
+      }
+      // 처음엔 썸네일만. 화면을 누른 모니터 하나만 플레이어를 붙인다.
+      return `<div class="mon live">` +
+        `<div class="bezel"><div class="screen" id="cam-${n}" style="background:url('${w.thumb}') center/cover,#1f1f1f">${camIdle(n)}</div></div>` +
+        `<button type="button" class="cap" data-cam="${n}" title="${esc(tipOf(n))} — 방으로 들어가기">` +
+        `<span><b>${esc(w.title)}</b><span>${esc(w.makers.join(' · '))}</span></span><em>ROOM →</em></button></div>`;
+    }).join('');
+  }
+
+  // 모니터 화면 위 표시들. 재생 중에는 걷어내서 플레이어 조작을 막지 않는다.
+  function camIdle(n) {
+    const w = byDay[n];
+    return `<button type="button" class="cue" data-act="cam-play" data-n="${n}" aria-label="CAM ${pad(n)} 재생"></button><div class="scan"></div><span class="tl">CAM ${pad(n)}</span>` +
+      `<span class="tr"><i style="background:#d23b2a"></i>${fmtDur(w.duration)}</span><span class="br">${dateOf(n)}</span>`;
+  }
+  let camPlaying = null;
+  function stopCam() {
+    const el = camPlaying && $('cam-' + camPlaying);
+    if (el && byDay[camPlaying]) {
+      el.classList.remove('playing');
+      el.innerHTML = camIdle(camPlaying);
+    }
+    camPlaying = null;
+  }
+  function playCam(n) {
+    const w = byDay[n], el = $('cam-' + n);
+    if (!w || !el || camPlaying === n) return;
+    stopCam();
+    camPlaying = n;
+    el.classList.add('playing');
+    el.innerHTML =
+      `<iframe src="https://www.youtube-nocookie.com/embed/${w.vid}?autoplay=1&rel=0&playsinline=1" ` +
+      `title="CAM ${pad(n)} — ${esc(w.title)}" allow="autoplay; encrypted-media; fullscreen" ` +
+      'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+  }
+
+  function openCctv() {
+    S.cctv = true;
+    setMap(false);
+    $('cctv').hidden = false;
+    $('cctv').scrollTop = 0;
+    cctvSig = '';
+    renderCctv();
+    try { history.replaceState(null, '', '#cctv'); } catch (_) {}
+    syncLock();
+  }
+  function closeCctv() {
+    S.cctv = false;
+    $('cctv').hidden = true;
+    $('grid').innerHTML = '';          // 숨긴 뒤에도 영상이 돌지 않게
+    cctvSig = ''; camPlaying = null;
+    setHash(null);
+    syncLock();
+  }
+
+  // ── 방 ───────────────────────────────────────────────────────
+  const room = $('room');
+  let roomSig = '', t1 = 0, t2 = 0, ct = 0;
+
+  const setHash = n => {
+    try { history.replaceState(null, '', n ? '#day-' + pad(n) : location.pathname + location.search); } catch (_) {}
+  };
+  const hashDay = () => { const m = /day-?(\d{1,2})/i.exec(location.hash || ''); return m ? +m[1] : null; };
+  const syncLock = () => document.documentElement.classList.toggle('locked', !!(S.open || S.cctv));
+  const roomList = () => works.map(w => w.day);
+
+  function renderRoom(force) {
+    const w = byDay[S.open];
+    if (!w) return;
+    const sig = [w.day, w.vid, w.title, w.prompt, w.note, w.ai, w.makers, w.duration].join('\u0001');
     // 남이 저장했다고 내가 보고 있던 영상을 끊어버리지 않는다.
-    if (!force && sig === detailSig) return;
-    detailSig = sig;
-
-    const thumb = $('d-thumb');
-    thumb.style.background = d.tint;
-    thumb.textContent = '';
-    if (d.vid) {
-      // 썸네일만 먼저 깔고 누를 때 iframe 을 붙인다. 30개 플레이어를 미리 만들 이유가 없다.
-      const poster = document.createElement('button');
-      poster.type = 'button';
-      poster.className = 'poster';
-      poster.setAttribute('aria-label', `Day ${d.nn} 영상 재생`);
-
-      const shot = document.createElement('img');
-      shot.alt = '';
-      shot.loading = 'lazy';
-      shot.src = `https://i.ytimg.com/vi/${d.vid}/maxresdefault.jpg`;
+    if (force || sig !== roomSig) {
+      roomSig = sig;
+      const vid = $('r-vid');
+      vid.style.background = `radial-gradient(ellipse at 50% 45%, ${PANE[w.day % PANE.length]}, #1e1e1d 85%)`;
+      vid.innerHTML =
+        `<button class="poster" type="button" data-act="play" aria-label="Day ${pad(w.day)} 영상 재생">` +
+          `<img alt="" src="https://i.ytimg.com/vi/${w.vid}/maxresdefault.jpg"><span class="play"></span></button>` +
+        `<span class="tl"><i class="dot"></i>PLAY · ${fmtDur(w.duration)}</span>` +
+        `<span class="br">${dateOf(w.day)}.2026</span>`;
       // maxres 가 없는 영상이 흔하다. 그때는 16:9 인 mqdefault 로 내려간다.
-      shot.addEventListener('error', () => {
-        shot.src = `https://i.ytimg.com/vi/${d.vid}/mqdefault.jpg`;
-      }, { once: true });
+      vid.querySelector('img').addEventListener('error', e => { e.target.src = w.thumb; }, { once: true });
 
-      poster.append(shot, document.createElement('i'));
-      poster.addEventListener('click', () => {
-        thumb.innerHTML =
-          `<iframe src="https://www.youtube-nocookie.com/embed/${d.vid}?autoplay=1&rel=0" ` +
-          `title="Day ${d.nn} — ${esc(d.title)}" allow="autoplay; encrypted-media; fullscreen" ` +
-          'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-      });
-      thumb.appendChild(poster);
-    } else {
-      thumb.textContent = d.videoLabel;
+      $('r-day').textContent = `DAY ${pad(w.day)} · ${dateOf(w.day)}`;
+      $('r-title').textContent = w.title;
+      $('r-names').textContent = w.makers.join(' · ');
+      $('r-ai').innerHTML = w.ai.length ? w.ai.map(a => `<span>${esc(a)}</span>`).join('') : '<span style="opacity:.6">—</span>';
+      $('r-note').textContent = w.note || '이날의 작업 과정과 메모가 여기에 기록됩니다.';
+      $('r-prompt').textContent = w.prompt || '— 이날 사용한 프롬프트가 여기에 올라옵니다';
     }
-
-    $('d-title').textContent = d.title;
-    $('d-date').textContent = `DAY ${d.nn} · ${d.date}`;
-    $('d-prompt').textContent = d.prompt;
-    $('d-log').textContent = d.log;
-    renderBy(d);
+    const list = roomList(), i = list.indexOf(w.day);
+    $('r-here').textContent = `ROOM ${pad(w.day)}`;
+    $('r-prev').textContent = `◀ ${pad(list[(i - 1 + list.length) % list.length])}`;
+    $('r-next').textContent = `${pad(list[(i + 1) % list.length])} ▶`;
+    $('r-prev').setAttribute('aria-label', '이전 방');
+    $('r-next').setAttribute('aria-label', '다음 방');
+    renderRoomLabels();
   }
 
-  async function renderBy(d) {
-    const el = $('d-by');
-    if (!d.by || !userNs) { el.textContent = ''; return; }
-    try {
-      const ps = await userNs.profiles([d.by]);
-      const nm = (ps[d.by] && ps[d.by].name) || '';
-      el.textContent = nm ? `${nm} 올림` : '';
-    } catch (_) {
-      el.textContent = '';
-    }
+  function renderRoomLabels() {
+    const w = byDay[S.open];
+    if (!w) return;
+    const long = w.prompt.length > 200;
+    $('r-pbox').classList.toggle('clip', long && !S.promptOpen);
+    $('r-more').hidden = !long;
+    $('r-more').textContent = S.promptOpen ? '접기 ↑' : 'more ↓';
+    $('r-more').style.font = S.promptOpen ? '400 13px var(--kr)' : '';
+    $('r-link').textContent = S.copied === 'link' ? '복사됨' : '링크 복사';
+    $('r-pcopy').textContent = S.copied === 'prompt' ? '복사됨' : '복사';
   }
 
-  function select(n, { scroll = false } = {}) {
-    selected = n;
-    cards.forEach(c => c.setAttribute('aria-selected', String(+c.dataset.n === n)));
-    renderDetail(true);
-    fillForm();
-    if (scroll) cards[n - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  function go(n) {
+    if (!byDay[n]) return;
+    setMap(false);
+    window.scrollTo({ top: scrollFor(n), behavior: 'smooth' });
+    clearTimeout(t1); t1 = setTimeout(() => openDoor(n), 850);
+  }
+  function openDoor(n) {
+    if (!byDay[n]) return;
+    S.opening = n; paintDoors();
+    clearTimeout(t2); t2 = setTimeout(() => openRoom(n), 450);
+  }
+  function openRoom(n) {
+    if (!byDay[n]) return;
+    clearTimeout(t2);
+    if (S.cctv) closeCctv();
+    setMap(false);
+    S.open = n; S.opening = null; S.promptOpen = false;
+    paintDoors();
+    // 스크롤을 잠그기 전에 문 앞으로 맞춘다. 잠그면 진행 중이던 smooth 스크롤이 멈춘다.
+    window.scrollTo({ top: scrollFor(n), behavior: 'auto' });
+    room.classList.remove('in');
+    room.hidden = false;
+    room.scrollTop = 0;
+    renderRoom(true);
+    setHash(n);
+    syncLock();
+    // rAF 두 번 뒤에 진입 애니메이션. 백그라운드 탭에서는 rAF 가 멈추므로 setTimeout 폴백도 둔다.
+    const enter = () => room.classList.add('in');
+    requestAnimationFrame(() => requestAnimationFrame(enter));
+    setTimeout(enter, 30);
+  }
+  function closeRoom() {
+    room.classList.remove('in');
+    setHash(null);
+    clearTimeout(t2);
+    t2 = setTimeout(() => {
+      room.hidden = true;
+      $('r-vid').innerHTML = '';       // 플레이어를 떼어야 소리가 멈춘다
+      roomSig = '';
+      S.open = null;
+      syncLock();
+    }, 400);
+  }
+  function step(dir) {
+    const list = roomList(), i = list.indexOf(S.open);
+    if (i < 0) return;
+    const n = list[(i + dir + list.length) % list.length];
+    S.open = n; S.promptOpen = false;
+    room.scrollTop = 0;
+    renderRoom(true);
+    setHash(n);
+    window.scrollTo({ top: scrollFor(n), behavior: 'auto' });
+  }
+  function flash(k) {
+    S.copied = k; renderRoomLabels();
+    clearTimeout(ct); ct = setTimeout(() => { S.copied = null; renderRoomLabels(); }, 1600);
+  }
+  function copy(text) {
+    const fallback = () => {
+      const t = document.createElement('textarea');
+      t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      t.remove();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).catch(fallback);
+    fallback(); return Promise.resolve();
   }
 
-  function refresh() {
-    buildDays();
-    paintCards();
-    renderDetail(false);
-    if (!formDirty) fillForm();
+  // ── 입력 패널 (공유 DB) ───────────────────────────────────────
+  const FIELDS = ['youtube', 'title', 'duration', 'ai', 'prompt', 'log'];
+  let db = null, uid = null, writable = false;
+  let editDay = P, fMakers = [], formDirty = false;
+
+  $('f-day').innerHTML = DAYS.map(n => `<option value="${n}">DAY ${pad(n)} · ${dateOf(n)}</option>`).join('');
+
+  function renderMakerChips() {
+    $('f-makers').innerHTML = MEMBERS.map(m => chip('data-fmaker', m, fMakers.includes(m))).join('');
   }
-
-  strip.addEventListener('click', e => {
-    const card = e.target.closest('.day');
-    if (!card) return;
-    const n = +card.dataset.n;
-    if (n === selected && days[n - 1].vid) {
-      $('panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
-    select(n, { scroll: true });
-  });
-
-  // 좌우 화살표로도 날짜를 넘길 수 있게
-  strip.addEventListener('keydown', e => {
-    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-    if (!step) return;
-    e.preventDefault();
-    const next = Math.min(TOTAL, Math.max(1, selected + step));
-    select(next, { scroll: true });
-    cards[next - 1].focus();
-  });
-
-  // ── 입력 폼 ──────────────────────────────────────────────────
-  const FIELDS = ['youtube', 'title', 'duration', 'prompt', 'log'];
-  let formDirty = false;
-
-  const val = k => $('f-' + k).value.trim();
-
   function fillForm() {
-    $('ed-head').textContent = `Day ${pad(selected)} 채우기`;
-    FIELDS.forEach(k => { $('f-' + k).value = field(selected, k); });
+    $('ed-head').textContent = `EDIT · DAY ${pad(editDay)}`;
+    $('f-day').value = String(editDay);
+    FIELDS.forEach(k => { $('f-' + k).value = field(editDay, k); });
+    fMakers = listOf(editDay, 'makers');
+    renderMakerChips();
     formDirty = false;
   }
-
   function setStatus(msg, bad) {
     const el = $('status');
     el.textContent = msg || '';
     el.classList.toggle('bad', !!bad);
   }
-
-  FIELDS.forEach(k => $('f-' + k).addEventListener('input', () => {
-    formDirty = true;
+  function openEditor() {
+    if (!writable) return;
+    S.edit = true;
+    editDay = S.open || nearest();
     setStatus('');
-  }));
-
-  $('toggle').addEventListener('click', () => {
-    const ed = $('editor');
-    const open = ed.hidden;
-    ed.hidden = !open;
-    $('toggle').setAttribute('aria-expanded', String(open));
-    $('toggle').textContent = open ? '입력창 닫기' : '이 날 채우기';
-    if (open) { fillForm(); $('f-youtube').focus(); }
-  });
-
-  function lockEditor() {
-    $('editor').hidden = true;
-    $('toggle').hidden = true;
+    fillForm();
+    $('editor').hidden = $('edit-dim').hidden = false;
+    $('f-youtube').focus();
   }
+  function closeEditor() {
+    S.edit = false;
+    $('editor').hidden = $('edit-dim').hidden = true;
+  }
+  function lockEditor() {
+    writable = false;
+    closeEditor();
+    document.querySelectorAll('[data-act="edit"]').forEach(b => { b.hidden = true; });
+  }
+
+  $('f-day').addEventListener('change', e => { editDay = +e.target.value; setStatus(''); fillForm(); });
+  FIELDS.forEach(k => $('f-' + k).addEventListener('input', () => { formDirty = true; setStatus(''); }));
 
   async function save() {
     if (!db) return;
-    const raw = val('youtube');
+    const raw = $('f-youtube').value.trim();
     if (raw && !ytId(raw)) {
       setStatus('유튜브 주소를 알아볼 수 없습니다. 주소창의 링크를 그대로 붙여넣어 주세요.', true);
       $('f-youtube').focus();
@@ -529,14 +930,17 @@
     btn.disabled = true;
     setStatus('저장하는 중');
 
-    const body = { updatedAt: new Date().toISOString() };
-    FIELDS.forEach(k => { body[k] = val(k); });
+    // 필드 이름은 days.js 와 같게 저장한다. 읽을 때 buildWorks() 가 스키마로 바꾼다.
+    const body = { updatedAt: new Date().toISOString(), makers: fMakers.join(', ') };
+    FIELDS.forEach(k => { body[k] = $('f-' + k).value.trim(); });
     if (uid) body.by = uid;
 
     try {
-      await db.doc('days/' + pad(selected)).set(body);
+      await db.doc('days/' + pad(editDay)).set(body);
       formDirty = false;
-      setStatus('저장했습니다. 팀원 모두에게 바로 보입니다.');
+      setStatus(editDay > P
+        ? '저장했습니다. 이 날이 되면 복도에 문이 열립니다.'
+        : '저장했습니다. 팀원 모두에게 바로 보입니다.');
     } catch (err) {
       const code = err && err.code;
       if (code === 'invalid_argument') {
@@ -553,20 +957,125 @@
       btn.disabled = false;
     }
   }
-  $('save').addEventListener('click', save);
 
-  // ── 첫 렌더. 여기까지는 공유 DB 없이도 완전히 동작한다 ──────────
-  paintCards();
-  renderDetail(true);
-  fillForm();
-  {
-    const first = cards[selected - 1];
-    strip.scrollLeft = first.offsetLeft - (strip.clientWidth - first.offsetWidth) / 2;
+  // ── 이벤트 ───────────────────────────────────────────────────
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-act],[data-go],[data-cam],[data-ai],[data-maker],[data-sort],[data-fmaker],.door');
+    if (!t) return;
+    const d = t.dataset;
+
+    if (t.classList.contains('door')) { if (passes(+d.n)) openDoor(+d.n); return; }
+    if (d.go) { if (passes(+d.go)) go(+d.go); return; }
+    if (d.cam) {
+      const n = +d.cam;
+      closeCctv();
+      window.scrollTo({ top: scrollFor(n), behavior: 'auto' });
+      openRoom(n);
+      return;
+    }
+    if (d.ai) { S.ai = S.ai.includes(d.ai) ? S.ai.filter(x => x !== d.ai) : [...S.ai, d.ai]; render(); return; }
+    if (d.maker) { S.makers = S.makers.includes(d.maker) ? S.makers.filter(x => x !== d.maker) : [...S.makers, d.maker]; render(); return; }
+    if (d.sort) { S.sort = d.sort; render(); return; }
+    if (d.fmaker) {
+      fMakers = fMakers.includes(d.fmaker) ? fMakers.filter(x => x !== d.fmaker) : [...fMakers, d.fmaker];
+      formDirty = true; setStatus(''); renderMakerChips();
+      return;
+    }
+
+    switch (d.act) {
+      case 'enter': window.scrollTo({ top: scrollFor(1), behavior: 'smooth' }); break;
+      case 'top': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
+      case 'map': setMap(!S.map); break;
+      case 'map-close': setMap(false); break;
+      case 'reset': S.q = ''; S.ai = []; S.makers = []; $('q').value = ''; render(); break;
+      case 'cctv': openCctv(); break;
+      case 'cctv-close': closeCctv(); break;
+      case 'room-close': closeRoom(); break;
+      case 'prev': step(-1); break;
+      case 'next': step(1); break;
+      case 'cam-play': playCam(+d.n); break;
+      case 'play': {
+        const w = byDay[S.open];
+        if (!w) break;
+        $('r-vid').innerHTML =
+          `<iframe src="https://www.youtube-nocookie.com/embed/${w.vid}?autoplay=1&rel=0" ` +
+          `title="Day ${pad(w.day)} — ${esc(w.title)}" allow="autoplay; encrypted-media; fullscreen" ` +
+          'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+        break;
+      }
+      case 'copy-link': if (S.open) copy(location.href.split('#')[0] + '#day-' + pad(S.open)).then(() => flash('link')); break;
+      case 'copy-prompt': if (S.open) copy(byDay[S.open].prompt).then(() => flash('prompt')); break;
+      case 'toggle-prompt': S.promptOpen = !S.promptOpen; renderRoomLabels(); break;
+      case 'edit': openEditor(); break;
+      case 'edit-close': closeEditor(); break;
+      case 'save': save(); break;
+    }
+  });
+
+  // 문 hover → 문짝이 조금 더 열린다
+  world.addEventListener('mouseover', e => {
+    const el = e.target.closest('.door');
+    const n = el && passes(+el.dataset.n) ? +el.dataset.n : null;
+    if (n !== S.hover) { S.hover = n; paintDoors(); }
+  });
+  world.addEventListener('mouseleave', () => { if (S.hover) { S.hover = null; paintDoors(); } });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (S.edit) closeEditor();
+      else if (S.open) closeRoom();
+      else if (S.cctv) closeCctv();
+      else if (S.map) setMap(false);
+      return;
+    }
+    if (S.edit || (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName))) return;
+    if (S.open && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { step(e.key === 'ArrowRight' ? 1 : -1); return; }
+    if (!S.open && !S.cctv && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      e.preventDefault();
+      window.scrollBy({ top: (e.key === 'ArrowDown' ? 1 : -1) * SEG * K, behavior: 'smooth' });
+    }
+  });
+
+  function fromHash() {
+    if (/cctv/i.test(location.hash)) { if (!S.cctv) openCctv(); return; }
+    const n = hashDay();
+    if (n && n !== S.open) go(n);
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  // 시계. 1초마다 DOM 만 갈아끼운다.
+  const MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const tick = () => {
+    const d = new Date(), h = d.getHours();
+    $('clock').textContent = `${h < 12 ? 'AM' : 'PM'} ${pad(h % 12 || 12)}:${pad(d.getMinutes())}:${pad(d.getSeconds())} · ${MON[d.getMonth()]}.${pad(d.getDate())} ${d.getFullYear()}`;
+  };
+  tick(); setInterval(tick, 1000);
+
+  // ── 렌더 ─────────────────────────────────────────────────────
+  function render() {
+    paintDoors();
+    renderRail();
+    renderMap();
+    if (S.cctv) renderCctv();
   }
 
-  // ── 공유 DB 연결. 배포된 뷰어에서만 살아난다 ────────────────────
-  let db = null, uid = null;
+  function refresh() {
+    buildWorks();
+    render();
+    if (S.open) { if (byDay[S.open]) renderRoom(false); else closeRoom(); }
+    if (S.edit && !formDirty) fillForm();
+  }
 
+  // ── 첫 렌더. 여기까지는 공유 DB 없이도 완전히 동작한다 ──────────
+  $('progress').textContent = `REC · (${pad(P)}/30) IN PROGRESS`;
+  buildWorks();
+  buildWorld();
+  render();
+  paint();
+  if (/cctv/i.test(location.hash)) openCctv();
+  else if (hashDay()) setTimeout(() => go(hashDay()), 200);
+
+  // ── 공유 DB 연결. 배포된 뷰어에서만 살아난다 ────────────────────
   (async () => {
     if (!(window.claude && window.claude.use)) return;   // 로컬 파일 — days.js 만으로 동작
     const [d, u] = await Promise.all([
@@ -575,9 +1084,8 @@
     ]);
     db = d;
 
-    let writable = !!db;
+    writable = !!db;
     if (u) {
-      userNs = u;
       try { uid = await u.id(); } catch (_) {}
       // null 은 "권한 없음"이 아니라 "아직 모름". 입력창은 열어두고 거절되면 닫는다.
       let allowed = null;
@@ -585,7 +1093,7 @@
       writable = !!db && allowed !== false;
     }
 
-    if (writable) $('toggle').hidden = false;
+    if (writable) document.querySelectorAll('[data-act="edit"]').forEach(b => { b.hidden = false; });
 
     if (db) {
       db.collection('days').onSnapshot(snap => {

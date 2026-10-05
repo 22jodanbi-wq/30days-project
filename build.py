@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """index.html 을 아트팩트로 발행할 단일 파일로 묶는다.
 
-로컬 index.html 은 assets/ 와 days.js 를 따로 읽지만, 아트팩트는 파일 하나여야
-한다. 그래서 배경 이미지는 data URI 로 박고, days.js 참조는 떼어낸다.
+로컬 index.html 은 days.js 를 따로 읽지만, 아트팩트는 파일 하나여야 한다.
+그래서 days.js 참조는 떼어내고, 배경 이미지가 있으면 data URI 로 박는다.
+(Corridor 디자인은 질감을 전부 CSS 로 만들어서 지금은 박을 이미지가 없다.)
 배포본에서는 콘텐츠가 days.js 가 아니라 공유 DB 에서 온다.
 
     python3 build.py        ->  dist/portfolio.html
@@ -20,10 +21,11 @@ OUT = ROOT / "dist" / "portfolio.html"
 
 
 def inline_image(html: str) -> str:
-    """<img class="bg" src="assets/..."> 를 data URI 로 치환한다."""
+    """<img class="bg" src="assets/..."> 가 있으면 data URI 로 치환한다."""
     match = re.search(r'<img class="bg" src="([^"]+)"', html)
     if not match:
-        sys.exit("배경 <img class=\"bg\"> 를 찾지 못했습니다. index.html 구조가 바뀌었는지 확인하세요.")
+        print("  배경 이미지 없음 (건너뜀)")
+        return html
 
     rel = match.group(1)
     path = ROOT / rel
